@@ -1,5 +1,6 @@
 {
   "predef": {
+    "$": true,
     "document": true,
     "window": true,
     "-Promise": true,

@@ -1,18 +1,16 @@
 {
   "name": "sl-translate",
-  "version": "0.0.0",
-  "directories": {
-    "doc": "doc",
-    "test": "test"
-  },
+  "version": "1.0.0",
+  "description": "Translation Service",
+  "private": true,
   "scripts": {
     "start": "ember server",
     "build": "ember build",
     "test": "ember test"
   },
-  "repository": "https://github.com/stefanpenner/ember-cli",
-  "engines": {
-    "node": ">= 0.10.0"
+  "repository": {
+    "type": "git",
+    "url": "git@gitlab.softlayer.local:interface/sl-translate.git"
   },
   "keywords": [
     "ember-addon"
@@ -20,7 +18,9 @@
   "ember-addon": {
     "configPath": "tests/dummy/config"
   },
-  "author": "",
+  "authors": [
+    "Jeremy Brown <jebrown@softlayer.com>"
+  ],
   "license": "MIT",
   "devDependencies": {
     "body-parser": "^1.2.0",
@@ -31,6 +31,7 @@
     "ember-cli-ic-ajax": "0.1.1",
     "ember-cli-qunit": "0.0.5",
     "express": "^4.8.5",
-    "glob": "^4.0.5"
+    "glob": "^4.0.5",
+    "connect-restreamer": "~1.0.0"
   }
 }
