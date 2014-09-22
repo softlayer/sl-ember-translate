@@ -1,8 +1,11 @@
 import Ember from 'ember';
+import template from '../templates/components/sl-translate';
 
 export default Ember.Component.extend({
 
     tagName: 'span',
+
+    layout: template,
 
     /**
      * Translated string
