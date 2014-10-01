@@ -221,6 +221,11 @@ Though a value can be bound to a property passed to the *sl-translate* component
 
 
 
+# Versioning
+Employs [Semantic Versioning 2.0.0](http://semver.org/)
+
+
+
 # Contribution
 [See CONTRIBUTING.md](CONTRIBUTING.md)
 
