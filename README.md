@@ -1,6 +1,30 @@
-# Sl-translate
 
-This README outlines the details of collaborating on this Ember addon.
+Ember CLI version: **0.0.46**
+
+NPM package name: **sl-translate**
+
+License: [MIT Licensed](LICENSE.md)
+
+# What sl-translate is
+An [Ember CLI Addon](http://www.ember-cli.com) that provides the ability to lookup a dictionary value either through method calls or via a component in your templates. It supports:
+
+* singular/plural string substitution
+* replacement of placeholder tokens in translation strings with passed parameters
+* bindings
+
+
+
+# What it is not
+This addon does not translate text strings or provide internationalization (i18n) support for your application.  You will need to provide content to this addon that is already translated and/or localized.
+
+
+
+# Then why is it called sl-translate?
+sl-dictionary or something similar might in fact be a better name for this addon but in our opinion, which could very well turn out to be incorrect, this addon will most usually be used in conjuction with the displaying of translated text in an application.  Then when you take into account support for token replacement it seemed to move away from just a dictionary lookup into something "more".
+
+
+
+# Working Demo
 
 ## Installation
 
@@ -11,15 +35,194 @@ This README outlines the details of collaborating on this Ember addon.
 ## Running
 
 * `ember server`
-* Visit your app at http://localhost:4200.
-
-## Running Tests
-
-* `ember test`
-* `ember test --server`
-
-## Building
-
-* `ember build`
+* View the demo at http://localhost:4200
 
 For more information on using ember-cli, visit [http://www.ember-cli.com/](http://www.ember-cli.com/).
+
+
+
+# How to use this addon in your application
+
+## Install this addon as a Node module
+```
+npm install sl-translate
+```
+
+
+## Set dictionary data on Translate Service
+
+Get a reference to the Translate Service and pass your dictionary as the only argument to *setDictionary()*
+
+In a route, for example:
+```
+this.controllerFor( 'application' ).get( 'translateService' ).setDictionary( yourDictionaryData );
+```
+
+## Use as a Component
+
+### Single Key
+
+The simplest use of the *sl-translate* component is when you only need to translate a single key that will not be bound to or need any strings replaced within it.  Such use looks like:
+
+```handlebars
+{{sl-translate key="CLOSE"}}
+```
+
+---
+
+### Singular/Plural
+
+If a different key needs to be used based on whether or not a singular or plural context needs to be represented, then use the following format:
+
+```handlebars
+{{sl-translate key="DEVICE_COUNT_SINGULAR" pluralKey="DEVICE_COUNT_PLURAL" pluralCount="3"}}
+```
+
+The order of the parameters does not matter.
+
+---
+
+### String Replacement
+
+If the translated string has tokens within it (e.g {0}, {1}, etc) that need to be replaced with values, use the following format:
+
+```handlebars
+{{sl-translate key="ACCESSLOG_LIST_PAGINATION" $0="5" $1="10" $2="200"}}
+```
+
+where each "$x" parameter numerically corresponds to the tokens in the translation string.  The order of the parameters does not matter.
+
+---
+
+### Binding
+
+If you need to pass parameters whose values are bound to other values rather than be hard-coded, use the following format:
+
+```handlebars
+{{sl-translate key="ACCESSLOG_LIST_PAGINATION" $0Binding="examplePropertyBoundTo1" $1Binding="examplePropertyBoundTo2" $2Binding="examplePropertyBoundTo3"}}
+```
+
+The order of the parameters does not matter.
+
+
+
+
+## Call Translation Service directly
+
+### getKeyValue()
+If you know that your translation string does not need pluralization support or you do not need to replace any tokens you can use this method to keep from having to build up the data object needed by *translateKey()*.
+
+It accepts one argument which is your key and will either return the translated string for this key or the original key text if the key is not found in the dictionary.
+
+
+### translateKey()
+This method provides the pluralization and token replacement support of the Tranlsate Service.  To call this method direclty, you must pass on object to it of the following format in any of the following combinations:
+
+**No pluralization or token replacement**
+
+```
+{
+    key: 'KEY_STRING'
+}
+```
+
+**Pluralization**
+
+```
+{
+    key         : 'KEY_STRING',
+    pluralKey   : 'PLURALKEY_STRING',
+    pluralCount : PLURALCOUNT_VALUE
+}
+```
+
+**Token replacement**
+
+```
+{
+    key        : 'KEY_STRING',
+    parameters : {
+        $0: 'REPLACEMENT_VALUE',
+        $1: 'REPLACEMENT_VALUE'
+        ...
+    }
+}
+```
+
+**Pluralization and Token replacement**
+
+```
+{
+    key         : 'KEY_STRING',
+    pluralKey   : 'PLURALKEY_STRING',
+    pluralCount : PLURALCOUNT_VALUE,
+    parameters  : {
+        $0: 'REPLACEMENT_VALUE',
+        $1: 'REPLACEMENT_VALUE'
+        ...
+    }
+}
+```
+
+
+
+# How all the parts work
+
+## Initializer
+A singleton instance of the Translate Service is injected on every View, Controller and Component as the *translateService* property via an initializer named *translate-service*.
+
+## Setting the dictionary data
+Though the Translate Service has been injected it is not ready for use until a dictionary object is set on it via a call to *setDictionary()*.  The dictionary object should be simple key-value pairings, such as
+
+```
+{
+    'SUBMIT_BUTTON': 'Submit',
+    'CANCEL_BUTTON': 'Cancel',
+    ...
+}
+```
+
+## Single key lookup, pluralization, and token replacement
+
+The Translate Service supports single key lookup, pluralization, token replacement and any combination of these together.
+
+When a single key is provided but cannot be found in the dictionary, or an error occurs during the dictionary lookup, a warning is written to the console and the original key string is returned.
+
+When pluralization is desired the *pluralKey* value is used instead of the one for *key* and the same error handling just described is still employed.
+
+To invoke pluralization, you must populate both of the *pluralKey* and *pluralCount* properties.  If only one of these values is provided then a warning is written to the console and the *key* value is returned.  If the value for *pluralCount* is greater than 0 (zero) then the *pluralKey* will be retrieved from the dictionary, otherwise *key* will be.
+
+The Translate Service supports the replacement of tokens within the translation string via simple string replacement without the application of any additional logic.  This is why pluralization is supported in the manner already described and not as a mechanism of token replacement.  While calling *translateKey()* directly does not place any restrictions on the text patterns of the replacement tokens you can use the *sl-component* presently does, therefore the safest pattern to use is a number surrounded by curly braces.  For example:
+
+```
+{
+    'ITEM_PAGINATION': 'You are viewing items {3} of {1} of {0} pages',
+}
+```
+
+The numerical values within each set of curly braces does not have any signifigance.  Just make sure that you correctly specify parameter values for each of these keys via the *sl-translate* component or via calls to *translateKey()* to ensure the desired substitution.  If you use the same token within the translation string more than once then each occurrence of the same string will be replaced with the same content specified as the replacement text.
+
+Suffice it to say, the values of your translation strings should not themselves have any numbers surrounded by curly braces that you desire to be presented in this manner.  If you do then you will need to encode the curly braces as HTML entities, as one possible solution.
+
+
+## sl-translate Component
+
+The simplest use of the *sl-translate* component is
+
+```
+{{sl-translate key="SUBMIT_BUTTON"}}
+```
+
+The reason it is necessary to specify the *key* portion instead of just being able to pass in *"SUBMIT_BUTTON"* as a lone parameter in this usage is because a component is not able to accept both named and un-named parameters and support binding the way that is required.  We contemplated creating two different components, one to handle single keys and one to handle pluralizations, but that quickly became messy due to needing to support token replacments.  When we first set out to make this component we wanted to make it as easy as possible for a developer to use it in their templates and it quickly became evident that having a single *sl-translate* component that would be used everywhere, in every scenario, was a better pattern than different components for different scenarios, and that having to specify a *key* portion for single key translations was an acceptable trade-off.
+
+Though a value can be bound to a property passed to the *sl-translate* component, due to how components work in Ember, these properties are not observed from within the component.  This is desired functionality of the *sl-translate* component so there is logic within it that distills the passed parameters to ones which should be observed and then on *willInsertElement()* and *willDestroyElement()* observers are added and removed.
+
+
+
+# Contribution
+[See CONTRIBUTING.md](CONTRIBUTING.md)
+
+
+
+# License
+sl-translate is [MIT Licensed](LICENSE.md)
