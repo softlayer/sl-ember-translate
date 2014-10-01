@@ -8,14 +8,16 @@ export default Ember.Route.extend({
         }
     },
 
-    beforeModel: function() {
-        var _this = this;
-
-        return new Ember.RSVP.Promise( function( resolve ) {
-            $.ajax( '/api/translation' ).done( function( response ) {
-                _this.controllerFor( 'application' ).get( 'translateService' ).setDictionary( Ember.Object.create(response) );
-                resolve();
-            });
+    model: function() {
+        return Ember.Object.create({
+            'SIMPLE_KEY'   : 'I have been translated',
+            'SINGULAR_KEY' : 'View my family',
+            'PLURAL_KEY'   : 'View my families',
+            'REPLACED_KEY' : 'I have replaced {0} and {1}'
         });
+    },
+
+    setupController: function( controller, model ) {
+        controller.get( 'translateService' ).setDictionary( model );
     }
 });
