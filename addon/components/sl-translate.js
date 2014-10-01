@@ -105,6 +105,8 @@ export default Ember.Component.extend({
         }.bind( this ));
 
         this.setTranslatedString();
+
+        this._super.apply( this, arguments );
     },
 
     /**
@@ -116,5 +118,7 @@ export default Ember.Component.extend({
         this.get( 'observedParameters' ).map( function( key ) {
             this.removeObserver( key, this, this.setTranslatedString );
         }.bind( this ));
+
+        this._super.apply( this, arguments );
     }
 });
