@@ -1,7 +1,7 @@
 {
   "name": "sl-translate",
   "version": "1.0.0",
-  "description": "Translation Service",
+  "description": "SoftLayer Translation Service",
   "private": true,
   "scripts": {
     "start": "ember server",
