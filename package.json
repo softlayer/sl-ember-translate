@@ -16,7 +16,10 @@
     "node": ">= 0.10.0"
   },
   "keywords": [
-    "ember-addon"
+    "ember-addon",
+    "sl-translate",
+    "dictionary",
+    "translation"
   ],
   "ember-addon": {
     "configPath": "tests/dummy/config"
