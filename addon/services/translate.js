@@ -1,3 +1,5 @@
+/** @module sl-translate/services/translate */
+
 import Ember from 'ember';
 
 export default Ember.Object.extend({
@@ -5,14 +7,17 @@ export default Ember.Object.extend({
     /**
      * Translations
      *
-     * @type {object}
+     * @property {object} dictionary
+     * @type     {Ember.Object}
+     * @default  null
      */
     dictionary: null,
 
     /**
      * Set translation dictionary data
      *
-     * @param  {object} translations  Translation model
+     * @function setDictionary
+     * @argument {Ember.Object} translations  Translation model
      * @return {void}
      */
     setDictionary: function( translations ) {
@@ -22,7 +27,8 @@ export default Ember.Object.extend({
     /**
      * Retrieve value for specified dictionary key
      *
-     * @param  {string} key Dictionary key to retrieve value for
+     * @function getKeyValue
+     * @argument {string} key Dictionary key to retrieve value for
      * @return {string}
      */
     getKeyValue: function( key ) {
@@ -45,15 +51,18 @@ export default Ember.Object.extend({
      * - singular/plural string substitution
      * - replacement of placeholder tokens in translation strings with passed parameters
      *
-     * @param  {object} data  Object with the following keys:
-     *                            {
-     *                                key
-     *                                pluralKey
-     *                                pluralCount
-     *                                parameters: {
-     *                                    $0: value
-     *                                }
-     *                            }
+     * @function translateKey
+     * @argument {object} data
+     * @example
+     * // Example object that can be passed as argument
+     * {
+     *     key
+     *     pluralKey
+     *     pluralCount
+     *     parameters: {
+     *         $0: value
+     *     }
+     * }
      * @return {string}       Translated string
      */
     translateKey: function( data ) {

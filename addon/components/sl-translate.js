@@ -1,3 +1,5 @@
+/** @module sl-translate/components/sl-translate */
+
 import Ember from 'ember';
 import template from '../templates/components/sl-translate';
 
@@ -10,7 +12,8 @@ export default Ember.Component.extend({
     /**
      * Translated string
      *
-     * @type {string}
+     * @property {string} translatedString
+     * @type     {string}
      * @default  null
      */
     translatedString: null,
@@ -20,8 +23,9 @@ export default Ember.Component.extend({
      *
      * Only contains those that are a number that begin with "$" and also do not end in "Binding"
      *
-     * @type    {Ember.Array}
-     * @default {null}
+     * @property {array} parameters
+     * @type     {Ember.Array}
+     * @default  {null}
      */
     parameters: null,
 
@@ -30,14 +34,16 @@ export default Ember.Component.extend({
      *
      * Only contains those that are a number that begin with "$" and are to be bound to
      *
-     * @type    {Ember.Array}
-     * @default {null}
+     * @property {array} observedParameters
+     * @type     {Ember.Array}
+     * @default  {null}
      */
     observedParameters: null,
 
     /**
      * Filter passed parameters on initialization
      *
+     * @function extractParameterKeys
      * @return {void}
      */
     extractParameterKeys: function() {
@@ -64,6 +70,7 @@ export default Ember.Component.extend({
     /**
      * Set translated string value on property used by template
      *
+     * @function setTranslatedString
      * @return {void}
      */
     setTranslatedString: function() {
@@ -77,6 +84,7 @@ export default Ember.Component.extend({
      * - singular/plural string substitution
      * - replacement of placeholder tokens in translation strings with passed parameters
      *
+     * @function translateString
      * @return {string} Translated string
      */
     translateString: function() {
@@ -97,7 +105,9 @@ export default Ember.Component.extend({
     /**
      * Register observers on filtered parameter list
      *
-     * @return {void}
+     * @function willInsertElement
+     * @fires    this._super
+     * @return   {void}
      */
     willInsertElement: function() {
         this.get( 'observedParameters' ).map( function( key ) {
@@ -112,7 +122,9 @@ export default Ember.Component.extend({
     /**
      * Remove observers on filtered parameter list
      *
-     * @return {void}
+     * @function willDestroyElement
+     * @fires    this._super
+     * @return   {void}
      */
     willDestroyElement: function() {
         this.get( 'observedParameters' ).map( function( key ) {

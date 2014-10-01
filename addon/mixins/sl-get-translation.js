@@ -1,3 +1,5 @@
+/** @module sl-translate/mixins/sl-get-translation */
+
 import Ember from 'ember';
 
 export default Ember.Mixin.create({
