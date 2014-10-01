@@ -71,7 +71,7 @@ test( 'parameters property defaults to null', function() {
 test( 'extractParameterKeys() fires on init', function() {
     expect(1);
 
-    deepEqual( this.subject().parameters, Ember.A() );
+    deepEqual( this.subject().parameters, [] );
 });
 
 test( 'On initialization, extractParameterKeys() filters passed parameters', function() {

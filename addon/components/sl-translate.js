@@ -41,8 +41,8 @@ export default Ember.Component.extend({
      * @return {void}
      */
     extractParameterKeys: function() {
-        var parameters         = Ember.A(),
-            observedParameters = Ember.A();
+        var parameters         = [],
+            observedParameters = [];
 
         Ember.keys( this ).map( function( key ) {
 
