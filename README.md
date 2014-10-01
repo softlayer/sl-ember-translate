@@ -44,6 +44,7 @@ For more information on using ember-cli, visit [http://www.ember-cli.com/](http:
 # How to use this addon in your application
 
 ## Install this addon as a Node module
+
 ```
 npm install sl-translate
 ```
@@ -54,6 +55,7 @@ npm install sl-translate
 Get a reference to the Translate Service and pass your dictionary as the only argument to *setDictionary()*
 
 In a route, for example:
+
 ```
 this.controllerFor( 'application' ).get( 'translateService' ).setDictionary( yourDictionaryData );
 ```
