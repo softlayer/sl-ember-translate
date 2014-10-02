@@ -77,7 +77,8 @@ or `Brocfile.js` also add a BREAKING tag within the brackets before any other ta
     - BUGFIX tag is a link to a bug + a link to a patch.
     - INTERNAL tag is an internal log of changes.
 
-We try to be quick about responding to tickets but sometimes we get a bit backlogged.
+We try to be quick about responding to tickets but sometimes we get a bit backlogged.  If the response is slow, try to
+find someone on IRC(#softlayer) to give the ticket a review.
 
 Some things that will increase the chance that your pull request is accepted, taken straight from the Ruby on Rails
 guide:
