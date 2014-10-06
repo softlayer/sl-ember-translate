@@ -50,7 +50,16 @@ more work to do than time to do it. If you can write some code then that will sp
 
 # Pull Requests
 
-We love pull requests. Here's a quick guide:
+## Contributer License Agreement
+Contributions to the sl-translate project require the submission of a contributer license agreement. Individual
+contributers should review and complete the [Individual CLA](CLA-INDIVIDUAL.md). Contributions made of behalf of a
+company/employer will necessitate the completion of the [Corporate CLA](CLA-CORPORATE.md).
+
+If you have any questions about either of these documents please contact the same individual listed in the documents
+you are to send your completed copies to.
+
+## We love pull requests!
+Here's a quick guide:
 
 1. Fork the repo.
 
