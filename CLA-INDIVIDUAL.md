@@ -1,5 +1,5 @@
-## International Business Machines, Inc. (IBM)
-### Individual Contributor License Agreement ("Agreement")
+#### International Business Machines, Inc. (IBM)
+##### Individual Contributor License Agreement ("Agreement")
 
 http://www.github.com/softlayer/sl-translate
 
