@@ -1,7 +1,6 @@
-/** @module sl-translate/initializers/translate-service */
-
 import TranslateService from '../services/translate';
 
+/** @module sl-translate/initializers/translate-service */
 export default function( container, app ) {
     var translateService  = TranslateService.create();
 

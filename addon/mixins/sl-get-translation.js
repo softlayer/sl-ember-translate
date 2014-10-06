@@ -1,7 +1,6 @@
-/** @module sl-translate/mixins/sl-get-translation */
-
 import Ember from 'ember';
 
+/** @module sl-translate/mixins/sl-get-translation */
 export default Ember.Mixin.create({
     get: function( key ) {
         var translationsRegex = /translate\.(.*)/,

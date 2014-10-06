@@ -1,5 +1,5 @@
-#### International Business machines, Inc.
-#####Software Grant and Corporate Contributor License Agreement ("Agreement")
+## International Business machines, Inc.
+### Software Grant and Corporate Contributor License Agreement ("Agreement")
 
 http://www.github.com/softlayer/sl-translate
 

@@ -1,7 +1,6 @@
-/** @module sl-translate/services/translate */
-
 import Ember from 'ember';
 
+/** @module sl-translate/services/translate */
 export default Ember.Object.extend({
 
     /**
