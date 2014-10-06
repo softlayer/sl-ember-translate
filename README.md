@@ -3,7 +3,7 @@ Ember CLI version: **0.0.46**
 
 NPM package name: **sl-translate**
 
-License: [MIT Licensed](LICENSE.md)
+License: [MIT](LICENSE.md)
 
 # What sl-translate is
 An [Ember CLI Addon](http://www.ember-cli.com) that provides the ability to lookup a dictionary value either through method calls or via a component in your templates. It supports:
@@ -231,5 +231,10 @@ Employs [Semantic Versioning 2.0.0](http://semver.org/)
 
 
 
-# License
-sl-translate is [MIT Licensed](LICENSE.md)
+# Copyright and License
+sl-translate and its source files are Copyright © 2014 [SoftLayer Technologies, Inc.](http://www.softlayer.com/) The software is [MIT Licensed](LICENSE.md)
+
+
+
+# Warranty
+This software is provided “as is” and without any express or implied warranties, including, without limitation, the implied warranties of merchantability and fitness for a particular purpose.
