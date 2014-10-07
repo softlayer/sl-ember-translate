@@ -61,18 +61,6 @@ test( 'Can be used alongside other properties or attribute bindings', function()
     equal( $component.prop( 'class'), ['ember-view testClass'] );
 });
 
-test( 'translatedString property defaults to null', function() {
-    equal( ComponentUnderTest.prototype.translatedString, null );
-});
-
-test( 'parameters property defaults to null', function() {
-    equal( ComponentUnderTest.prototype.parameters, null );
-});
-
-test( 'extractParameterKeys() fires on init', function() {
-    deepEqual( this.subject().parameters, [] );
-});
-
 test( 'On initialization, extractParameterKeys() filters passed parameters', function() {
     var component = this.subject({
             key         : 'the_key',
