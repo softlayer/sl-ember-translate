@@ -178,7 +178,7 @@ This method provides the pluralization and token replacement support of the Tran
 
 ## Use as a Mixin
 
-By using the *sl-get-translation* mixin on your controllers you can enable quick access to translations through the standard *Ember.get* method by simply prepending "*translation.*" to the beginning of the key you want translated.  This is especially useful in templates where the use of the *sl-translate* component is not possible.  In those situations the path *controller.translate.[key]* will provide the translation for the specified key.
+By using the *sl-get-translation* mixin on your controllers you can enable quick access to translations through the standard *Ember.get* method by simply prepending "translation." to the beginning of the key you want translated.  This is especially useful in templates where the use of the *sl-translate* component is not possible.  In those situations the path *controller.translate.[key]* will provide the translation for the specified key.
 
 
 
