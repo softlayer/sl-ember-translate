@@ -16,33 +16,6 @@ var translateService = Ember.Object.create({
 moduleForComponent( 'sl-translate', 'Unit - component:sl-translate' );
 
 /**
- * Ensures that the template is wrapping the content in a span tag and not in any block-level tags.
- * A side effect of this test is the appearance that core Ember functionality is being tested
- */
-test( 'Renders as a span tag with no classes', function() {
-    var component  = this.subject({ translateService: translateService }),
-        $component = this.append();
-
-    equal( $component.prop( 'tagName' ), 'SPAN' );
-    equal( $component.prop( 'class'), 'ember-view' );
-});
-
-/**
- * That it renders and functins as expected
- */
-test( 'DOM and content of rendered translation', function() {
-    var component = this.subject({
-            key              : 'the_key',
-            translateService : translateService
-        }),
-        $component = this.append();
-
-    equal( $component.text(), 'TRANSLATE: the_key' );
-    ok( /metamorph-[0-9]*-start/.test( $component.prop( 'firstChild' ).id ) );
-    ok( /metamorph-[0-9]*-end/.test( $component.prop( 'lastChild' ).id ) );
-});
-
-/**
  * Ensure haven't broken any default behavior of Ember, since manipulate properties passed to the component
  * A side effect of this test is the appearance that core Ember functionality is being tested
  */
