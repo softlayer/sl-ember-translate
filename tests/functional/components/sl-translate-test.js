@@ -1,6 +1,7 @@
 import Ember from 'ember';
 import { test, moduleForComponent } from 'ember-qunit';
 import startApp from '../../helpers/start-app';
+import ComponentUnderTest from 'sl-translate/components/sl-translate';
 
 var translateService = Ember.Object.create({
         translateKey: function( data ) {
