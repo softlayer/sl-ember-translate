@@ -3,52 +3,37 @@ import { test, moduleForComponent } from 'ember-qunit';
 import startApp from '../../helpers/start-app';
 import ComponentUnderTest from 'sl-translate/components/sl-translate';
 
-var App;
+var translateService = Ember.Object.create({
+        translateKey: function( data ) {
+            this.set( 'key', data.key );
+            this.set( 'pluralKey', data.pluralKey );
+            this.set( 'pluralCount', data.pluralCount );
+            this.set( 'parameters', data.parameters );
 
-moduleForComponent( 'sl-translate', 'Unit - component:sl-translate', {
-    setup: function() {
-        var TS = Ember.Object.create({
-            translateKey: function( data ) {
-                this.set( 'key', data.key );
-                this.set( 'pluralKey', data.pluralKey );
-                this.set( 'pluralCount', data.pluralCount );
-                this.set( 'parameters', data.parameters );
+            return 'TRANSLATE: ' + data.key;
+        }
+    });
 
-                return 'TRANSLATE: ' + data.key;
-            }
-        });
-
-        App = startApp();
-
-        App.__container__.register( 'translateService:main', TS, { instantiate: false } );
-    },
-
-    teardown: function() {
-        Ember.run( App, App.destroy );
-    }
-});
+moduleForComponent( 'sl-translate', 'Unit - component:sl-translate' );
 
 test( 'Renders as a span tag with no classes', function() {
-    var component = this.subject();
-    component.container = App.__container__;
-    component.translateService = App.__container__.lookup( 'translateService:main' );
+    var component = this.subject({ translateService: translateService }),
+        $component = this.append();
 
-    equal( this.$().prop( 'tagName' ), 'SPAN' );
-    equal( this.$().prop( 'class'), 'ember-view' );
+    equal( $component.prop( 'tagName' ), 'SPAN' );
+    equal( $component.prop( 'class'), 'ember-view' );
 });
 
 test( 'DOM and content of rendered translation', function() {
     var component = this.subject({
-        key: 'the_key'
-    });
-    component.container = App.__container__;
-    component.translateService = App.__container__.lookup( 'translateService:main' );
+            key: 'the_key',
+            translateService: translateService
+        }),
+        $component = this.append();
 
-    component.translateString();
-
-    equal( this.$().text(), 'TRANSLATE: the_key' );
-    ok( /metamorph-[0-9]*-start/.test( this.$().prop( 'firstChild' ).id ) );
-    ok( /metamorph-[0-9]*-end/.test( this.$().prop( 'lastChild' ).id ) );
+    equal( $component.text(), 'TRANSLATE: the_key' );
+    ok( /metamorph-[0-9]*-start/.test( $component.prop( 'firstChild' ).id ) );
+    ok( /metamorph-[0-9]*-end/.test( $component.prop( 'lastChild' ).id ) );
 });
 
 test( 'translatedString property defaults to null', function() {
@@ -103,22 +88,19 @@ test( 'setTranslatedString() sets translatedString property with value from tran
 
 test( 'translateString() calls translateKey() on the translation service', function() {
     var component = this.subject({
-        key: 'the_key',
-        pluralKey: 'plural_key',
-        pluralCount: 'plural_count',
-        $0: 'a',
-        $1: 'b'
-    });
+            key: 'the_key',
+            pluralKey: 'plural_key',
+            pluralCount: 'plural_count',
+            $0: 'a',
+            $1: 'b',
+            translateService: translateService
+        }),
+        $component = this.append();
 
-    component.container = App.__container__;
-    component.translateService = App.__container__.lookup( 'translateService:main' );
-
-    component.translateString();
-
-    equal( component.container.lookup( 'controller:application' ).get( 'translateService' ).get( 'key' ), 'the_key' );
-    equal( component.container.lookup( 'controller:application' ).get( 'translateService' ).get( 'pluralKey' ), 'plural_key' );
-    equal( component.container.lookup( 'controller:application' ).get( 'translateService' ).get( 'pluralCount' ), 'plural_count' );
-    deepEqual( component.container.lookup( 'controller:application' ).get( 'translateService' ).get( 'parameters' ), { $0: 'a', $1: 'b' } );
+    equal( translateService.get( 'key' ), 'the_key' );
+    equal( translateService.get( 'pluralKey' ), 'plural_key' );
+    equal( translateService.get( 'pluralCount' ), 'plural_count' );
+    deepEqual( translateService.get( 'parameters' ), { $0: 'a', $1: 'b' } );
 });
 
 test( 'willInsertElement() calls setTranslatedString()', function() {
@@ -139,18 +121,18 @@ test( 'willInsertElement() adds observers to each entry in observedParameters pr
     var component = this.subject({
             key: 'the_key',
             $0Binding: 'a',
-            $1: 'b'
+            $1: 'b',
+            translateService: translateService
         }),
-        setTranslatedStringWasCalled = false;
-
-    component.container = App.__container__;
+        setTranslatedStringWasCalled = false,
+        $component;
 
     component.setTranslatedString = function() {
         setTranslatedStringWasCalled = true;
     };
 
     // Render in DOM to fire willInsertElement()
-    this.append();
+    $component = this.append();
 
     // Reset, as willInsertElement() calls setTranslatedString()
     setTranslatedStringWasCalled = false;
@@ -166,18 +148,18 @@ test( 'willDestroyElement() removes observers', function() {
     var component = this.subject({
             key: 'the_key',
             $0Binding: 'a',
-            $1: 'b'
+            $1: 'b',
+            translateService: translateService
         }),
-        setTranslatedStringWasCalled = false;
-
-    component.container = App.__container__;
+        setTranslatedStringWasCalled = false,
+        $component;
 
     component.setTranslatedString = function() {
         setTranslatedStringWasCalled = true;
     };
 
     // Render in DOM to fire willInsertElement()
-    this.append();
+    $component = this.append();
 
     // Reset, as willInsertElement() calls setTranslatedString()
     setTranslatedStringWasCalled = false;
