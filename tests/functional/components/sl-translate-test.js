@@ -39,6 +39,4 @@ test( 'DOM and content of rendered translation', function() {
         $component = this.append();
 
     equal( $component.text(), 'TRANSLATE: the_key' );
-    ok( /metamorph-[0-9]*-start/.test( $component.prop( 'firstChild' ).id ) );
-    ok( /metamorph-[0-9]*-end/.test( $component.prop( 'lastChild' ).id ) );
 });
