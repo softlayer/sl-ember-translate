@@ -16,8 +16,9 @@ var translateService = Ember.Object.create({
 moduleForComponent( 'sl-translate', 'Functional - component:sl-translate' );
 
 /**
- * Ensures that the template is wrapping the content in a span tag and not in any block-level tags.
- * A side effect of this test is the appearance that core Ember functionality is being tested
+ * Ensures that the template is wrapping the content in a span tag and not in any block-level tags. While it appears
+ * that core Ember functionality is being tested this test is ensuring that the implied contract about how this non-UI
+ * component is rendered into the DOM is adhered to.
  */
 test( 'Renders as a span tag with no classes', function() {
     var component  = this.subject({ translateService: translateService }),
