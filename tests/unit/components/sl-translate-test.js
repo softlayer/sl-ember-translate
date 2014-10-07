@@ -21,7 +21,6 @@ moduleForComponent( 'sl-translate', 'Unit - component:sl-translate', {
         App = startApp();
 
         App.__container__.register( 'translateService:main', TS, { instantiate: false } );
-        App.inject( 'controller', 'translateService', 'translateService:main' );
     },
 
     teardown: function() {
