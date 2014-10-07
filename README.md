@@ -106,7 +106,15 @@ If you need to pass parameters whose values are bound to other values rather tha
 
 The order of the parameters does not matter.
 
+---
 
+### Used alongside other properties or attribute bindings
+
+You can still use the *sl-translate* component alongside other properties or attribute bindings as well:
+
+```handlebars
+{{sl-translate tagName="div" class="btn :btn-primary" key="CLOSE"}}
+```
 
 
 ## Call Translation Service directly
