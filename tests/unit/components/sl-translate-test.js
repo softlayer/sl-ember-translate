@@ -30,8 +30,6 @@ moduleForComponent( 'sl-translate', 'Unit - component:sl-translate', {
 });
 
 test( 'Renders as a span tag with no classes', function() {
-    expect(2);
-
     var component = this.subject();
     component.container = App.__container__;
     component.translateService = App.__container__.lookup( 'translateService:main' );
@@ -41,8 +39,6 @@ test( 'Renders as a span tag with no classes', function() {
 });
 
 test( 'DOM and content of rendered translation', function() {
-    expect(3);
-
     var component = this.subject({
         key: 'the_key'
     });
@@ -57,26 +53,18 @@ test( 'DOM and content of rendered translation', function() {
 });
 
 test( 'translatedString property defaults to null', function() {
-    expect(1);
-
     equal( ComponentUnderTest.prototype.translatedString, null );
 });
 
 test( 'parameters property defaults to null', function() {
-    expect(1);
-
     equal( ComponentUnderTest.prototype.parameters, null );
 });
 
 test( 'extractParameterKeys() fires on init', function() {
-    expect(1);
-
     deepEqual( this.subject().parameters, [] );
 });
 
 test( 'On initialization, extractParameterKeys() filters passed parameters', function() {
-    expect(1);
-
     var component = this.subject({
         key: 'the_key',
         pluralKey: 'plural_key',
@@ -90,8 +78,6 @@ test( 'On initialization, extractParameterKeys() filters passed parameters', fun
 });
 
 test( 'On initialization, extractParameterKeys() filters passed parameters to be bound', function() {
-    expect(1);
-
     var component = this.subject({
         key: 'the_key',
         pluralKey: 'plural_key',
@@ -105,8 +91,6 @@ test( 'On initialization, extractParameterKeys() filters passed parameters to be
 });
 
 test( 'setTranslatedString() sets translatedString property with value from translateString()', function() {
-    expect(1);
-
     var component = this.subject();
 
     component.translateString = function() {
@@ -119,8 +103,6 @@ test( 'setTranslatedString() sets translatedString property with value from tran
 });
 
 test( 'translateString() calls translateKey() on the translation service', function() {
-    expect(4);
-
     var component = this.subject({
         key: 'the_key',
         pluralKey: 'plural_key',
@@ -141,8 +123,6 @@ test( 'translateString() calls translateKey() on the translation service', funct
 });
 
 test( 'willInsertElement() calls setTranslatedString()', function() {
-    expect(1);
-
     var component                    = this.subject(),
         setTranslatedStringWasCalled = false;
 
@@ -157,8 +137,6 @@ test( 'willInsertElement() calls setTranslatedString()', function() {
 });
 
 test( 'willInsertElement() adds observers to each entry in observedParameters property to call setTranslatedString()', function() {
-    expect(1);
-
     var component = this.subject({
             key: 'the_key',
             $0Binding: 'a',
@@ -186,8 +164,6 @@ test( 'willInsertElement() adds observers to each entry in observedParameters pr
 });
 
 test( 'willDestroyElement() removes observers', function() {
-    expect(1);
-
     var component = this.subject({
             key: 'the_key',
             $0Binding: 'a',
