@@ -36,6 +36,20 @@ test( 'DOM and content of rendered translation', function() {
     ok( /metamorph-[0-9]*-end/.test( $component.prop( 'lastChild' ).id ) );
 });
 
+test( 'Can be used alongside other properties or attribute bindings', function() {
+    var component  = this.subject({
+            translateService : translateService,
+            key              : 'key_alongside',
+            tagName          : 'h1',
+            classNames       : [ 'testClass' ]
+        }),
+        $component = this.append();
+
+    equal( $component.prop( 'tagName' ), 'H1' );
+    equal( $component.text(), 'TRANSLATE: key_alongside' );
+    equal( $component.prop( 'class'), ['ember-view testClass'] );
+});
+
 test( 'translatedString property defaults to null', function() {
     equal( ComponentUnderTest.prototype.translatedString, null );
 });
