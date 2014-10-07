@@ -17,7 +17,7 @@ var translateService = Ember.Object.create({
 moduleForComponent( 'sl-translate', 'Unit - component:sl-translate' );
 
 test( 'Renders as a span tag with no classes', function() {
-    var component = this.subject({ translateService: translateService }),
+    var component  = this.subject({ translateService: translateService }),
         $component = this.append();
 
     equal( $component.prop( 'tagName' ), 'SPAN' );
@@ -26,8 +26,8 @@ test( 'Renders as a span tag with no classes', function() {
 
 test( 'DOM and content of rendered translation', function() {
     var component = this.subject({
-            key: 'the_key',
-            translateService: translateService
+            key              : 'the_key',
+            translateService : translateService
         }),
         $component = this.append();
 
@@ -50,26 +50,26 @@ test( 'extractParameterKeys() fires on init', function() {
 
 test( 'On initialization, extractParameterKeys() filters passed parameters', function() {
     var component = this.subject({
-        key: 'the_key',
-        pluralKey: 'plural_key',
-        pluralCount: 'plural_count',
-        $0: 'a',
-        $1Binding: 'b',
-        $2: 'c'
-    });
+            key         : 'the_key',
+            pluralKey   : 'plural_key',
+            pluralCount : 'plural_count',
+            $0          : 'a',
+            $1Binding   : 'b',
+            $2          : 'c'
+        });
 
     deepEqual( component.get( 'parameters' ).sort(), [ '$0', '$1', '$2' ] );
 });
 
 test( 'On initialization, extractParameterKeys() filters passed parameters to be bound', function() {
     var component = this.subject({
-        key: 'the_key',
-        pluralKey: 'plural_key',
-        pluralCount: 'plural_count',
-        $0: 'a',
-        $1Binding: 'b',
-        $2: 'c'
-    });
+            key         : 'the_key',
+            pluralKey   : 'plural_key',
+            pluralCount : 'plural_count',
+            $0          : 'a',
+            $1Binding   : 'b',
+            $2          : 'c'
+        });
 
     deepEqual( component.get( 'observedParameters' ), [ '$1' ] );
 });
@@ -88,12 +88,12 @@ test( 'setTranslatedString() sets translatedString property with value from tran
 
 test( 'translateString() calls translateKey() on the translation service', function() {
     var component = this.subject({
-            key: 'the_key',
-            pluralKey: 'plural_key',
-            pluralCount: 'plural_count',
-            $0: 'a',
-            $1: 'b',
-            translateService: translateService
+            translateService : translateService,
+            key              : 'the_key',
+            pluralKey        : 'plural_key',
+            pluralCount      : 'plural_count',
+            $0               : 'a',
+            $1               : 'b'
         }),
         $component = this.append();
 
@@ -119,10 +119,10 @@ test( 'willInsertElement() calls setTranslatedString()', function() {
 
 test( 'willInsertElement() adds observers to each entry in observedParameters property to call setTranslatedString()', function() {
     var component = this.subject({
-            key: 'the_key',
-            $0Binding: 'a',
-            $1: 'b',
-            translateService: translateService
+            translateService : translateService,
+            key              : 'the_key',
+            $0Binding        : 'a',
+            $1               : 'b'
         }),
         setTranslatedStringWasCalled = false,
         $component;
@@ -146,10 +146,10 @@ test( 'willInsertElement() adds observers to each entry in observedParameters pr
 
 test( 'willDestroyElement() removes observers', function() {
     var component = this.subject({
-            key: 'the_key',
-            $0Binding: 'a',
-            $1: 'b',
-            translateService: translateService
+            translateService : translateService,
+            key              : 'the_key',
+            $0Binding        : 'a',
+            $1               : 'b'
         }),
         setTranslatedStringWasCalled = false,
         $component;
