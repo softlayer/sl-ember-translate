@@ -62,8 +62,10 @@ export default Ember.Component.extend({
             }
         }.bind( this ));
 
-        this.set( 'parameters', parameters );
-        this.set( 'observedParameters', observedParameters );
+        this.setProperties({
+            'parameters'         : parameters,
+            'observedParameters' : observedParameters
+        });
     }.on( 'init' ),
 
     /**
