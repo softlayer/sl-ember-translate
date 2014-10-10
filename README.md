@@ -5,6 +5,8 @@ NPM package name: **sl-translate**
 
 License: [MIT](LICENSE.md)
 
+---
+
 # What sl-translate is
 An [Ember CLI Addon](http://www.ember-cli.com) that provides the ability to lookup a dictionary value either through method calls or via a component in your templates. It supports:
 
@@ -23,6 +25,7 @@ This addon does not translate text strings or provide internationalization (i18n
 sl-dictionary or something similar might in fact be a better name for this addon but in our opinion, which could very well turn out to be incorrect, this addon will most usually be used in conjuction with the displaying of translated text in an application.  Then when you take into account support for token replacement it seemed to move away from just a dictionary lookup into something "more".
 
 
+---
 
 # Working Demo
 
@@ -39,7 +42,7 @@ sl-dictionary or something similar might in fact be a better name for this addon
 
 For more information on using ember-cli, visit [http://www.ember-cli.com/](http://www.ember-cli.com/).
 
-
+---
 
 # How to use this addon in your application
 
@@ -180,7 +183,7 @@ This method provides the pluralization and token replacement support of the Tran
 
 By using the *sl-get-translation* mixin on your controllers you can enable quick access to translations through the standard *Ember.get* method by simply prepending "translation." to the beginning of the key you want translated.  This is especially useful in templates where the use of the *sl-translate* component is not possible.  In those situations the path *controller.translate.[key]* will provide the translation for the specified key.
 
-
+---
 
 # How all the parts work
 
@@ -233,22 +236,22 @@ The reason it is necessary to specify the *key* portion instead of just being ab
 
 Though a value can be bound to a property passed to the *sl-translate* component, due to how components work in Ember, these properties are not observed from within the component.  This is desired functionality of the *sl-translate* component so there is logic within it that distills the passed parameters to ones which should be observed and then on *willInsertElement()* and *willDestroyElement()* observers are added and removed.
 
-
+---
 
 # Versioning
 Employs [Semantic Versioning 2.0.0](http://semver.org/)
 
-
+---
 
 # Contribution
 [See CONTRIBUTING.md](CONTRIBUTING.md)
 
-
+---
 
 # Copyright and License
 sl-translate and its source files are Copyright © 2014 [SoftLayer Technologies, Inc.](http://www.softlayer.com/) The software is [MIT Licensed](LICENSE.md)
 
-
+---
 
 # Warranty
 This software is provided “as is” and without any express or implied warranties, including, without limitation, the implied warranties of merchantability and fitness for a particular purpose.
