@@ -149,7 +149,7 @@ test( 'willClearRender event causes observers to be removed', function() {
     // Change value so can monitor for change
     setTranslatedStringWasCalled = false;
 
-    component.unregisterObservers();
+    component.trigger( 'willClearRender' );
 
     Ember.run( function(){
         component.set( '$0', 'c' );
