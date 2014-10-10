@@ -69,6 +69,34 @@ export default Ember.Component.extend({
     }.on( 'init' ),
 
     /**
+     * Register observers on filtered parameter list
+     *
+     * @function registerObservers
+     * @observes willInsertElement event
+     * @return   {void}
+     */
+    registerObservers: function() {
+        this.get( 'observedParameters' ).map( function( key ) {
+            this.addObserver( key, this, this.setTranslatedString );
+        }.bind( this ));
+
+        this.setTranslatedString();
+    }.on( 'willInsertElement' ),
+
+    /**
+     * Remove observers on filtered parameter list
+     *
+     * @function unregisterObservers
+     * @observes willClearRender event
+     * @return   {void}
+     */
+    unregisterObservers: function() {
+        this.get( 'observedParameters' ).map( function( key ) {
+            this.removeObserver( key, this, this.setTranslatedString );
+        }.bind( this ));
+    }.on( 'willClearRender' ),
+
+    /**
      * Set translated string value on property used by template
      *
      * @function setTranslatedString
@@ -101,37 +129,5 @@ export default Ember.Component.extend({
             pluralCount : this.get( 'pluralCount' ),
             parameters  : parametersHash
         });
-    },
-
-    /**
-     * Register observers on filtered parameter list
-     *
-     * @function willInsertElement
-     * @fires    this._super
-     * @return   {void}
-     */
-    willInsertElement: function() {
-        this.get( 'observedParameters' ).map( function( key ) {
-            this.addObserver( key, this, this.setTranslatedString );
-        }.bind( this ));
-
-        this.setTranslatedString();
-
-        this._super.apply( this, arguments );
-    },
-
-    /**
-     * Remove observers on filtered parameter list
-     *
-     * @function willDestroyElement
-     * @fires    this._super
-     * @return   {void}
-     */
-    willDestroyElement: function() {
-        this.get( 'observedParameters' ).map( function( key ) {
-            this.removeObserver( key, this, this.setTranslatedString );
-        }.bind( this ));
-
-        this._super.apply( this, arguments );
     }
 });

@@ -88,7 +88,7 @@ test( 'translateString() calls translateKey() on the translation service', funct
     deepEqual( translateService.get( 'parameters' ), { $0: 'a', $1: 'b' } );
 });
 
-test( 'willInsertElement() calls setTranslatedString()', function() {
+test( 'willInsertElement event causes setTranslatedString() to be called', function() {
     var component                    = this.subject(),
         setTranslatedStringWasCalled = false;
 
@@ -96,13 +96,13 @@ test( 'willInsertElement() calls setTranslatedString()', function() {
         setTranslatedStringWasCalled = true;
     };
 
-    // Render in DOM to fire willInsertElement()
+    // Render in DOM to trigger willInsertElement event
     this.append();
 
     equal( setTranslatedStringWasCalled, true );
 });
 
-test( 'willInsertElement() adds observers to each entry in observedParameters property to call setTranslatedString()', function() {
+test( 'willInsertElement event causes observers to be added to each entry in observedParameters property', function() {
     var component = this.subject({
             translateService : translateService,
             key              : 'the_key',
@@ -116,10 +116,10 @@ test( 'willInsertElement() adds observers to each entry in observedParameters pr
         setTranslatedStringWasCalled = true;
     };
 
-    // Render in DOM to fire willInsertElement()
+    // Render in DOM to trigger willInsertElement event
     $component = this.append();
 
-    // Reset, as willInsertElement() calls setTranslatedString()
+    // Change value so can monitor for change
     setTranslatedStringWasCalled = false;
 
     Ember.run( function(){
@@ -129,7 +129,7 @@ test( 'willInsertElement() adds observers to each entry in observedParameters pr
     equal( setTranslatedStringWasCalled, true );
 });
 
-test( 'willDestroyElement() removes observers', function() {
+test( 'willClearRender event causes observers to be removed', function() {
     var component = this.subject({
             translateService : translateService,
             key              : 'the_key',
@@ -143,13 +143,13 @@ test( 'willDestroyElement() removes observers', function() {
         setTranslatedStringWasCalled = true;
     };
 
-    // Render in DOM to fire willInsertElement()
+    // Render in DOM to trigger willInsertElement event
     $component = this.append();
 
-    // Reset, as willInsertElement() calls setTranslatedString()
+    // Change value so can monitor for change
     setTranslatedStringWasCalled = false;
 
-    component.willDestroyElement();
+    component.unregisterObservers();
 
     Ember.run( function(){
         component.set( '$0', 'c' );
