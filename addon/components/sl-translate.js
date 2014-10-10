@@ -71,6 +71,11 @@ export default Ember.Component.extend({
     /**
      * Register observers on filtered parameter list
      *
+     * The reason observers have to be manually (de)registered rather than calling .property() on translateString() is
+     * because in order to support token replacement within a tranlsation string a user needs to be able to pass in a
+     * variable amount of (potentially) bound properties.  There is not a way to specify such a dynamic list of
+     * properties in a .property() call.
+     *
      * @function registerObservers
      * @observes willInsertElement event
      * @return   {void}
