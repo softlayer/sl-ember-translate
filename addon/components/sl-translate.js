@@ -12,7 +12,7 @@ export default Ember.Component.extend({
      * Translated string
      *
      * @property {string} translatedString
-     * @type     {string}
+     * @type     {Ember.String}
      * @default  null
      */
     translatedString: null,
