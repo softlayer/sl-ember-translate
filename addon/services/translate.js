@@ -6,8 +6,7 @@ export default Ember.Object.extend({
     /**
      * Translations
      *
-     * @property {object} dictionary
-     * @type     {Ember.Object}
+     * @property {Ember.Object} dictionary
      * @default  null
      */
     dictionary: null,

@@ -11,8 +11,7 @@ export default Ember.Component.extend({
     /**
      * Translated string
      *
-     * @property {string} translatedString
-     * @type     {Ember.String}
+     * @property {Ember.String} translatedString
      * @default  null
      */
     translatedString: null,
@@ -22,8 +21,7 @@ export default Ember.Component.extend({
      *
      * Only contains those that are a number that begin with "$" and also do not end in "Binding"
      *
-     * @property {array} parameters
-     * @type     {Ember.Array}
+     * @property {Ember.Array} parameters
      * @default  {null}
      */
     parameters: null,
@@ -33,8 +31,7 @@ export default Ember.Component.extend({
      *
      * Only contains those that are a number that begin with "$" and are to be bound to
      *
-     * @property {array} observedParameters
-     * @type     {Ember.Array}
+     * @property {Ember.Array} observedParameters
      * @default  {null}
      */
     observedParameters: null,
