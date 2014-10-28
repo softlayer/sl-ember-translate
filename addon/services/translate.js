@@ -3,6 +3,21 @@ import Ember from 'ember';
 /** @module sl-translate/services/translate */
 export default Ember.Object.extend({
 
+    // -------------------------------------------------------------------------
+    // Dependencies
+
+    // -------------------------------------------------------------------------
+    // Attributes
+
+    // -------------------------------------------------------------------------
+    // Actions
+
+    // -------------------------------------------------------------------------
+    // Events
+
+    // -------------------------------------------------------------------------
+    // Properties
+
     /**
      * Translations
      *
@@ -11,12 +26,18 @@ export default Ember.Object.extend({
      */
     dictionary: null,
 
+    // -------------------------------------------------------------------------
+    // Observers
+
+    // -------------------------------------------------------------------------
+    // Methods
+
     /**
      * Set translation dictionary data
      *
      * @function setDictionary
      * @argument {Ember.Object} translations  Translation model
-     * @return {void}
+     * @returns  {void}
      */
     setDictionary: function( translations ) {
         this.set( 'dictionary', translations );
@@ -26,14 +47,14 @@ export default Ember.Object.extend({
      * Retrieve value for specified dictionary key
      *
      * @function getKeyValue
-     * @argument {string} key Dictionary key to retrieve value for
-     * @return {string}
+     * @argument {Ember.String} key Dictionary key to retrieve value for
+     * @returns  {Ember.String}
      */
     getKeyValue: function( key ) {
         var defaultKeyValue = 'KEY__NOT__PRESENT',
             retrievedKey    = this.get( 'dictionary' ).getWithDefault( key, defaultKeyValue );
 
-        if( defaultKeyValue !== retrievedKey ) {
+        if ( defaultKeyValue !== retrievedKey ) {
             return retrievedKey;
 
         } else {
@@ -50,7 +71,7 @@ export default Ember.Object.extend({
      * - replacement of placeholder tokens in translation strings with passed parameters
      *
      * @function translateKey
-     * @argument {object} data
+     * @argument {Ember.Object} data
      * @example
      * // Example object that can be passed as argument
      * {
@@ -61,7 +82,7 @@ export default Ember.Object.extend({
      *         $0: value
      *     }
      * }
-     * @return {string}       Translated string
+     * @return {Ember.String}       Translated string
      */
     translateKey: function( data ) {
 

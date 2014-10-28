@@ -1,12 +1,62 @@
 import Ember from 'ember';
 import template from '../templates/components/sl-translate';
 
-/** @module sl-translate/components/sl-translate */
+/**
+ * @module components
+ * @class  sl-translate
+ */
 export default Ember.Component.extend({
 
+    // -------------------------------------------------------------------------
+    // Dependencies
+
+    // -------------------------------------------------------------------------
+    // Attributes
+
+    /**
+     * The tag type of the root element
+     *
+     * @property {Ember.String} tagName
+     * @default  "span"
+     */
     tagName: 'span',
 
+    /**
+     * The template used to render the view
+     *
+     * @property {function} layout
+     * @default  template:components/sl-translate
+     */
     layout: template,
+
+    // -------------------------------------------------------------------------
+    // Actions
+
+    // -------------------------------------------------------------------------
+    // Events
+
+    // -------------------------------------------------------------------------
+    // Properties
+
+    /**
+     * Filtered array of parameters passed to this component
+     *
+     * Only contains those that are a number that begin with "$" and are to be bound to
+     *
+     * @property {Ember.Array} observedParameters
+     * @default  null
+     */
+    observedParameters: null,
+
+    /**
+     * Filtered array of parameters passed to this component
+     *
+     * Only contains those that are a number that begin with "$" and also do not end in "Binding"
+     *
+     * @property {Ember.Array} parameters
+     * @default  null
+     */
+    parameters: null,
 
     /**
      * Translated string
@@ -16,31 +66,15 @@ export default Ember.Component.extend({
      */
     translatedString: null,
 
-    /**
-     * Filtered array of parameters passed to this component
-     *
-     * Only contains those that are a number that begin with "$" and also do not end in "Binding"
-     *
-     * @property {Ember.Array} parameters
-     * @default  {null}
-     */
-    parameters: null,
-
-    /**
-     * Filtered array of parameters passed to this component
-     *
-     * Only contains those that are a number that begin with "$" and are to be bound to
-     *
-     * @property {Ember.Array} observedParameters
-     * @default  {null}
-     */
-    observedParameters: null,
+    // -------------------------------------------------------------------------
+    // Observers
 
     /**
      * Filter passed parameters on initialization
      *
      * @function extractParameterKeys
-     * @return {void}
+     * @observes "init" event
+     * @returns  {void}
      */
     extractParameterKeys: function() {
         var parameters         = [],
@@ -74,8 +108,8 @@ export default Ember.Component.extend({
      * properties in a .property() call.
      *
      * @function registerObservers
-     * @observes willInsertElement event
-     * @return   {void}
+     * @observes "willInsertElement" event
+     * @returns  {void}
      */
     registerObservers: function() {
         this.get( 'observedParameters' ).map( function( key ) {
@@ -89,8 +123,8 @@ export default Ember.Component.extend({
      * Remove observers on filtered parameter list
      *
      * @function unregisterObservers
-     * @observes willClearRender event
-     * @return   {void}
+     * @observes "willClearRender" event
+     * @returns  {void}
      */
     unregisterObservers: function() {
         this.get( 'observedParameters' ).map( function( key ) {
@@ -98,11 +132,14 @@ export default Ember.Component.extend({
         }.bind( this ));
     }.on( 'willClearRender' ),
 
+    // -------------------------------------------------------------------------
+    // Methods
+
     /**
      * Set translated string value on property used by template
      *
      * @function setTranslatedString
-     * @return {void}
+     * @returns {void}
      */
     setTranslatedString: function() {
         this.set( 'translatedString', this.translateString() );
@@ -116,14 +153,14 @@ export default Ember.Component.extend({
      * - replacement of placeholder tokens in translation strings with passed parameters
      *
      * @function translateString
-     * @return {string} Translated string
+     * @returns {Ember.String} Translated string
      */
     translateString: function() {
         var parametersHash = {};
 
         this.get( 'parameters' ).map( function( key ) {
             parametersHash[key] = this.get( key );
-        }.bind( this ) );
+        }.bind( this ));
 
         return this.get( 'translateService' ).translateKey({
             key         : this.get( 'key' ),
