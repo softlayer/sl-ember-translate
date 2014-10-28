@@ -52,15 +52,18 @@ export default Ember.Object.extend({
      */
     getKeyValue: function( key ) {
         var defaultKeyValue = 'KEY__NOT__PRESENT',
-            retrievedKey    = this.get( 'dictionary' ).getWithDefault( key, defaultKeyValue );
+            retrievedKey    = this.get( 'dictionary' ).getWithDefault( key, defaultKeyValue ),
+            returnValue;
 
         if ( defaultKeyValue !== retrievedKey ) {
-            return retrievedKey;
+            returnValue = retrievedKey;
 
         } else {
             console.warn( 'No translation match for key "' + key + '".' );
-            return key;
+            returnValue = key;
         }
+
+        return returnValue;
     },
 
     /**
