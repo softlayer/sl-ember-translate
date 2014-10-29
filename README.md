@@ -1,5 +1,5 @@
 
-Ember CLI version: **0.1.1**
+Ember CLI version: **0.1.2**
 
 NPM package name: **sl-translate**
 
