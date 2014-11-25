@@ -22,7 +22,7 @@ This addon does not translate text strings or provide internationalization (i18n
 
 
 # Then why is it called sl-ember-translate?
-sl-dictionary or something similar might in fact be a better name for this addon but in our opinion, which could very well turn out to be incorrect, this addon will most usually be used in conjuction with the displaying of translated text in an application.  Then when you take into account support for token replacement it seemed to move away from just a dictionary lookup into something "more".
+sl-ember-dictionary or something similar might in fact be a better name for this addon but in our opinion, which could very well turn out to be incorrect, this addon will most usually be used in conjuction with the displaying of translated text in an application.  Then when you take into account support for token replacement it seemed to move away from just a dictionary lookup into something "more".
 
 
 ---
