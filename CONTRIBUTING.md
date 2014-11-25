@@ -4,9 +4,9 @@ There are many ways to contribute to the project, including fixing issues or imp
 
 # Questions
 
-This is the issue tracker for `sl-translate`. The community uses this site to collect and track bugs and discussions of
-new features. If you are having difficulties using `sl-translate` or have a question about usage please ask a question
-on Stack Overflow: http://stackoverflow.com/questions/ask?tags=sl-translate
+This is the issue tracker for `sl-ember-translate`. The community uses this site to collect and track bugs and discussions of
+new features. If you are having difficulties using `sl-ember-translate` or have a question about usage please ask a question
+on Stack Overflow: http://stackoverflow.com/questions/ask?tags=sl-ember-translate
 
 # Issues
 
@@ -21,10 +21,10 @@ Think you've found a bug or have a new feature to suggest? Let us know!
 3. Provide a demo that specifically shows the problem. This demo should be fully operational with the exception of the
 bug you want to demonstrate. The more pared down, the better. Issues with demos are prioritized.
 
-4. Your issue will be verified. The provided demo will be tested for correctness. The sl-translate team will work with
+4. Your issue will be verified. The provided demo will be tested for correctness. The sl-ember-translate team will work with
 you until your issue can be verified.
 
-5. Keep up to date with feedback from the sl-translate team on your ticket. Your ticket may be closed if it becomes
+5. Keep up to date with feedback from the sl-ember-translate team on your ticket. Your ticket may be closed if it becomes
 stale.
 
 6. If possible, submit a Pull Request with a failing test. Better yet, take

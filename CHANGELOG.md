@@ -1,4 +1,4 @@
-# sl-translate Changelog
+# sl-ember-translate Changelog
 
 ### 1.0.0
 

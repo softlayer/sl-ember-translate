@@ -1,5 +1,5 @@
 {
-  "name": "sl-translate",
+  "name": "sl-ember-translate",
   "version": "0.1.0",
   "description": "Ember CLI Addon - Translation Service",
   "private": true,
@@ -10,16 +10,17 @@
   },
   "repository": {
     "type": "git",
-    "url": "https://stash.softlayer.local/projects/INTERFACE/repos/sl-translate/"
+    "url": "https://github.com/softlayer/sl-ember-translate"
   },
   "engines": {
     "node": ">= 0.10.0"
   },
   "keywords": [
     "ember-addon",
-    "sl-translate",
+    "sl-ember-translate",
     "dictionary",
-    "translation"
+    "translation",
+    "translate"
   ],
   "ember-addon": {
     "configPath": "tests/dummy/config"

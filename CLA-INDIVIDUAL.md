@@ -1,9 +1,9 @@
 #### International Business Machines, Inc. (IBM)
 ##### Individual Contributor License Agreement ("Agreement")
 
-http://www.github.com/softlayer/sl-translate
+http://www.github.com/softlayer/sl-ember-translate
 
-Thank you for your interest in the sl-translate project ("the Project").
+Thank you for your interest in the sl-ember-translate project ("the Project").
 
 In order to clarify the intellectual property license granted with Contributions
 from any person or entity, IBM must have a Contributor License Agreement ("CLA")

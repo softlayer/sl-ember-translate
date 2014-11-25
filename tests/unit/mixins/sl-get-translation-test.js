@@ -1,5 +1,5 @@
 import Ember from 'ember';
-import mixinUnderTest from 'sl-translate/mixins/sl-get-translation';
+import mixinUnderTest from 'sl-ember-translate/mixins/sl-get-translation';
 
 module( 'Unit - mixins:sl-get-translation' );
 

@@ -1,5 +1,5 @@
 'use strict';
 
 module.exports = {
-  name: 'sl-translate'
+  name: 'sl-ember-translate'
 };

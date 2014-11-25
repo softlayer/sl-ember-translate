@@ -1,6 +1,6 @@
 import Ember from 'ember';
 import { test, moduleFor } from 'ember-qunit';
-import TranslateService from 'sl-translate/services/translate';
+import TranslateService from 'sl-ember-translate/services/translate';
 
 var TS;
 
