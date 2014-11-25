@@ -1,0 +1,54 @@
+import Ember from 'ember';
+
+/**
+ * @module mixins
+ * @class  sl-get-translation
+ */
+export default Ember.Mixin.create({
+
+    // -------------------------------------------------------------------------
+    // Dependencies
+
+    // -------------------------------------------------------------------------
+    // Attributes
+
+    // -------------------------------------------------------------------------
+    // Actions
+
+    // -------------------------------------------------------------------------
+    // Events
+
+    // -------------------------------------------------------------------------
+    // Properties
+
+    // -------------------------------------------------------------------------
+    // Observers
+
+    // -------------------------------------------------------------------------
+    // Methods
+
+    /**
+     * Based on value of key, retrieve translation or usual get() value
+     *
+     * @function get
+     * @argument {Ember.String} key property to retrieve
+     * @returns  {Ember.String}
+     */
+    get: function( key ) {
+        var translationsRegex = /translate\.(.*)/,
+            matches           = key.match( translationsRegex );
+
+        return ( matches ) ? this.translate( matches[1] ) : this._super( key );
+    },
+
+    /**
+     * Retrieve translated key without support for token replacement or pluralization
+     *
+     * @function translate
+     * @argument {Ember.String} key key to translate
+     * @returns  {Ember.String} translated key
+     */
+    translate: function( key ) {
+        return this.translateService.getKeyValue( key );
+    }
+});

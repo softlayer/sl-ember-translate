@@ -1,0 +1,22 @@
+<h1>sl-ember-translate</h1>
+
+<h3>Simple Key</h3>
+{{sl-translate key="SIMPLE_KEY"}}
+
+<h3>Singular/Plural Keys</h3>
+{{sl-translate key="SINGULAR_KEY" pluralKey="PLURAL_KEY" pluralCount="1"}}<br>
+{{sl-translate key="SINGULAR_KEY" pluralKey="PLURAL_KEY" pluralCount="3"}}
+
+<h3>Replaced Values In Keys</h3>
+Original String: {{sl-translate key="REPLACED_KEY"}}<br>
+Replaced String: {{sl-translate key="REPLACED_KEY" $0="First" $1="Unicorn"}}
+
+<h3>Bound Replacement Values In Keys</h3>
+String Will Update: {{sl-translate key="REPLACED_KEY" $0="First" $1Binding="valueToDisplay"}}
+<br><br>
+<button {{action "updateStringValues"}}>Update Values</button>
+
+<h3>Used alongside other properties or attribute bindings</h3>
+{{sl-translate tagName="h1" key="REPLACED_KEY" $0="First" $1="Dragon"}}
+
+{{outlet}}
