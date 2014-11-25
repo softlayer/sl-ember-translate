@@ -1,9 +1,9 @@
 import Ember from 'ember';
 
 /**
-@module  mixins
-@classes sl-get-translation
-*/
+ * @module mixins
+ * @class  sl-get-translation
+ */
 export default Ember.Mixin.create({
 
     // -------------------------------------------------------------------------
