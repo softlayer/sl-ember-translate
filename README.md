@@ -67,10 +67,10 @@ this.controllerFor( 'application' ).get( 'translateService' ).setDictionary( you
 
 ### Single Key
 
-The simplest use of the *sl-ember-translate* component is when you only need to translate a single key that will not be bound to or need any strings replaced within it.  Such use looks like:
+The simplest use of the *sl-translate* component is when you only need to translate a single key that will not be bound to or need any strings replaced within it.  Such use looks like:
 
 ```handlebars
-{{sl-ember-translate key="CLOSE"}}
+{{sl-translate key="CLOSE"}}
 ```
 
 ---
@@ -80,7 +80,7 @@ The simplest use of the *sl-ember-translate* component is when you only need to 
 If a different key needs to be used based on whether or not a singular or plural context needs to be represented, then use the following format:
 
 ```handlebars
-{{sl-ember-translate key="DEVICE_COUNT_SINGULAR" pluralKey="DEVICE_COUNT_PLURAL" pluralCount="3"}}
+{{sl-translate key="DEVICE_COUNT_SINGULAR" pluralKey="DEVICE_COUNT_PLURAL" pluralCount="3"}}
 ```
 
 The order of the parameters does not matter.
@@ -92,7 +92,7 @@ The order of the parameters does not matter.
 If the translated string has tokens within it (e.g {0}, {1}, etc) that need to be replaced with values, use the following format:
 
 ```handlebars
-{{sl-ember-translate key="ACCESSLOG_LIST_PAGINATION" $0="5" $1="10" $2="200"}}
+{{sl-translate key="ACCESSLOG_LIST_PAGINATION" $0="5" $1="10" $2="200"}}
 ```
 
 where each "$x" parameter numerically corresponds to the tokens in the translation string.  The order of the parameters does not matter.
@@ -104,7 +104,7 @@ where each "$x" parameter numerically corresponds to the tokens in the translati
 If you need to pass parameters whose values are bound to other values rather than be hard-coded, use the following format:
 
 ```handlebars
-{{sl-ember-translate key="ACCESSLOG_LIST_PAGINATION" $0Binding="examplePropertyBoundTo1" $1Binding="examplePropertyBoundTo2" $2Binding="examplePropertyBoundTo3"}}
+{{sl-translate key="ACCESSLOG_LIST_PAGINATION" $0Binding="examplePropertyBoundTo1" $1Binding="examplePropertyBoundTo2" $2Binding="examplePropertyBoundTo3"}}
 ```
 
 The order of the parameters does not matter.
@@ -113,10 +113,10 @@ The order of the parameters does not matter.
 
 ### Used alongside other properties or attribute bindings
 
-You can still use the *sl-ember-translate* component alongside other properties or attribute bindings as well:
+You can still use the *sl-translate* component alongside other properties or attribute bindings as well:
 
 ```handlebars
-{{sl-ember-translate tagName="div" class="btn :btn-primary" key="CLOSE"}}
+{{sl-translate tagName="div" class="btn :btn-primary" key="CLOSE"}}
 ```
 
 
@@ -181,7 +181,7 @@ This method provides the pluralization and token replacement support of the Tran
 
 ## Use as a Mixin
 
-By using the *sl-get-translation* mixin on your controllers you can enable quick access to translations through the standard *Ember.get* method by simply prepending "translation." to the beginning of the key you want translated.  This is especially useful in templates where the use of the *sl-ember-translate* component is not possible.  In those situations the path *controller.translate.[key]* will provide the translation for the specified key.
+By using the *sl-get-translation* mixin on your controllers you can enable quick access to translations through the standard *Ember.get* method by simply prepending "translation." to the beginning of the key you want translated.  This is especially useful in templates where the use of the *sl-translate* component is not possible.  In those situations the path *controller.translate.[key]* will provide the translation for the specified key.
 
 ---
 
@@ -219,22 +219,22 @@ The Translate Service supports the replacement of tokens within the translation 
 }
 ```
 
-The numerical values within each set of curly braces does not have any signifigance.  Just make sure that you correctly specify parameter values for each of these keys via the *sl-ember-translate* component or via calls to *translateKey()* to ensure the desired substitution.  If you use the same token within the translation string more than once then each occurrence of the same string will be replaced with the same content specified as the replacement text.
+The numerical values within each set of curly braces does not have any signifigance.  Just make sure that you correctly specify parameter values for each of these keys via the *sl-translate* component or via calls to *translateKey()* to ensure the desired substitution.  If you use the same token within the translation string more than once then each occurrence of the same string will be replaced with the same content specified as the replacement text.
 
 Suffice it to say, the values of your translation strings should not themselves have any numbers surrounded by curly braces that you desire to be presented in this manner.  If you do then you will need to encode the curly braces as HTML entities, as one possible solution.
 
 
-## sl-ember-translate Component
+## sl-translate Component
 
-The simplest use of the *sl-ember-translate* component is
+The simplest use of the *sl-translate* component is
 
 ```
-{{sl-ember-translate key="SUBMIT_BUTTON"}}
+{{sl-translate key="SUBMIT_BUTTON"}}
 ```
 
-The reason it is necessary to specify the *key* portion instead of just being able to pass in *"SUBMIT_BUTTON"* as a lone parameter in this usage is because a component is not able to accept both named and un-named parameters and support binding the way that is required.  We contemplated creating two different components, one to handle single keys and one to handle pluralizations, but that quickly became messy due to needing to support token replacments.  When we first set out to make this component we wanted to make it as easy as possible for a developer to use it in their templates and it quickly became evident that having a single *sl-ember-translate* component that would be used everywhere, in every scenario, was a better pattern than different components for different scenarios, and that having to specify a *key* portion for single key translations was an acceptable trade-off.
+The reason it is necessary to specify the *key* portion instead of just being able to pass in *"SUBMIT_BUTTON"* as a lone parameter in this usage is because a component is not able to accept both named and un-named parameters and support binding the way that is required.  We contemplated creating two different components, one to handle single keys and one to handle pluralizations, but that quickly became messy due to needing to support token replacments.  When we first set out to make this component we wanted to make it as easy as possible for a developer to use it in their templates and it quickly became evident that having a single *sl-translate* component that would be used everywhere, in every scenario, was a better pattern than different components for different scenarios, and that having to specify a *key* portion for single key translations was an acceptable trade-off.
 
-Though a value can be bound to a property passed to the *sl-ember-translate* component, due to how components work in Ember, these properties are not observed from within the component.  This is desired functionality of the *sl-ember-translate* component so there is logic within it that distills the passed parameters to ones which should be observed and then on *willInsertElement()* and *willDestroyElement()* observers are added and removed.
+Though a value can be bound to a property passed to the *sl-translate* component, due to how components work in Ember, these properties are not observed from within the component.  This is desired functionality of the *sl-translate* component so there is logic within it that distills the passed parameters to ones which should be observed and then on *willInsertElement()* and *willDestroyElement()* observers are added and removed.
 
 ---
 
