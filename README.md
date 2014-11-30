@@ -27,15 +27,21 @@ sl-ember-dictionary or something similar might in fact be a better name for this
 
 ---
 
-# Working Demo
+# Demo
 
-## Installation
+## Live
+
+[http://softlayer.github.io/sl-ember-translate](http://softlayer.github.io/sl-ember-translate)
+
+## Development Environment
+
+### Installation
 
 * `git clone` this repository
 * `npm install`
 * `bower install`
 
-## Running
+### Running
 
 * `ember server`
 * View the demo at http://localhost:4200
