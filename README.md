@@ -31,7 +31,7 @@ sl-ember-dictionary or something similar might in fact be a better name for this
 
 ## Live
 
-[http://softlayer.github.io/sl-ember-translate](http://softlayer.github.io/sl-ember-translate)
+[http://softlayer.github.io/sl-ember-translate/dist](http://softlayer.github.io/sl-ember-translate/dist)
 
 ## Development Environment
 
