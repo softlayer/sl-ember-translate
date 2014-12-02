@@ -27,11 +27,11 @@ a:hover,
  * Base structure
  */
 body {
-  color: #fff;
-  text-align: center;
+  color: #fff;
+  text-align: center;
   background-color: #1E1E1E;
-  background-image: url("http://cdn.rawgit.com/softlayer/sl-ember-translate/gh-pages/images/bg2.jpg");
-  background-repeat: no-repeat;
+  background: url("http://cdn.rawgit.com/softlayer/sl-ember-translate/gh-pages/images/bg2.jpg");
+  background-repeat: no-repeat;
 }
 
 /* Extra markup and styles for table-esque vertical and horizontal centering */
