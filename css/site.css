@@ -30,7 +30,7 @@ body {
   color: #fff;
   text-align: center;
   background-color: #1E1E1E;
-  background: url("http://cdn.rawgit.com/softlayer/sl-ember-translate/gh-pages/images/bg2.jpg");
+  background: url("../images/bg2.jpg");
   background-repeat: no-repeat;
 }
 
