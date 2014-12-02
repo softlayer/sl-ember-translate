@@ -5,7 +5,10 @@
 /* Links */
 a,
 a:focus,
-a:hover {
+a:hover,
+.mastfoot > .inner a,
+.mastfoot > .inner a:focus,
+.mastfoot > .inner a:hover {
   color: #fff;
 }
 
@@ -24,21 +27,12 @@ a:hover {
  * Base structure
  */
 
-html,
-body {
-  height: 100%;
-  background-color: #333;
-}
 body {
   color: #fff;
-  background: -webkit-linear-gradient(rgba(0, 0, 0, 0.3), rgba(0, 0, 0, 0.5)), url("http://cdn.rawgit.com/softlayer/sl-ember-translate/gh-pages/images/bg2.jpg");
-  background: -moz-linear-gradient(rgba(0, 0, 0, 0.3), rgba(0, 0, 0, 0.5)), url("http://cdn.rawgit.com/softlayer/sl-ember-translate/gh-pages/images/bg2.jpg");
-  background: linear-gradient(rgba(0, 0, 0, 0.3), rgba(0, 0, 0, 0.5)), url("http://cdn.rawgit.com/softlayer/sl-ember-translate/gh-pages/images/bg2.jpg");
+  text-align: center;
+  background-color: #1E1E1E;
+  background-image: url("http://cdn.rawgit.com/softlayer/sl-ember-translate/gh-pages/images/bg2.jpg");
   background-repeat: no-repeat;
-  -webkit-background-size: cover;
-     -moz-background-size: cover;
-       -o-background-size: cover;
-          background-size: cover;
 }
 
 /* Extra markup and styles for table-esque vertical and horizontal centering */
@@ -47,8 +41,6 @@ body {
   width: 100%;
   height: 100%; /* For at least Firefox */
   min-height: 100%;
-  -webkit-box-shadow: inset 0 0 100px rgba(0,0,0,.5);
-          box-shadow: inset 0 0 100px rgba(0,0,0,.5);
 }
 .site-wrapper-inner {
   display: table-cell;
@@ -127,7 +119,12 @@ body {
 .cover h4 {
     margin-top: 20px;
 }
-
+.left-text {
+  text-align: left;
+}
+.center-text {
+  text-align: center;
+}
 
 /*
  * Footer
@@ -147,11 +144,11 @@ body {
 @media (min-width: 768px) {
   /* Pull out the header and footer */
   .masthead {
-    position: fixed;
+    position: relative;
     top: 0;
   }
   .mastfoot {
-    position: fixed;
+    position: relative;
     bottom: 0;
   }
   /* Start the vertical centering */

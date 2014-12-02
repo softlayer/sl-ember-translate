@@ -52,28 +52,28 @@
           </div>
 
           <div class="inner cover">
+            <div class="left-text">
+              <h4>Simple Key</h4>
+              {{sl-translate key="SIMPLE_KEY"}}
 
-            <h4>Simple Key</h4>
-            {{sl-translate key="SIMPLE_KEY"}}
+              <h4>Singular/Plural Keys</h4>
+              {{sl-translate key="SINGULAR_KEY" pluralKey="PLURAL_KEY" pluralCount="1"}}<br>
+              {{sl-translate key="SINGULAR_KEY" pluralKey="PLURAL_KEY" pluralCount="3"}}
 
-            <h4>Singular/Plural Keys</h4>
-            {{sl-translate key="SINGULAR_KEY" pluralKey="PLURAL_KEY" pluralCount="1"}}<br>
-            {{sl-translate key="SINGULAR_KEY" pluralKey="PLURAL_KEY" pluralCount="3"}}
+              <h4>Replaced Values In Keys</h4>
+              Original String: {{sl-translate key="REPLACED_KEY"}}<br>
+              Replaced String: {{sl-translate key="REPLACED_KEY" $0="First" $1="Unicorn"}}
 
-            <h4>Replaced Values In Keys</h4>
-            Original String: {{sl-translate key="REPLACED_KEY"}}<br>
-            Replaced String: {{sl-translate key="REPLACED_KEY" $0="First" $1="Unicorn"}}
+              <h4>Bound Replacement Values In Keys</h4>
+              String Will Update: {{sl-translate key="REPLACED_KEY" $0="First" $1Binding="valueToDisplay"}}
+              <br><br>
+              <button class="btn-default" {{action "updateStringValues"}}>Update Values</button>
 
-            <h4>Bound Replacement Values In Keys</h4>
-            String Will Update: {{sl-translate key="REPLACED_KEY" $0="First" $1Binding="valueToDisplay"}}
-            <br><br>
-            <button class="btn-default" {{action "updateStringValues"}}>Update Values</button>
+              <h4>Used alongside other properties or attribute bindings</h4>
+              {{sl-translate tagName="em" key="REPLACED_KEY" $0="First" $1="Dragon"}}
 
-            <h4>Used alongside other properties or attribute bindings</h4>
-            {{sl-translate tagName="em" key="REPLACED_KEY" $0="First" $1="Dragon"}}
-
-            {{outlet}}
-
+              {{outlet}}
+            </div>
           </div>
 
           <div class="mastfoot">
