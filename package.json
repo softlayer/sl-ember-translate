@@ -10,7 +10,7 @@
   "homepage": "http://softlayer.github.io/sl-ember-translate/",
   "repository": {
     "type": "git",
-    "url": "https://github.com/softlayer/sl-ember-translate"
+    "url": "https://github.com/softlayer/sl-ember-translate.git"
   },
   "bugs": "https://github.com/softlayer/sl-ember-translate/issues",
   "engines": {
