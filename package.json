@@ -12,6 +12,7 @@
     "type": "git",
     "url": "https://github.com/softlayer/sl-ember-translate"
   },
+  "bugs": "https://github.com/softlayer/sl-ember-translate/issues",
   "engines": {
     "node": ">= 0.10.0"
   },
