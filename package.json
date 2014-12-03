@@ -26,9 +26,7 @@
   "ember-addon": {
     "configPath": "tests/dummy/config"
   },
-  "authors": [
-    "Jeremy Brown <jebrown@softlayer.com>"
-  ],
+  "author": "Jeremy Brown <jeremy@notmessenger.com> (http://www.notmessenger.com)",
   "license": "MIT",
   "devDependencies": {
     "body-parser": "^1.2.0",
