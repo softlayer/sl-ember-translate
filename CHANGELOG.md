@@ -13,6 +13,12 @@
 * [[INTERNAL]](https://github.com/softlayer/sl-ember-translate/commit/07333503cbae49acaf3bf0039a2c66f4785faa99) Change keywords meta value for demo application
 * [[INTERNAL]](https://github.com/softlayer/sl-ember-translate/commit/b466ead9b8143b68bcb8475d3f6c15f8e86a24ed) Change spelling error in footer of demo application
 * [[INTERNAL]](https://github.com/softlayer/sl-ember-translate/commit/a75853a5dc2e2ce577c6535384832516f16de4d3) Add homepage property to package.json
+* [INTERNAL] Upgrade package.json properties
+* [#31](https://github.com/softlayer/sl-ember-translate/pull/31) [INTERNAL] Update CONTRIBUTING.md
+* [INTERNAL] Update demo application configuration
+* [#36](https://github.com/softlayer/sl-ember-translate/pull/36) [BREAKING INTERNAL] Upgrade to Ember CLI 0.1.4
+
+[View complete changeset](https://github.com/softlayer/sl-ember-translate/compare/v1.0.0...v1.1.0)
 
 ### 1.0.0
 
