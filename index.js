@@ -9,11 +9,11 @@ module.exports = {
 
     switch ( type ) {
         case 'keywords':
-            content = 'ember, ember cli, translate, translation, dictionary';
+            content = require('./package.json')['keywords'].join( ', ' ) + ', ember, ember cli';
             break;
 
         case 'description':
-            content = 'An Ember CLI Addon that provides the ability to lookup a dictionary value through method calls or via a component in your templates.';
+            content = require('./package.json')['description'];
             break;
     }
 
