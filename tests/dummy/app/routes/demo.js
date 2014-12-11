@@ -4,7 +4,7 @@ export default Ember.Route.extend({
 
     actions: {
         updateStringValues: function() {
-            this.controllerFor( 'application' ).set( 'valueToDisplay', 'New Updated Value - ' + Math.random() );
+            this.controllerFor( 'demo' ).set( 'valueToDisplay', 'New Updated Value - ' + Math.random() );
         }
     },
 

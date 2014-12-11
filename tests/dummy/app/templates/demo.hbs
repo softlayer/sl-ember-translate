@@ -1,0 +1,29 @@
+<div class="row">
+    <div class="col-md-12 text-center">
+        <h1>Usage Demonstration</h1>
+        <p class="lead">View the source code of the dummy application for syntax employed in this demo</p>
+    </div>
+</div>
+
+<h4>Simple Key</h4>
+{{sl-translate key="SIMPLE_KEY"}}
+
+<br><br>
+<h4>Singular/Plural Keys</h4>
+{{sl-translate key="SINGULAR_KEY" pluralKey="PLURAL_KEY" pluralCount="1"}}<br>
+{{sl-translate key="SINGULAR_KEY" pluralKey="PLURAL_KEY" pluralCount="3"}}
+
+<br><br>
+<h4>Replaced Values In Keys</h4>
+Original String: {{sl-translate key="REPLACED_KEY"}}<br>
+Replaced String: {{sl-translate key="REPLACED_KEY" $0="First" $1="Unicorn"}}
+
+<br><br>
+<h4>Bound Replacement Values In Keys</h4>
+String Will Update: {{sl-translate key="REPLACED_KEY" $0="First" $1Binding="valueToDisplay"}}
+<br><br>
+<button {{action "updateStringValues"}}>Update Values</button>
+
+<br><br>
+<h4>Used alongside other properties or attribute bindings</h4>
+{{sl-translate tagName="em" key="REPLACED_KEY" $0="First" $1="Dragon"}}
