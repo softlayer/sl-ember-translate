@@ -1,5 +1,11 @@
 # sl-ember-translate Changelog
 
+### 1.2.0
+
+[INTERNAL] Documentation updates
+
+[View complete changeset](https://github.com/softlayer/sl-ember-translate/compare/v1.1.0...v1.2.0)
+
 ### 1.1.0
 
 * [#5](https://github.com/softlayer/sl-ember-translate/pull/5) [INTERNAL] Remove "private: true" flag
