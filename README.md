@@ -7,6 +7,10 @@ License: [MIT](LICENSE.md)
 
 ---
 
+[![Build Status](https://travis-ci.org/softlayer/sl-ember-translate.svg?branch=develop)](https://travis-ci.org/softlayer/sl-ember-translate)
+
+---
+
 # What sl-ember-translate is
 An [Ember CLI Addon](http://www.ember-cli.com) that provides the ability to lookup a dictionary value either through method calls or via a component in your templates. It supports:
 
