@@ -15,33 +15,27 @@ module( 'Unit - initializer:translate-service', {
 });
 
 test( 'Registered on container as a singleton', function() {
-    expect(3);
-
     equal( typeof App.__container__.lookup( 'translateService:main' ), 'object' );
-    notEqual( App.__container__._options.dict['translateService:main'].instantiate, 'undefined' );
-    equal( App.__container__._options.dict['translateService:main'].instantiate, false );
+    notEqual( App.__container__._options['translateService:main'].instantiate, 'undefined' );
+    equal( App.__container__._options['translateService:main'].instantiate, false );
 });
 
 test( 'Injected on controllers', function() {
-    expect(2);
-
-    var findBy = App.__container__.typeInjections.dict.controller.findBy( 'fullName', 'translateService:main' );
+    var findBy = App.__container__.typeInjections.controller.findBy( 'fullName', 'translateService:main' );
 
     notEqual( findBy, 'undefined' );
     equal( findBy.property, 'translateService' );
 });
 
 test( 'Injected on views', function() {
-    expect(2);
-    var findBy = App.__container__.typeInjections.dict.view.findBy( 'fullName', 'translateService:main' );
+    var findBy = App.__container__.typeInjections.view.findBy( 'fullName', 'translateService:main' );
 
     notEqual( findBy, 'undefined' );
     equal( findBy.property, 'translateService' );
 });
 
 test( 'Injected on components', function() {
-    expect(2);
-    var findBy = App.__container__.typeInjections.dict.component.findBy( 'fullName', 'translateService:main' );
+    var findBy = App.__container__.typeInjections.component.findBy( 'fullName', 'translateService:main' );
 
     notEqual( findBy, 'undefined' );
     equal( findBy.property, 'translateService' );
