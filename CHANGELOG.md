@@ -1,5 +1,15 @@
 # sl-ember-translate Changelog
 
+### 1.3.0
+
+* [#67](https://github.com/softlayer/sl-ember-translate/pull/67) [BREAKING ENHANCEMENT] Upgrade to Ember CLI 0.1.5
+* [#58](https://github.com/softlayer/sl-ember-translate/pull/58) [INTERNAL] Updated tests
+* [#59](https://github.com/softlayer/sl-ember-translate/pull/59) [INTERNAL] Installed ember-cli-es5-shim to faciliate running of tests via TravisCI
+* [DOCUMENTATION] Updated README.md
+* [#65](https://github.com/softlayer/sl-ember-translate/pull/65) [INTERNAL] Changed how meta data in demo application is populated
+
+[View complete changeset](https://github.com/softlayer/sl-ember-translate/compare/v1.2.0...v1.3.0)
+
 ### 1.2.0
 
 [INTERNAL] Documentation updates
