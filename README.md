@@ -1,8 +1,6 @@
 
 Ember CLI version: **0.1.5**
 
-NPM package name: **sl-ember-translate**
-
 License: [MIT](LICENSE.md)
 
 ---
