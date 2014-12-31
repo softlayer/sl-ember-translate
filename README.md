@@ -1,9 +1,7 @@
 
-Ember CLI version: **0.1.5**
+[![Latest Version](https://img.shields.io/npm/v/sl-ember-translate.svg)](https://www.npmjs.com/package/sl-ember-translate) [![Ember CLI version](https://img.shields.io/badge/ember--cli-0.1.5-red.svg) [![License](https://img.shields.io/npm/l/sl-ember-translate.svg)](LICENSE.md) [![Downloads](https://img.shields.io/npm/dm/sl-ember-translate.svg)](https://www.npmjs.com/package/sl-ember-translate)
 
-License: [MIT](LICENSE.md)
-
----
+[![Dependency Status](https://david-dm.org/softlayer/sl-ember-translate.svg)](https://david-dm.org/softlayer/sl-ember-translate) [![devDependency Status](https://david-dm.org/softlayer/sl-ember-translate/dev-status.svg)](https://david-dm.org/softlayer/sl-ember-translate#info=devDependencies)
 
 [![Build Status](https://travis-ci.org/softlayer/sl-ember-translate.svg?branch=develop)](https://travis-ci.org/softlayer/sl-ember-translate) [![Code Climate](https://codeclimate.com/github/softlayer/sl-ember-translate/badges/gpa.svg)](https://codeclimate.com/github/softlayer/sl-ember-translate)
 
