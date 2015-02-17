@@ -5,38 +5,38 @@ import startApp from '../../helpers/start-app';
 var App;
 
 module( 'Unit - initializer:translate-service', {
-    setup: function() {
+    beforeEach: function() {
         App = startApp();
     },
 
-    teardown: function() {
+    afterEach: function() {
         Ember.run( App, App.destroy );
     }
 });
 
-test( 'Registered on container as a singleton', function() {
-    equal( typeof App.__container__.lookup( 'translateService:main' ), 'object' );
-    notEqual( App.__container__._options['translateService:main'].instantiate, 'undefined' );
-    equal( App.__container__._options['translateService:main'].instantiate, false );
+test( 'Registered on container as a singleton', function( assert ) {
+    assert.equal( typeof App.__container__.lookup( 'translateService:main' ), 'object' );
+    assert.notEqual( App.__container__._options['translateService:main'].instantiate, 'undefined' );
+    assert.equal( App.__container__._options['translateService:main'].instantiate, false );
 });
 
-test( 'Injected on controllers', function() {
+test( 'Injected on controllers', function( assert ) {
     var findBy = App.__container__.typeInjections.controller.findBy( 'fullName', 'translateService:main' );
 
-    notEqual( findBy, 'undefined' );
-    equal( findBy.property, 'translateService' );
+    assert.notEqual( findBy, 'undefined' );
+    assert.equal( findBy.property, 'translateService' );
 });
 
-test( 'Injected on views', function() {
+test( 'Injected on views', function( assert ) {
     var findBy = App.__container__.typeInjections.view.findBy( 'fullName', 'translateService:main' );
 
-    notEqual( findBy, 'undefined' );
-    equal( findBy.property, 'translateService' );
+    assert.notEqual( findBy, 'undefined' );
+    assert.equal( findBy.property, 'translateService' );
 });
 
-test( 'Injected on components', function() {
+test( 'Injected on components', function( assert ) {
     var findBy = App.__container__.typeInjections.component.findBy( 'fullName', 'translateService:main' );
 
-    notEqual( findBy, 'undefined' );
-    equal( findBy.property, 'translateService' );
+    assert.notEqual( findBy, 'undefined' );
+    assert.equal( findBy.property, 'translateService' );
 });

@@ -19,46 +19,46 @@ moduleForComponent( 'sl-translate', 'Unit - component:sl-translate' );
  * that core Ember functionality is being tested this test is ensuring that the implied contract about how this non-UI
  * component is rendered into the DOM is adhered to.
  */
-test( 'Renders as a span tag with no classes', function() {
+test( 'Renders as a span tag with no classes', function( assert ) {
     var component  = this.subject({ translateService: translateService }),
-        $component = this.append();
+        $component = this.render();
 
-    equal( $component.prop( 'tagName' ), 'SPAN' );
-    equal( $component.prop( 'class'), 'ember-view' );
+    assert.equal( $component.prop( 'tagName' ), 'SPAN' );
+    assert.equal( $component.prop( 'class'), 'ember-view' );
 });
 
 /**
  * That it renders and functions as expected
  */
-test( 'DOM and content of rendered translation', function() {
+test( 'DOM and content of rendered translation', function( assert ) {
     var component = this.subject({
             key              : 'the_key',
             translateService : translateService
         }),
-        $component = this.append();
+        $component = this.render();
 
-    equal( $component.text(), 'TRANSLATE: the_key' );
+    assert.equal( $component.text(), 'TRANSLATE: the_key' );
 });
 
 /**
  * Ensure haven't broken any default behavior of Ember, since manipulate properties passed to the component
  * A side effect of this test is the appearance that core Ember functionality is being tested
  */
-test( 'Can be used alongside other properties or attribute bindings', function() {
+test( 'Can be used alongside other properties or attribute bindings', function( assert ) {
     var component  = this.subject({
             translateService : translateService,
             key              : 'key_alongside',
             tagName          : 'h1',
             classNames       : [ 'testClass' ]
         }),
-        $component = this.append();
+        $component = this.render();
 
-    equal( $component.prop( 'tagName' ), 'H1' );
-    equal( $component.text(), 'TRANSLATE: key_alongside' );
-    equal( $component.prop( 'class'), ['ember-view testClass'] );
+    assert.equal( $component.prop( 'tagName' ), 'H1' );
+    assert.equal( $component.text(), 'TRANSLATE: key_alongside' );
+    assert.equal( $component.prop( 'class'), ['ember-view testClass'] );
 });
 
-test( 'On initialization, extractParameterKeys() filters passed parameters', function() {
+test( 'On initialization, extractParameterKeys() filters passed parameters', function( assert ) {
     var component = this.subject({
             key         : 'the_key',
             pluralKey   : 'plural_key',
@@ -68,10 +68,10 @@ test( 'On initialization, extractParameterKeys() filters passed parameters', fun
             $2          : 'c'
         });
 
-    deepEqual( component.get( 'parameters' ).sort(), [ '$0', '$1', '$2' ] );
+    assert.deepEqual( component.get( 'parameters' ).sort(), [ '$0', '$1', '$2' ] );
 });
 
-test( 'On initialization, extractParameterKeys() filters passed parameters to be bound', function() {
+test( 'On initialization, extractParameterKeys() filters passed parameters to be bound', function( assert ) {
     var component = this.subject({
             key         : 'the_key',
             pluralKey   : 'plural_key',
@@ -81,10 +81,10 @@ test( 'On initialization, extractParameterKeys() filters passed parameters to be
             $2          : 'c'
         });
 
-    deepEqual( component.get( 'observedParameters' ), [ '$1' ] );
+    assert.deepEqual( component.get( 'observedParameters' ), [ '$1' ] );
 });
 
-test( 'setTranslatedString() sets translatedString property with value from translateString()', function() {
+test( 'setTranslatedString() sets translatedString property with value from translateString()', function( assert ) {
     var component = this.subject();
 
     component.translateString = function() {
@@ -93,10 +93,10 @@ test( 'setTranslatedString() sets translatedString property with value from tran
 
     component.setTranslatedString();
 
-    equal( component.get( 'translatedString' ), 'test value' );
+    assert.equal( component.get( 'translatedString' ), 'test value' );
 });
 
-test( 'translateString() calls translateKey() on the translation service', function() {
+test( 'translateString() calls translateKey() on the translation service', function( assert ) {
     var component = this.subject({
             translateService : translateService,
             key              : 'the_key',
@@ -106,15 +106,15 @@ test( 'translateString() calls translateKey() on the translation service', funct
             $1               : 'b'
         });
 
-        this.append();
+        this.render();
 
-    equal( translateService.get( 'key' ), 'the_key' );
-    equal( translateService.get( 'pluralKey' ), 'plural_key' );
-    equal( translateService.get( 'pluralCount' ), 'plural_count' );
-    deepEqual( translateService.get( 'parameters' ), { $0: 'a', $1: 'b' } );
+    assert.equal( translateService.get( 'key' ), 'the_key' );
+    assert.equal( translateService.get( 'pluralKey' ), 'plural_key' );
+    assert.equal( translateService.get( 'pluralCount' ), 'plural_count' );
+    assert.deepEqual( translateService.get( 'parameters' ), { $0: 'a', $1: 'b' } );
 });
 
-test( 'willInsertElement event causes setTranslatedString() to be called', function() {
+test( 'willInsertElement event causes setTranslatedString() to be called', function( assert ) {
     var component                    = this.subject(),
         setTranslatedStringWasCalled = false;
 
@@ -123,12 +123,12 @@ test( 'willInsertElement event causes setTranslatedString() to be called', funct
     };
 
     // Render in DOM to trigger willInsertElement event
-    this.append();
+    this.render();
 
-    equal( setTranslatedStringWasCalled, true );
+    assert.equal( setTranslatedStringWasCalled, true );
 });
 
-test( 'willInsertElement event causes observers to be added to each entry in observedParameters property', function() {
+test( 'willInsertElement event causes observers to be added to each entry in observedParameters property', function( assert ) {
     var component = this.subject({
             translateService : translateService,
             key              : 'the_key',
@@ -142,7 +142,7 @@ test( 'willInsertElement event causes observers to be added to each entry in obs
     };
 
     // Render in DOM to trigger willInsertElement event
-    this.append();
+    this.render();
 
     // Change value so can monitor for change
     setTranslatedStringWasCalled = false;
@@ -151,10 +151,10 @@ test( 'willInsertElement event causes observers to be added to each entry in obs
         component.set( '$0', 'c' );
     });
 
-    equal( setTranslatedStringWasCalled, true );
+    assert.equal( setTranslatedStringWasCalled, true );
 });
 
-test( 'willClearRender event causes observers to be removed', function() {
+test( 'willClearRender event causes observers to be removed', function( assert ) {
     var component = this.subject({
             translateService : translateService,
             key              : 'the_key',
@@ -168,7 +168,7 @@ test( 'willClearRender event causes observers to be removed', function() {
     };
 
     // Render in DOM to trigger willInsertElement event
-    this.append();
+    this.render();
 
     // Change value so can monitor for change
     setTranslatedStringWasCalled = false;
@@ -179,5 +179,5 @@ test( 'willClearRender event causes observers to be removed', function() {
         component.set( '$0', 'c' );
     });
 
-    equal( setTranslatedStringWasCalled, false );
+    assert.equal( setTranslatedStringWasCalled, false );
 });
