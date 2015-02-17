@@ -3,28 +3,28 @@ import mixinUnderTest from 'sl-ember-translate/mixins/sl-get-translation';
 
 module( 'Unit - mixins:sl-get-translation' );
 
-test( 'Successfully mixed', function() {
-    expect(1);
+test( 'Successfully mixed', function( assert ) {
+    assert.expect(1);
 
     var testObject = Ember.Object.extend( mixinUnderTest ),
         subject    = testObject.create();
 
-    ok( subject );
+    assert.ok( subject );
 });
 
-test( 'Call to get() with a key not beginning with "translate." is not intercepted', function() {
-    expect(1);
+test( 'Call to get() with a key not beginning with "translate." is not intercepted', function( assert ) {
+    assert.expect(1);
 
     var testObject = Ember.Object.extend( mixinUnderTest, {
             testKey: 'testValue'
         }),
         subject    = testObject.create();
 
-    equal( subject.get( 'testKey' ), 'testValue' );
+    assert.equal( subject.get( 'testKey' ), 'testValue' );
 });
 
-test( 'Call to get() with a key beginning with "translate." calls this.translate()', function() {
-    expect(1);
+test( 'Call to get() with a key beginning with "translate." calls this.translate()', function( assert ) {
+    assert.expect(1);
 
     var testObject = Ember.Object.extend( mixinUnderTest, {
             translate: function( value ) {
@@ -33,11 +33,11 @@ test( 'Call to get() with a key beginning with "translate." calls this.translate
         }),
         subject    = testObject.create();
 
-    equal( subject.get( 'translate.testingKey' ), 'testingKey' );
+    assert.equal( subject.get( 'translate.testingKey' ), 'testingKey' );
 });
 
-test( 'translate() returns call to this.translateService.getKeyValue()', function() {
-    expect(1);
+test( 'translate() returns call to this.translateService.getKeyValue()', function( assert ) {
+    assert.expect(1);
 
     var testObject = Ember.Object.extend( mixinUnderTest, {
             translateService: {
@@ -48,5 +48,5 @@ test( 'translate() returns call to this.translateService.getKeyValue()', functio
         }),
         subject    = testObject.create();
 
-    equal( subject.translate( 'called' ), 'called' );
+    assert.equal( subject.translate( 'called' ), 'called' );
 });
