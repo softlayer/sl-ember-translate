@@ -67,7 +67,7 @@ export default Ember.Object.extend({
             returnValue = retrievedKey;
 
         } else {
-            console.warn( 'No translation match for key "' + key + '".' );
+            Ember.warn( 'No translation match for key "' + key + '".' );
             returnValue = key;
         }
 
@@ -111,7 +111,7 @@ export default Ember.Object.extend({
                 try {
                     value = this.getKeyValue( value );
                 } catch ( e ) {
-                    console.warn( 'Unable to translate key "' + value + '".' );
+                    Ember.warn( 'Unable to translate key "' + value + '".' );
                 }
 
                 return value;
@@ -128,7 +128,7 @@ export default Ember.Object.extend({
         }
 
         if ( 1 === pluralErrorTracker ) {
-            console.warn( 'If either "pluralKey" or "pluralCount" are provided then both must be.' +
+            Ember.warn( 'If either "pluralKey" or "pluralCount" are provided then both must be.' +
                 'Singular key value was returned.' );
             return getTokenValue( token );
         }
