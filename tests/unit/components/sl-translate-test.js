@@ -104,8 +104,9 @@ test( 'translateString() calls translateKey() on the translation service', funct
             pluralCount      : 'plural_count',
             $0               : 'a',
             $1               : 'b'
-        }),
-        $component = this.append();
+        });
+
+        this.append();
 
     equal( translateService.get( 'key' ), 'the_key' );
     equal( translateService.get( 'pluralKey' ), 'plural_key' );
@@ -134,15 +135,14 @@ test( 'willInsertElement event causes observers to be added to each entry in obs
             $0Binding        : 'a',
             $1               : 'b'
         }),
-        setTranslatedStringWasCalled = false,
-        $component;
+        setTranslatedStringWasCalled = false;
 
     component.setTranslatedString = function() {
         setTranslatedStringWasCalled = true;
     };
 
     // Render in DOM to trigger willInsertElement event
-    $component = this.append();
+    this.append();
 
     // Change value so can monitor for change
     setTranslatedStringWasCalled = false;
@@ -161,15 +161,14 @@ test( 'willClearRender event causes observers to be removed', function() {
             $0Binding        : 'a',
             $1               : 'b'
         }),
-        setTranslatedStringWasCalled = false,
-        $component;
+        setTranslatedStringWasCalled = false;
 
     component.setTranslatedString = function() {
         setTranslatedStringWasCalled = true;
     };
 
     // Render in DOM to trigger willInsertElement event
-    $component = this.append();
+    this.append();
 
     // Change value so can monitor for change
     setTranslatedStringWasCalled = false;
