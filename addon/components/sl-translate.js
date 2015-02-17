@@ -80,7 +80,7 @@ export default Ember.Component.extend({
         var parameters         = [],
             observedParameters = [];
 
-        Ember.keys( this ).map( function( key ) {
+        Ember.keys( this ).map( Ember.run.bind( this, function( key ) {
 
             // Is a number that begins with $ but doesn't also end with "Binding"
             if ( /^\$/.test( key ) && !/^\$.*(Binding)$/.test( key ) ) {
@@ -91,7 +91,7 @@ export default Ember.Component.extend({
             if ( /^\$[0-9]*$/.test( key ) && this.hasOwnProperty( key + 'Binding' ) ) {
                 observedParameters.push( key );
             }
-        }.bind( this ));
+        }));
 
         this.setProperties({
             'parameters'         : parameters,
@@ -112,9 +112,9 @@ export default Ember.Component.extend({
      * @returns  {void}
      */
     registerObservers: function() {
-        this.get( 'observedParameters' ).map( function( key ) {
+        this.get( 'observedParameters' ).map( Ember.run.bind( this, function( key ) {
             this.addObserver( key, this, this.setTranslatedString );
-        }.bind( this ));
+        }));
 
         this.setTranslatedString();
     }.on( 'willInsertElement' ),
@@ -127,9 +127,9 @@ export default Ember.Component.extend({
      * @returns  {void}
      */
     unregisterObservers: function() {
-        this.get( 'observedParameters' ).map( function( key ) {
+        this.get( 'observedParameters' ).map( Ember.run.bind( this, function( key ) {
             this.removeObserver( key, this, this.setTranslatedString );
-        }.bind( this ));
+        }));
     }.on( 'willClearRender' ),
 
     // -------------------------------------------------------------------------
@@ -158,9 +158,9 @@ export default Ember.Component.extend({
     translateString: function() {
         var parametersHash = {};
 
-        this.get( 'parameters' ).map( function( key ) {
+        this.get( 'parameters' ).map( Ember.run.bind( this, function( key ) {
             parametersHash[key] = this.get( key );
-        }.bind( this ));
+        }));
 
         return this.get( 'translateService' ).translateKey({
             key         : this.get( 'key' ),

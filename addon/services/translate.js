@@ -102,7 +102,7 @@ export default Ember.Object.extend({
 
         var pluralErrorTracker = 0,
             token              = data.key,
-            getTokenValue      = function( value ) {
+            getTokenValue      = Ember.run.bind( this, function( value ) {
                 try {
                     value = this.getKeyValue( value );
                 } catch ( e ) {
@@ -110,7 +110,7 @@ export default Ember.Object.extend({
                 }
 
                 return value;
-            }.bind( this ),
+            }),
             translatedString;
 
         // BEGIN: Pluralization error checking
@@ -139,7 +139,7 @@ export default Ember.Object.extend({
         // Parameter replacement
         Ember.keys( data.parameters ).map( function( key ) {
             translatedString = translatedString.replace( '{' + key.replace( '$', '' ) + '}' , data.parameters[key] );
-        }.bind( this ) );
+        });
 
         return translatedString;
     }
