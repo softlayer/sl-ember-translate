@@ -47,7 +47,7 @@ more work to do than time to do it. If you can write some code then that will sp
 # Pull Requests
 
 ## Contributer License Agreement
-Contributions to the sl-translate project require the submission of a contributer license agreement. Individual
+Contributions to the sl-ember-translate project require the submission of a contributer license agreement. Individual
 contributers should review and complete the [Individual CLA](CLA-INDIVIDUAL.md). Contributions made on behalf of a
 company/employer will necessitate the completion of the [Corporate CLA](CLA-CORPORATE.md).
 
