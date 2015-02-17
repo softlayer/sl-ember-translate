@@ -40,9 +40,14 @@ export default Ember.Object.extend({
      *
      * @function setDictionary
      * @argument {Ember.Object} translations  Translation model
+     * @throws   {Ember.assert}
      * @returns  {void}
      */
     setDictionary: function( translations ) {
+        if ( ( 'object' !== typeof translations || Array.isArray( translations ) ) ) {
+            Ember.assert( 'services/translation.setDictionary() expects "translations" parameter to be an object' );
+        }
+
         this.set( 'dictionary', translations );
     },
 

@@ -22,6 +22,93 @@ test( 'dictionary property defaults to null', function() {
     equal( TS.get( 'dictionary' ), null );
 });
 
+test( 'setDictionary() accepts only an object as a parameter', function() {
+
+    // Empty parameter
+
+    var assertionThrown = false;
+
+    try {
+        TS.setDictionary();
+    } catch( error ) {
+        assertionThrown = true;
+    }
+
+    ok( assertionThrown, 'Parameter was empty' );
+
+    // Number parameter
+
+    assertionThrown = false;
+
+    try {
+        TS.setDictionary( 4 );
+    } catch( error ) {
+        assertionThrown = true;
+    }
+
+    ok( assertionThrown, 'Parameter was a Number' );
+
+    // Array Parameter
+
+    assertionThrown = false;
+
+    try {
+        TS.setDictionary( [] );
+    } catch( error ) {
+        assertionThrown = true;
+    }
+
+    ok( assertionThrown, 'Parameter was an Array' );
+
+    // Function
+
+    assertionThrown = false;
+
+    try {
+        TS.setDictionary( function(){} );
+    } catch( error ) {
+        assertionThrown = true;
+    }
+
+    ok( assertionThrown, 'Parameter was a Function' );
+
+    // String Parameter
+
+    assertionThrown = false;
+
+    try {
+        TS.setDictionary( 'test' );
+    } catch( error ) {
+        assertionThrown = true;
+    }
+
+    ok( assertionThrown, 'Parameter was a String' );
+
+    // Boolean Parameter
+
+    assertionThrown = false;
+
+    try {
+        TS.setDictionary( false );
+    } catch( error ) {
+        assertionThrown = true;
+    }
+
+    ok( assertionThrown, 'Parameter was a Boolean' );
+
+    // Object Parameter
+
+    assertionThrown = false;
+
+    try {
+        TS.setDictionary( {} );
+    } catch( error ) {
+        assertionThrown = true;
+    }
+
+    ok( !assertionThrown, 'Parameter was an Object' );
+});
+
 test( 'setDictionary() sets data on the dictionary property', function() {
     expect(1);
 
