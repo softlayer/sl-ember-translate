@@ -1,6 +1,7 @@
 import Ember from 'ember';
 import { test, moduleFor } from 'ember-qunit';
 import TranslateService from 'sl-ember-translate/services/translate';
+import { requires } from '../../helpers/sl/synchronous';
 
 var TS;
 
@@ -135,18 +136,10 @@ test( 'getKeyValue() returns requested key\'s translated string', function( asse
     assert.equal( TS.getKeyValue( 'the_key' ), 'my value' );
 });
 
-test( 'translateKey() requires an argument to be provided', function( assert ) {
-    assert.expect(1);
+test( 'translateKey() accepts only an object as a parameter', function( assert ) {
+    var test = requires( TS.translateKey, [ 'object' ] );
 
-    var assertionThrown = false;
-
-    try {
-        TS.translateKey();
-    } catch( error ) {
-        assertionThrown = true;
-    }
-
-    assert.ok( assertionThrown );
+    assert.ok( test.requires, test.messages );
 });
 
 test( 'translateKey() returns translated string for specified key', function( assert ) {
