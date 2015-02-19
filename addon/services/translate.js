@@ -44,9 +44,11 @@ export default Ember.Object.extend({
      * @returns  {void}
      */
     setDictionary: function( translations ) {
-        if ( ( 'object' !== typeof translations || Array.isArray( translations ) ) ) {
-            Ember.assert( 'services/translation.setDictionary() expects "translations" parameter to be an object' );
-        }
+
+        Ember.assert(
+            'services/translation.setDictionary() expects parameter to be an object',
+            'object' === typeof translations && !Array.isArray( translations )
+        );
 
         this.set( 'dictionary', translations );
     },
@@ -97,11 +99,7 @@ export default Ember.Object.extend({
      */
     translateKey: function( data ) {
 
-        Ember.assert( 'Argument must be supplied', data );
-
-        if ( undefined === data ) {
-            return;
-        }
+        Ember.assert( 'Argument must be an object', 'object' === typeof data && !Array.isArray( data ) );
 
         data.parameters = data.parameters || {};
 
