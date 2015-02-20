@@ -49,4 +49,5 @@ Then follow these steps:
     * `assets/vendor.js` with `sl-ember-translate/assets/vendor.js`
     * `assets/dummy.js` with `sl-ember-translate/assets/dummy.js`
 * Also within the *index.html* file, in the `<meta name="dummy/config/environment"...` tag, replace the `locationType` value from `auto` to `hash`
+* Also within the *index.html* file, in the `<meta name="dummy/config/environment"...` tag, replace the `baseUrl` value from `/` to `/sl-ember-translate`
 * Commit and push the changes
