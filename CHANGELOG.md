@@ -1,5 +1,12 @@
 # sl-ember-translate Changelog
 
+### 1.4.0
+
+* [#84](https://github.com/softlayer/sl-ember-translate/pull/88) [BREAKING ENHANCEMENT] Removed es5-shim
+* [#94](https://github.com/softlayer/sl-ember-translate/pull/94) [BREAKING ENHANCEMENT] Upgrade to Ember CLI 0.1.15
+
+[View complete changeset](https://github.com/softlayer/sl-ember-translate/compare/v1.3.0...v1.4.0)
+
 ### 1.3.0
 
 * [#67](https://github.com/softlayer/sl-ember-translate/pull/67) [BREAKING ENHANCEMENT] Upgrade to Ember CLI 0.1.5
