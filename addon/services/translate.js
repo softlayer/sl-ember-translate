@@ -104,16 +104,17 @@ export default Ember.Object.extend({
         data.parameters = data.parameters || {};
 
         var pluralErrorTracker = 0,
+            self               = this,
             token              = data.key,
-            getTokenValue      = Ember.run.bind( this, function( value ) {
+            getTokenValue      = function( value ) {
                 try {
-                    value = this.getKeyValue( value );
+                    value = self.getKeyValue( value );
                 } catch ( e ) {
                     Ember.warn( 'Unable to translate key "' + value + '".' );
                 }
 
                 return value;
-            }),
+            },
             translatedString;
 
         // BEGIN: Pluralization error checking
