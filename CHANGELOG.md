@@ -1,5 +1,9 @@
 # sl-ember-translate Changelog
 
+### 1.4.1
+
+* [#100](https://github.com/softlayer/sl-ember-translate/pull/100) [BUGFIX] Fix binding reference for getTokenValue
+
 ### 1.4.0
 
 * [#84](https://github.com/softlayer/sl-ember-translate/pull/88) [BREAKING ENHANCEMENT] Removed es5-shim
