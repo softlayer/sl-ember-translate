@@ -78,9 +78,10 @@ export default Ember.Component.extend({
      */
     extractParameterKeys: function() {
         var parameters         = [],
-            observedParameters = [];
+            observedParameters = [],
+            self               = this;
 
-        Ember.keys( this ).map( Ember.run.bind( this, function( key ) {
+        Ember.keys( this ).map( function( key ) {
 
             // Is a number that begins with $ but doesn't also end with "Binding"
             if ( /^\$/.test( key ) && !/^\$.*(Binding)$/.test( key ) ) {
@@ -88,10 +89,10 @@ export default Ember.Component.extend({
             }
 
             // Is a number that begins with $ and was passed as a binding
-            if ( /^\$[0-9]*$/.test( key ) && this.hasOwnProperty( key + 'Binding' ) ) {
+            if ( /^\$[0-9]*$/.test( key ) && self.hasOwnProperty( key + 'Binding' ) ) {
                 observedParameters.push( key );
             }
-        }));
+        });
 
         this.setProperties({
             'parameters'         : parameters,
@@ -112,9 +113,11 @@ export default Ember.Component.extend({
      * @returns  {void}
      */
     registerObservers: function() {
-        this.get( 'observedParameters' ).map( Ember.run.bind( this, function( key ) {
-            this.addObserver( key, this, this.setTranslatedString );
-        }));
+        var self = this;
+
+        this.get( 'observedParameters' ).map( function( key ) {
+            self.addObserver( key, self, self.setTranslatedString );
+        });
 
         this.setTranslatedString();
     }.on( 'willInsertElement' ),
@@ -127,9 +130,11 @@ export default Ember.Component.extend({
      * @returns  {void}
      */
     unregisterObservers: function() {
-        this.get( 'observedParameters' ).map( Ember.run.bind( this, function( key ) {
-            this.removeObserver( key, this, this.setTranslatedString );
-        }));
+        var self = this;
+
+        this.get( 'observedParameters' ).map( function( key ) {
+            self.removeObserver( key, self, self.setTranslatedString );
+        });
     }.on( 'willClearRender' ),
 
     // -------------------------------------------------------------------------
@@ -156,11 +161,12 @@ export default Ember.Component.extend({
      * @returns {Ember.String} Translated string
      */
     translateString: function() {
-        var parametersHash = {};
+        var parametersHash = {},
+            self           = this;
 
-        this.get( 'parameters' ).map( Ember.run.bind( this, function( key ) {
-            parametersHash[key] = this.get( key );
-        }));
+        this.get( 'parameters' ).map( function( key ) {
+            parametersHash[key] = self.get( key );
+        });
 
         return this.get( 'translateService' ).translateKey({
             key         : this.get( 'key' ),
