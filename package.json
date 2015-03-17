@@ -1,6 +1,6 @@
 {
   "name": "sl-ember-translate",
-  "version": "1.4.1",
+  "version": "1.5.0",
   "description": "Ember CLI Addon - Translation Service",
   "scripts": {
     "start": "ember server",
