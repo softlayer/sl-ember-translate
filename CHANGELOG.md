@@ -1,8 +1,17 @@
 # sl-ember-translate Changelog
 
+### 1.5.0
+
+* [#103](https://github.com/softlayer/sl-ember-translate/pull/103) [BUG FIX] Replace Ember.run.bind() calls with self=this references
+* [#101](https://github.com/softlayer/sl-ember-translate/pull/101) [ENHANCEMENT] Add ember-cli-blanket for code coverage reporting
+
+[View complete changeset](https://github.com/softlayer/sl-ember-translate/compare/v1.4.1...v1.5.0)
+
 ### 1.4.1
 
 * [#100](https://github.com/softlayer/sl-ember-translate/pull/100) [BUGFIX] Fix binding reference for getTokenValue
+
+[View complete changeset](https://github.com/softlayer/sl-ember-translate/compare/v1.4.0...v1.4.1)
 
 ### 1.4.0
 
