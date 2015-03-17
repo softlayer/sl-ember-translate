@@ -1,5 +1,11 @@
 # sl-ember-translate Changelog
 
+### 1.5.1
+
+* [#104](https://github.com/softlayer/sl-ember-translate/pull/104) [BUGFIX] Update dependencies for underlying dependency chaining mis-matches that have occurred within Ember CLI ecosystem
+
+[View complete changeset](https://github.com/softlayer/sl-ember-translate/compare/v1.5.0...v1.5.1)
+
 ### 1.5.0
 
 * [#103](https://github.com/softlayer/sl-ember-translate/pull/103) [BUG FIX] Replace Ember.run.bind() calls with self=this references
