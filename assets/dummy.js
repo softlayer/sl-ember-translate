@@ -43,7 +43,7 @@ define('dummy/initializers/app-version', ['exports', 'dummy/config/environment',
 
   exports['default'] = {
     name: "App Version",
-    initialize: function (container, application) {
+    initialize: function initialize(container, application) {
       var appName = classify(application.toString());
       Ember['default'].libraries.register(appName, config['default'].APP.version);
     }
@@ -62,7 +62,9 @@ define('dummy/initializers/export-application-global', ['exports', 'ember', 'dum
     if (config['default'].exportApplicationGlobal && !window[classifiedName]) {
       window[classifiedName] = application;
     }
-  };
+  }
+
+  ;
 
   exports['default'] = {
     name: "export-application-global",
@@ -105,12 +107,12 @@ define('dummy/routes/demo', ['exports', 'ember'], function (exports, Ember) {
     exports['default'] = Ember['default'].Route.extend({
 
         actions: {
-            updateStringValues: function () {
+            updateStringValues: function updateStringValues() {
                 this.controllerFor("demo").set("valueToDisplay", "New Updated Value - " + Math.random());
             }
         },
 
-        model: function () {
+        model: function model() {
             return Ember['default'].Object.create({
                 SIMPLE_KEY: "I have been translated",
                 SINGULAR_KEY: "View my family",
@@ -119,7 +121,7 @@ define('dummy/routes/demo', ['exports', 'ember'], function (exports, Ember) {
             });
         },
 
-        setupController: function (controller, model) {
+        setupController: function setupController(controller, model) {
             controller.get("translateService").setDictionary(model);
         }
     });
@@ -292,6 +294,31 @@ define('dummy/tests/app.jshint', function () {
   });
 
 });
+define('dummy/tests/blanket-options', function () {
+
+   'use strict';
+
+   /* globals blanket */
+
+   blanket.options({
+      modulePrefix: "dummy",
+      filter: "//.*dummy/.*/",
+      antifilter: "//.*(tests|template).*/",
+      loaderExclusions: [],
+      enableCoverage: true
+   });
+
+});
+define('dummy/tests/blanket-options.jshint', function () {
+
+  'use strict';
+
+  module('JSHint - .');
+  test('blanket-options.js should pass jshint', function() { 
+    ok(true, 'blanket-options.js should pass jshint.'); 
+  });
+
+});
 define('dummy/tests/controllers/demo.jshint', function () {
 
   'use strict';
@@ -352,7 +379,7 @@ define('dummy/tests/helpers/sl/synchronous/ajax', ['exports', 'ember'], function
 
     'use strict';
 
-    var AjaxHelper = function () {};
+    var AjaxHelper = function AjaxHelper() {};
 
     /**
      * Emulate the beginning of an AJAX request
@@ -436,7 +463,7 @@ define('dummy/tests/helpers/sl/synchronous/requires', ['exports', 'ember'], func
             },
             "function": {
                 required: false,
-                testValue: function () {},
+                testValue: function testValue() {},
                 message: "Parameter was a function"
             },
             undefined: {
@@ -467,6 +494,7 @@ define('dummy/tests/helpers/sl/synchronous/requires', ['exports', 'ember'], func
         // Test each parameter type
         for (property in typesToTest) {
             if (typesToTest.hasOwnProperty(property)) {
+
                 // Reset flag
                 assertionThrown = false;
 
@@ -499,7 +527,7 @@ define('dummy/tests/helpers/sl/utils/utils', ['exports', 'ember'], function (exp
 
     'use strict';
 
-    var convertToArray = function (underTest) {
+    var convertToArray = function convertToArray(underTest) {
         var returnArray;
 
         if (Array.isArray(underTest)) {
@@ -531,7 +559,8 @@ define('dummy/tests/helpers/sl/utils/utils', ['exports', 'ember'], function (exp
      * @throws  {Ember.assert} If argument is not provided or is not a string
      * @returns {array}
      */
-    var convertStringToArray = function (underTest) {
+    var convertStringToArray = function convertStringToArray(underTest) {
+
         Ember['default'].assert("String must be supplied", "string" === typeof underTest);
 
         return underTest.split(" ");
@@ -547,7 +576,8 @@ define('dummy/tests/helpers/sl/utils/utils', ['exports', 'ember'], function (exp
      * @throws  {Ember.assert} If argument is not provided or is not an object
      * @returns {array}
      */
-    var convertObjectKeysToArray = function (underTest) {
+    var convertObjectKeysToArray = function convertObjectKeysToArray(underTest) {
+
         Ember['default'].assert("Object must be supplied", "object" === typeof underTest && !Array.isArray(underTest));
 
         return Object.keys(underTest);
@@ -561,7 +591,8 @@ define('dummy/tests/helpers/sl/utils/utils', ['exports', 'ember'], function (exp
      * @param  {array} testFor
      * @return {boolean}
      */
-    var doArraysIntersect = function (underTest, testFor) {
+    var doArraysIntersect = function doArraysIntersect(underTest, testFor) {
+
         Ember['default'].assert("Parameters must be Arrays", Array.isArray(underTest) && Array.isArray(testFor));
 
         return testFor.some(function (v) {
@@ -651,7 +682,7 @@ define('dummy/tests/unit/components/sl-translate-test', ['ember', 'ember-qunit']
     'use strict';
 
     var translateService = Ember['default'].Object.create({
-        translateKey: function (data) {
+        translateKey: function translateKey(data) {
             this.set("key", data.key);
             this.set("pluralKey", data.pluralKey);
             this.set("pluralCount", data.pluralCount);
@@ -849,11 +880,11 @@ define('dummy/tests/unit/initializers/translate-service-test', ['ember', 'ember-
     var App;
 
     module("Unit - initializer:translate-service", {
-        beforeEach: function () {
+        beforeEach: function beforeEach() {
             App = startApp['default']();
         },
 
-        afterEach: function () {
+        afterEach: function afterEach() {
             Ember['default'].run(App, App.destroy);
         }
     });
@@ -926,7 +957,7 @@ define('dummy/tests/unit/mixins/sl-get-translation-test', ['ember', 'sl-ember-tr
         assert.expect(1);
 
         var testObject = Ember['default'].Object.extend(mixinUnderTest['default'], {
-            translate: function (value) {
+            translate: function translate(value) {
                 return value;
             }
         }),
@@ -940,7 +971,7 @@ define('dummy/tests/unit/mixins/sl-get-translation-test', ['ember', 'sl-ember-tr
 
         var testObject = Ember['default'].Object.extend(mixinUnderTest['default'], {
             translateService: {
-                getKeyValue: function (value) {
+                getKeyValue: function getKeyValue(value) {
                     return value;
                 }
             }
@@ -968,7 +999,7 @@ define('dummy/tests/unit/services/translate-test', ['ember', 'ember-qunit', 'sl-
     var TS;
 
     module("Unit - services:translate", {
-        beforeEach: function () {
+        beforeEach: function beforeEach() {
             TS = TranslateService['default'].create();
         }
     });
@@ -986,6 +1017,7 @@ define('dummy/tests/unit/services/translate-test', ['ember', 'ember-qunit', 'sl-
     });
 
     ember_qunit.test("setDictionary() accepts only an object as a parameter", function (assert) {
+
         // Empty parameter
 
         var assertionThrown = false;
@@ -1196,7 +1228,7 @@ catch(err) {
 if (runningTests) {
   require("dummy/tests/test-helper");
 } else {
-  require("dummy/app")["default"].create({"name":"sl-ember-translate","version":"1.4.0.0a717c51"});
+  require("dummy/app")["default"].create({"name":"sl-ember-translate","version":"1.5.1.508e6eb5"});
 }
 
 /* jshint ignore:end */
