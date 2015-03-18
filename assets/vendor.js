@@ -63065,37 +63065,19 @@ define("ember/resolver",
     };
   }
 
-  function chooseModuleName(moduleEntries, moduleName) {
-    var underscoredModuleName = Ember.String.underscore(moduleName);
-
-    if (moduleName !== underscoredModuleName && moduleEntries[moduleName] && moduleEntries[underscoredModuleName]) {
-      throw new TypeError("Ambiguous module names: `" + moduleName + "` and `" + underscoredModuleName + "`");
-    }
-
-    if (moduleEntries[moduleName]) {
-      return moduleName;
-    } else if (moduleEntries[underscoredModuleName]) {
-      return underscoredModuleName;
-    } else {
-      // workaround for dasherized partials:
-      // something/something/-something => something/something/_something
-      var partializedModuleName = moduleName.replace(/\/-([^\/]*)$/, '/_$1');
-
-      if (moduleEntries[partializedModuleName]) {
-        Ember.deprecate('Modules should not contain underscores. ' +
-                        'Attempted to lookup "'+moduleName+'" which ' +
-                        'was not found. Please rename "'+partializedModuleName+'" '+
-                        'to "'+moduleName+'" instead.', false);
-
-        return partializedModuleName;
-      } else {
-        return moduleName;
-      }
-    }
-  }
-
   function resolveOther(parsedName) {
     /*jshint validthis:true */
+
+    if (!this._deprecatedPodModulePrefix) {
+      var podModulePrefix = this.namespace.podModulePrefix || '';
+      var podPath = podModulePrefix.substr(podModulePrefix.lastIndexOf('/') + 1);
+
+      Ember.deprecate('`podModulePrefix` is deprecated and will be removed '+
+        'from future versions of ember-cli. Please move existing pods from '+
+        '\'app/' + podPath + '/\' to \'app/\'.', !this.namespace.podModulePrefix);
+
+      this._deprecatedPodModulePrefix = true;
+    }
 
     Ember.assert('`modulePrefix` must be defined', this.namespace.modulePrefix);
 
@@ -63143,6 +63125,8 @@ define("ember/resolver",
       if (!this.pluralizedTypes.config) {
         this.pluralizedTypes.config = 'config';
       }
+
+      this._deprecatedPodModulePrefix = false;
     },
     normalize: function(fullName) {
       return this._normalizeCache[fullName] || (this._normalizeCache[fullName] = this._normalize(fullName));
@@ -63241,7 +63225,7 @@ define("ember/resolver",
         // allow treat all dashed and all underscored as the same thing
         // supports components with dashes and other stuff with underscores.
         if (tmpModuleName) {
-          tmpModuleName = chooseModuleName(moduleEntries, tmpModuleName);
+          tmpModuleName = self.chooseModuleName(moduleEntries, tmpModuleName);
         }
 
         if (tmpModuleName && moduleEntries[tmpModuleName]) {
@@ -63260,6 +63244,35 @@ define("ember/resolver",
       });
 
       return moduleName;
+    },
+
+    chooseModuleName: function(moduleEntries, moduleName) {
+      var underscoredModuleName = Ember.String.underscore(moduleName);
+
+      if (moduleName !== underscoredModuleName && moduleEntries[moduleName] && moduleEntries[underscoredModuleName]) {
+        throw new TypeError("Ambiguous module names: `" + moduleName + "` and `" + underscoredModuleName + "`");
+      }
+
+      if (moduleEntries[moduleName]) {
+        return moduleName;
+      } else if (moduleEntries[underscoredModuleName]) {
+        return underscoredModuleName;
+      } else {
+        // workaround for dasherized partials:
+        // something/something/-something => something/something/_something
+        var partializedModuleName = moduleName.replace(/\/-([^\/]*)$/, '/_$1');
+
+        if (moduleEntries[partializedModuleName]) {
+          Ember.deprecate('Modules should not contain underscores. ' +
+                          'Attempted to lookup "'+moduleName+'" which ' +
+                          'was not found. Please rename "'+partializedModuleName+'" '+
+                          'to "'+moduleName+'" instead.', false);
+
+          return partializedModuleName;
+        } else {
+          return moduleName;
+        }
+      }
     },
 
     // used by Ember.DefaultResolver.prototype._logLookup
@@ -63366,6 +63379,17 @@ define("ember/container-debug-adapter",
     },
 
     /**
+     * Get all defined modules.
+     *
+     * @method _getEntries
+     * @return {Array} the list of registered modules.
+     * @private
+     */
+    _getEntries: function() {
+      return requirejs.entries;
+    },
+
+    /**
       Returns the available classes a given type.
 
       @method catalogEntriesByType
@@ -63373,7 +63397,7 @@ define("ember/container-debug-adapter",
       @return {Array} An array of classes.
     */
     catalogEntriesByType: function(type) {
-      var entries = requirejs.entries,
+      var entries = this._getEntries(),
           module,
           types = Ember.A();
 
@@ -63381,24 +63405,39 @@ define("ember/container-debug-adapter",
         return this.shortname;
       };
 
+      var prefix = this.namespace.modulePrefix;
+
       for(var key in entries) {
-        if(entries.hasOwnProperty(key) && key.indexOf(type) !== -1)
-        {
-          // // TODO return the name instead of the module itself
-          // module = require(key, null, null, true);
+        if(entries.hasOwnProperty(key) && key.indexOf(type) !== -1) {
+          // Check if it's a pod module
+          var name = getPod(type, key, this.namespace.podModulePrefix || prefix);
+          if (!name) {
+            // Not pod
+            name = key.split(type + 's/').pop();
 
-          // if (module && module['default']) { module = module['default']; }
-          // module.shortname = key.split(type +'s/').pop();
-          // module.toString = makeToString;
+            // Support for different prefix (such as ember-cli addons).
+            // Uncomment the code below when
+            // https://github.com/ember-cli/ember-resolver/pull/80 is merged.
 
-          // types.push(module);
-          types.push(key.split(type +'s/').pop());
+            //var match = key.match('^/?(.+)/' + type);
+            //if (match && match[1] !== prefix) {
+              // Different prefix such as an addon
+              //name = match[1] + '@' + name;
+            //}
+          }
+          types.addObject(name);
         }
       }
-
       return types;
     }
   });
+
+  function getPod(type, key, prefix) {
+    var match = key.match(new RegExp('^/?' + prefix + '/(.+)/' + type + '$'));
+    if (match) {
+      return match[1];
+    }
+  }
 
   ContainerDebugAdapter['default'] = ContainerDebugAdapter;
   return ContainerDebugAdapter;
@@ -63415,11 +63454,12 @@ define("ember/container-debug-adapter",
   Ember.Application.initializer({
     name: 'container-debug-adapter',
 
-    initialize: function(container) {
+    initialize: function(container, app) {
       var ContainerDebugAdapter = require('ember/container-debug-adapter');
       var Resolver = require('ember/resolver');
 
       container.register('container-debug-adapter:main', ContainerDebugAdapter);
+      app.inject('container-debug-adapter:main', 'namespace', 'application:main');
     }
   });
 }());
@@ -75855,9 +75895,10 @@ define('sl-ember-translate/components/sl-translate', ['exports', 'ember', 'sl-em
          */
         extractParameterKeys: function() {
             var parameters         = [],
-                observedParameters = [];
+                observedParameters = [],
+                self               = this;
 
-            Ember['default'].keys( this ).map( Ember['default'].run.bind( this, function( key ) {
+            Ember['default'].keys( this ).map( function( key ) {
 
                 // Is a number that begins with $ but doesn't also end with "Binding"
                 if ( /^\$/.test( key ) && !/^\$.*(Binding)$/.test( key ) ) {
@@ -75865,10 +75906,10 @@ define('sl-ember-translate/components/sl-translate', ['exports', 'ember', 'sl-em
                 }
 
                 // Is a number that begins with $ and was passed as a binding
-                if ( /^\$[0-9]*$/.test( key ) && this.hasOwnProperty( key + 'Binding' ) ) {
+                if ( /^\$[0-9]*$/.test( key ) && self.hasOwnProperty( key + 'Binding' ) ) {
                     observedParameters.push( key );
                 }
-            }));
+            });
 
             this.setProperties({
                 'parameters'         : parameters,
@@ -75889,9 +75930,11 @@ define('sl-ember-translate/components/sl-translate', ['exports', 'ember', 'sl-em
          * @returns  {void}
          */
         registerObservers: function() {
-            this.get( 'observedParameters' ).map( Ember['default'].run.bind( this, function( key ) {
-                this.addObserver( key, this, this.setTranslatedString );
-            }));
+            var self = this;
+
+            this.get( 'observedParameters' ).map( function( key ) {
+                self.addObserver( key, self, self.setTranslatedString );
+            });
 
             this.setTranslatedString();
         }.on( 'willInsertElement' ),
@@ -75904,9 +75947,11 @@ define('sl-ember-translate/components/sl-translate', ['exports', 'ember', 'sl-em
          * @returns  {void}
          */
         unregisterObservers: function() {
-            this.get( 'observedParameters' ).map( Ember['default'].run.bind( this, function( key ) {
-                this.removeObserver( key, this, this.setTranslatedString );
-            }));
+            var self = this;
+
+            this.get( 'observedParameters' ).map( function( key ) {
+                self.removeObserver( key, self, self.setTranslatedString );
+            });
         }.on( 'willClearRender' ),
 
         // -------------------------------------------------------------------------
@@ -75933,11 +75978,12 @@ define('sl-ember-translate/components/sl-translate', ['exports', 'ember', 'sl-em
          * @returns {Ember.String} Translated string
          */
         translateString: function() {
-            var parametersHash = {};
+            var parametersHash = {},
+                self           = this;
 
-            this.get( 'parameters' ).map( Ember['default'].run.bind( this, function( key ) {
-                parametersHash[key] = this.get( key );
-            }));
+            this.get( 'parameters' ).map( function( key ) {
+                parametersHash[key] = self.get( key );
+            });
 
             return this.get( 'translateService' ).translateKey({
                 key         : this.get( 'key' ),
@@ -76122,16 +76168,17 @@ define('sl-ember-translate/services/translate', ['exports', 'ember'], function (
             data.parameters = data.parameters || {};
 
             var pluralErrorTracker = 0,
+                self               = this,
                 token              = data.key,
-                getTokenValue      = Ember['default'].run.bind( this, function( value ) {
+                getTokenValue      = function( value ) {
                     try {
-                        value = this.getKeyValue( value );
+                        value = self.getKeyValue( value );
                     } catch ( e ) {
                         Ember['default'].warn( 'Unable to translate key "' + value + '".' );
                     }
 
                     return value;
-                }),
+                },
                 translatedString;
 
             // BEGIN: Pluralization error checking
