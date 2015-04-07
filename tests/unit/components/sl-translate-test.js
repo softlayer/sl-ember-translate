@@ -1,43 +1,39 @@
 import Ember from 'ember';
-import { test, moduleForComponent } from 'ember-qunit';
+import { moduleForComponent, test } from 'ember-qunit';
 
 var translateService = Ember.Object.create({
-        translateKey: function( data ) {
-            this.set( 'key', data.key );
-            this.set( 'pluralKey', data.pluralKey );
-            this.set( 'pluralCount', data.pluralCount );
-            this.set( 'parameters', data.parameters );
+    translateKey( data ) {
+        this.set( 'key', data.key );
+        this.set( 'pluralKey', data.pluralKey );
+        this.set( 'pluralCount', data.pluralCount );
+        this.set( 'parameters', data.parameters );
 
-            return 'TRANSLATE: ' + data.key;
-        }
-    });
+        return 'TRANSLATE: ' + data.key;
+    }
+});
 
 moduleForComponent( 'sl-translate', 'Unit - component:sl-translate' );
 
 /**
- * Ensures that the template is wrapping the content in a span tag and not in any block-level tags. While it appears
- * that core Ember functionality is being tested this test is ensuring that the implied contract about how this non-UI
+ * Ensures that the template is wrapping the content in a span tag and not in
+ * any block-level tags. While it appears that core Ember functionality is being
+ * tested this test is ensuring that the implied contract about how this non-UI
  * component is rendered into the DOM is adhered to.
  */
 test( 'Renders as a span tag with no classes', function( assert ) {
-    var component  = this.subject({ translateService: translateService }),
-        $component = this.render();
+    var component = this.subject({ translateService });
 
-    assert.equal( $component.prop( 'tagName' ), 'SPAN' );
-    assert.equal( $component.prop( 'class'), 'ember-view' );
+    assert.equal( this.$().prop( 'tagName' ), 'SPAN' );
+    assert.equal( this.$().prop( 'class' ), 'ember-view' );
 });
 
 /**
  * That it renders and functions as expected
  */
 test( 'DOM and content of rendered translation', function( assert ) {
-    var component = this.subject({
-            key              : 'the_key',
-            translateService : translateService
-        }),
-        $component = this.render();
+    var component = this.subject({ key: 'the_key', translateService });
 
-    assert.equal( $component.text(), 'TRANSLATE: the_key' );
+    assert.equal( Ember.$.trim( this.$().text() ), 'TRANSLATE: the_key' );
 });
 
 /**
@@ -46,16 +42,15 @@ test( 'DOM and content of rendered translation', function( assert ) {
  */
 test( 'Can be used alongside other properties or attribute bindings', function( assert ) {
     var component  = this.subject({
-            translateService : translateService,
-            key              : 'key_alongside',
-            tagName          : 'h1',
-            classNames       : [ 'testClass' ]
-        }),
-        $component = this.render();
+        translateService,
+        key        : 'key_alongside',
+        tagName    : 'h1',
+        classNames : [ 'testClass' ]
+    });
 
-    assert.equal( $component.prop( 'tagName' ), 'H1' );
-    assert.equal( $component.text(), 'TRANSLATE: key_alongside' );
-    assert.equal( $component.prop( 'class'), ['ember-view testClass'] );
+    assert.equal( this.$().prop( 'tagName' ), 'H1' );
+    assert.equal( Ember.$.trim( this.$().text() ), 'TRANSLATE: key_alongside' );
+    assert.equal( this.$().prop( 'class'), ['ember-view testClass'] );
 });
 
 test( 'On initialization, extractParameterKeys() filters passed parameters', function( assert ) {
@@ -98,15 +93,15 @@ test( 'setTranslatedString() sets translatedString property with value from tran
 
 test( 'translateString() calls translateKey() on the translation service', function( assert ) {
     var component = this.subject({
-            translateService : translateService,
-            key              : 'the_key',
-            pluralKey        : 'plural_key',
-            pluralCount      : 'plural_count',
-            $0               : 'a',
-            $1               : 'b'
-        });
+        translateService,
+        key         : 'the_key',
+        pluralKey   : 'plural_key',
+        pluralCount : 'plural_count',
+        $0          : 'a',
+        $1          : 'b'
+    });
 
-        this.render();
+    this.render();
 
     assert.equal( translateService.get( 'key' ), 'the_key' );
     assert.equal( translateService.get( 'pluralKey' ), 'plural_key' );
@@ -130,10 +125,10 @@ test( 'willInsertElement event causes setTranslatedString() to be called', funct
 
 test( 'willInsertElement event causes observers to be added to each entry in observedParameters property', function( assert ) {
     var component = this.subject({
-            translateService : translateService,
-            key              : 'the_key',
-            $0Binding        : 'a',
-            $1               : 'b'
+            translateService,
+            key       : 'the_key',
+            $0Binding : 'a',
+            $1        : 'b'
         }),
         setTranslatedStringWasCalled = false;
 
@@ -156,14 +151,14 @@ test( 'willInsertElement event causes observers to be added to each entry in obs
 
 test( 'willClearRender event causes observers to be removed', function( assert ) {
     var component = this.subject({
-            translateService : translateService,
-            key              : 'the_key',
-            $0Binding        : 'a',
-            $1               : 'b'
+            translateService,
+            key       : 'the_key',
+            $0Binding : 'a',
+            $1        : 'b'
         }),
         setTranslatedStringWasCalled = false;
 
-    component.setTranslatedString = function() {
+    component.setTranslatedString = () => {
         setTranslatedStringWasCalled = true;
     };
 
@@ -175,7 +170,7 @@ test( 'willClearRender event causes observers to be removed', function( assert )
 
     component.trigger( 'willClearRender' );
 
-    Ember.run( function(){
+    Ember.run( () => {
         component.set( '$0', 'c' );
     });
 

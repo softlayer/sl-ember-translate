@@ -34,7 +34,7 @@ export default Ember.Mixin.create({
      * @argument {Ember.String} key property to retrieve
      * @returns  {Ember.String}
      */
-    get: function( key ) {
+    get( key ) {
         var translationsRegex = /translate\.(.*)/,
             matches           = key.match( translationsRegex );
 
@@ -48,7 +48,7 @@ export default Ember.Mixin.create({
      * @argument {Ember.String} key key to translate
      * @returns  {Ember.String} translated key
      */
-    translate: function( key ) {
+    translate( key ) {
         return this.translateService.getKeyValue( key );
     }
 });
