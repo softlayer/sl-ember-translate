@@ -57,7 +57,7 @@ For more information on using ember-cli, visit [http://www.ember-cli.com/](http:
 ## Install this addon as a Node module
 
 ```
-ember install:addon sl-ember-translate
+ember install sl-ember-translate
 ```
 
 
