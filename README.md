@@ -107,18 +107,6 @@ where each "$x" parameter numerically corresponds to the tokens in the translati
 
 ---
 
-### Binding
-
-If you need to pass parameters whose values are bound to other values rather than be hard-coded, use the following format:
-
-```handlebars
-{{sl-translate key="ACCESSLOG_LIST_PAGINATION" $0Binding="examplePropertyBoundTo1" $1Binding="examplePropertyBoundTo2" $2Binding="examplePropertyBoundTo3"}}
-```
-
-The order of the parameters does not matter.
-
----
-
 ### Used alongside other properties or attribute bindings
 
 You can still use the *sl-translate* component alongside other properties or attribute bindings as well:
