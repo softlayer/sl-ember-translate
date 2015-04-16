@@ -21,7 +21,7 @@ moduleForComponent( 'sl-translate', 'Unit - component:sl-translate' );
  * component is rendered into the DOM is adhered to.
  */
 test( 'Renders as a span tag with no classes', function( assert ) {
-    var component = this.subject({ translateService });
+    this.subject({ translateService });
 
     assert.equal( this.$().prop( 'tagName' ), 'SPAN' );
     assert.equal( this.$().prop( 'class' ), 'ember-view' );
@@ -31,7 +31,7 @@ test( 'Renders as a span tag with no classes', function( assert ) {
  * That it renders and functions as expected
  */
 test( 'DOM and content of rendered translation', function( assert ) {
-    var component = this.subject({ key: 'the_key', translateService });
+    this.subject({ key: 'the_key', translateService });
 
     assert.equal( Ember.$.trim( this.$().text() ), 'TRANSLATE: the_key' );
 });
@@ -41,7 +41,7 @@ test( 'DOM and content of rendered translation', function( assert ) {
  * A side effect of this test is the appearance that core Ember functionality is being tested
  */
 test( 'Can be used alongside other properties or attribute bindings', function( assert ) {
-    var component  = this.subject({
+    this.subject({
         translateService,
         key        : 'key_alongside',
         tagName    : 'h1',
@@ -92,7 +92,7 @@ test( 'setTranslatedString() sets translatedString property with value from tran
 });
 
 test( 'translateString() calls translateKey() on the translation service', function( assert ) {
-    var component = this.subject({
+    this.subject({
         translateService,
         key         : 'the_key',
         pluralKey   : 'plural_key',
