@@ -41,7 +41,8 @@ export default Ember.Component.extend({
     /**
      * Filtered array of parameters passed to this component
      *
-     * Only contains those that are a number that begin with "$" and are to be bound to
+     * Only contains those that are a number that begin with "$" and are to be
+     * bound to
      *
      * @property {Ember.Array} observedParameters
      * @default  null
@@ -51,7 +52,8 @@ export default Ember.Component.extend({
     /**
      * Filtered array of parameters passed to this component
      *
-     * Only contains those that are a number that begin with "$" and also do not end in "Binding"
+     * Only contains those that are a number that begin with "$" and also do not
+     * end in "Binding"
      *
      * @property {Ember.Array} parameters
      * @default  null
@@ -76,12 +78,11 @@ export default Ember.Component.extend({
      * @observes "init" event
      * @returns  {void}
      */
-    extractParameterKeys: function() {
+    extractParameterKeys: Ember.on( 'init', function() {
         var parameters         = [],
-            observedParameters = [],
-            self               = this;
+            observedParameters = [];
 
-        Ember.keys( this ).map( function( key ) {
+        Ember.keys( this ).map( key => {
 
             // Is a number that begins with $ but doesn't also end with "Binding"
             if ( /^\$/.test( key ) && !/^\$.*(Binding)$/.test( key ) ) {
@@ -89,38 +90,37 @@ export default Ember.Component.extend({
             }
 
             // Is a number that begins with $ and was passed as a binding
-            if ( /^\$[0-9]*$/.test( key ) && self.hasOwnProperty( key + 'Binding' ) ) {
+            if ( /^\$[0-9]*$/.test( key ) && this.hasOwnProperty( key + 'Binding' ) ) {
                 observedParameters.push( key );
             }
         });
 
         this.setProperties({
-            'parameters'         : parameters,
-            'observedParameters' : observedParameters
+            observedParameters,
+            parameters
         });
-    }.on( 'init' ),
+    }),
 
     /**
      * Register observers on filtered parameter list
      *
-     * The reason observers have to be manually (de)registered rather than calling .property() on translateString() is
-     * because in order to support token replacement within a tranlsation string a user needs to be able to pass in a
-     * variable amount of (potentially) bound properties.  There is not a way to specify such a dynamic list of
-     * properties in a .property() call.
+     * The reason observers have to be manually (de)registered rather than
+     * calling .property() on translateString() is because in order to support
+     * token replacement within a tranlsation string a user needs to be able to
+     * pass in a variable amount of (potentially) bound properties. There is not
+     * a way to specify such a dynamic list of properties in a .property() call.
      *
      * @function registerObservers
      * @observes "willInsertElement" event
      * @returns  {void}
      */
-    registerObservers: function() {
-        var self = this;
-
-        this.get( 'observedParameters' ).map( function( key ) {
-            self.addObserver( key, self, self.setTranslatedString );
+    registerObservers: Ember.on( 'willInsertElement', function() {
+        this.get( 'observedParameters' ).map( key => {
+            this.addObserver( key, this, this.setTranslatedString );
         });
 
         this.setTranslatedString();
-    }.on( 'willInsertElement' ),
+    }),
 
     /**
      * Remove observers on filtered parameter list
@@ -129,13 +129,11 @@ export default Ember.Component.extend({
      * @observes "willClearRender" event
      * @returns  {void}
      */
-    unregisterObservers: function() {
-        var self = this;
-
-        this.get( 'observedParameters' ).map( function( key ) {
-            self.removeObserver( key, self, self.setTranslatedString );
+    unregisterObservers: Ember.on( 'willClearRender', function() {
+        this.get( 'observedParameters' ).map( key => {
+            this.removeObserver( key, this, this.setTranslatedString );
         });
-    }.on( 'willClearRender' ),
+    }),
 
     // -------------------------------------------------------------------------
     // Methods
@@ -146,7 +144,7 @@ export default Ember.Component.extend({
      * @function setTranslatedString
      * @returns {void}
      */
-    setTranslatedString: function() {
+    setTranslatedString() {
         this.set( 'translatedString', this.translateString() );
     },
 
@@ -155,17 +153,17 @@ export default Ember.Component.extend({
      *
      * Supports
      * - singular/plural string substitution
-     * - replacement of placeholder tokens in translation strings with passed parameters
+     * - replacement of placeholder tokens in translation strings with
+     *   passed parameters
      *
      * @function translateString
      * @returns {Ember.String} Translated string
      */
-    translateString: function() {
-        var parametersHash = {},
-            self           = this;
+    translateString() {
+        var parametersHash = {};
 
-        this.get( 'parameters' ).map( function( key ) {
-            parametersHash[key] = self.get( key );
+        this.get( 'parameters' ).map( key => {
+            parametersHash[key] = this.get( key );
         });
 
         return this.get( 'translateService' ).translateKey({

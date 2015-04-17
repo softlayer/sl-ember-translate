@@ -1,5 +1,5 @@
 
-[![Latest Release](https://img.shields.io/github/release/softlayer/sl-ember-translate.svg)](https://github.com/softlayer/sl-ember-translate/releases) ![Ember CLI version](https://img.shields.io/badge/ember%20cli-0.1.15-orange.svg) [![License](https://img.shields.io/npm/l/sl-ember-translate.svg)](LICENSE.md) [![Downloads](https://img.shields.io/npm/dm/sl-ember-translate.svg)](https://www.npmjs.com/package/sl-ember-translate)
+[![Latest Release](https://img.shields.io/github/release/softlayer/sl-ember-translate.svg)](https://github.com/softlayer/sl-ember-translate/releases) ![Ember CLI version](https://img.shields.io/badge/ember%20cli-0.2.3-orange.svg) [![License](https://img.shields.io/npm/l/sl-ember-translate.svg)](LICENSE.md) [![Downloads](https://img.shields.io/npm/dm/sl-ember-translate.svg)](https://www.npmjs.com/package/sl-ember-translate)
 
 [![Dependencies](https://img.shields.io/david/softlayer/sl-ember-translate.svg)](https://david-dm.org/softlayer/sl-ember-translate) [![Dev Dependencies](https://img.shields.io/david/dev/softlayer/sl-ember-translate.svg)](https://david-dm.org/softlayer/sl-ember-translate#info=devDependencies)
 
@@ -57,7 +57,7 @@ For more information on using ember-cli, visit [http://www.ember-cli.com/](http:
 ## Install this addon as a Node module
 
 ```
-ember install:addon sl-ember-translate
+ember install sl-ember-translate
 ```
 
 
@@ -104,18 +104,6 @@ If the translated string has tokens within it (e.g {0}, {1}, etc) that need to b
 ```
 
 where each "$x" parameter numerically corresponds to the tokens in the translation string.  The order of the parameters does not matter.
-
----
-
-### Binding
-
-If you need to pass parameters whose values are bound to other values rather than be hard-coded, use the following format:
-
-```handlebars
-{{sl-translate key="ACCESSLOG_LIST_PAGINATION" $0Binding="examplePropertyBoundTo1" $1Binding="examplePropertyBoundTo2" $2Binding="examplePropertyBoundTo3"}}
-```
-
-The order of the parameters does not matter.
 
 ---
 

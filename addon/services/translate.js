@@ -43,8 +43,7 @@ export default Ember.Object.extend({
      * @throws   {Ember.assert}
      * @returns  {void}
      */
-    setDictionary: function( translations ) {
-
+    setDictionary( translations ) {
         Ember.assert(
             'services/translation.setDictionary() expects parameter to be an object',
             'object' === typeof translations && !Array.isArray( translations )
@@ -60,7 +59,7 @@ export default Ember.Object.extend({
      * @argument {Ember.String} key Dictionary key to retrieve value for
      * @returns  {Ember.String}
      */
-    getKeyValue: function( key ) {
+    getKeyValue( key ) {
         var defaultKeyValue = 'KEY__NOT__PRESENT',
             retrievedKey    = this.get( 'dictionary' ).getWithDefault( key, defaultKeyValue ),
             returnValue;
@@ -97,18 +96,17 @@ export default Ember.Object.extend({
      * }
      * @return {Ember.String}       Translated string
      */
-    translateKey: function( data ) {
+    translateKey( data ) {
 
         Ember.assert( 'Argument must be an object', 'object' === typeof data && !Array.isArray( data ) );
 
         data.parameters = data.parameters || {};
 
         var pluralErrorTracker = 0,
-            self               = this,
             token              = data.key,
-            getTokenValue      = function( value ) {
+            getTokenValue      = ( value ) => {
                 try {
-                    value = self.getKeyValue( value );
+                    value = this.getKeyValue( value );
                 } catch ( e ) {
                     Ember.warn( 'Unable to translate key "' + value + '".' );
                 }
@@ -141,7 +139,7 @@ export default Ember.Object.extend({
         translatedString = getTokenValue( token );
 
         // Parameter replacement
-        Ember.keys( data.parameters ).map( function( key ) {
+        Ember.keys( data.parameters ).map( key => {
             translatedString = translatedString.replace( '{' + key.replace( '$', '' ) + '}' , data.parameters[key] );
         });
 
