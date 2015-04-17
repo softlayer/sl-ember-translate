@@ -1,5 +1,12 @@
 # sl-ember-translate Changelog
 
+### 1.6.0
+
+* [#107](https://github.com/softlayer/sl-ember-translate/pull/107) [BREAKING ENHANCEMENT] Upgrade to Ember CLI 0.2.3
+* [#107](https://github.com/softlayer/sl-ember-translate/pull/107) [BREAKING ENHANCEMENT] Bound values now function in the normal Ember way
+
+[View complete changeset](https://github.com/softlayer/sl-ember-translate/compare/v1.5.1...v1.6.0)
+
 ### 1.5.1
 
 * [#104](https://github.com/softlayer/sl-ember-translate/pull/104) [BUGFIX] Update dependencies for underlying dependency chaining mis-matches that have occurred within Ember CLI ecosystem
