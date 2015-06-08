@@ -18,6 +18,8 @@ export default Ember.Route.extend({
     },
 
     setupController: function( controller, model ) {
-        controller.get( 'translateService' ).setDictionary( model );
-    }
+        this.get( 'translateService' ).setDictionary( model );
+    },
+
+    translateService: Ember.inject.service( 'translate' )
 });

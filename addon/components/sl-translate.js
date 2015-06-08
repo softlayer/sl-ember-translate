@@ -61,6 +61,13 @@ export default Ember.Component.extend({
     parameters: null,
 
     /**
+     * The translateService used to translate content
+     *
+     * @type {Ember.Service}
+     */
+    translateService: Ember.inject.service( 'translate' ),
+
+    /**
      * Translated string
      *
      * @property {Ember.String} translatedString

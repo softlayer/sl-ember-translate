@@ -1,11 +1,11 @@
 import Ember from 'ember';
-import { test, moduleFor } from 'ember-qunit';
+import { module, test } from 'ember-qunit';
 import TranslateService from 'sl-ember-translate/services/translate';
 import { requires } from '../../helpers/sl/synchronous';
 
 var TS;
 
-module( 'Unit - services:translate', {
+module( 'Unit | Service | translate', {
     beforeEach() {
         TS = TranslateService.create();
     }

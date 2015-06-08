@@ -4,7 +4,7 @@ import Ember from 'ember';
  * @module services
  * @class  translate
  */
-export default Ember.Object.extend({
+export default Ember.Service.extend({
 
     // -------------------------------------------------------------------------
     // Dependencies
