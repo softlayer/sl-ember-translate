@@ -12,7 +12,7 @@ var translateService = Ember.Object.create({
     }
 });
 
-moduleForComponent( 'sl-translate', 'Unit | Component | sl-translate', {
+moduleForComponent( 'sl-translate', 'Unit | Component | sl translate', {
     unit: true
 });
 
