@@ -1,8 +1,10 @@
 import Ember from 'ember';
 import mixinUnderTest from 'sl-ember-translate/mixins/sl-get-translation';
-import { module, test } from 'ember-qunit';
+import { moduleFor, test } from 'ember-qunit';
 
-module( 'Unit | Mixin | sl-get-translation' );
+moduleFor( 'mixin:sl-get-translation', 'Unit | Mixin | sl-get-translation', {
+    unit: true
+});
 
 test( 'Successfully mixed', function( assert ) {
     assert.expect(1);

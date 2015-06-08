@@ -1,7 +1,6 @@
 {
   "name": "sl-ember-translate",
   "dependencies": {
-    "blanket": "~1.1.5",
     "ember": "1.12.0",
     "ember-cli-shims": "ember-cli/ember-cli-shims#0.0.3",
     "ember-cli-test-loader": "ember-cli/ember-cli-test-loader#0.1.3",

@@ -36,7 +36,7 @@ export default Ember.Mixin.create({
      */
     get( key ) {
         var translationsRegex = /translate\.(.*)/,
-            matches           = key.match( translationsRegex );
+            matches = key.match( translationsRegex );
 
         return ( matches ) ? this.translate( matches[1] ) : this._super( key );
     },
@@ -49,6 +49,13 @@ export default Ember.Mixin.create({
      * @returns  {Ember.String} translated key
      */
     translate( key ) {
-        return this.translateService.getKeyValue( key );
-    }
+        return this.get( 'translateService' ).getKeyValue( key );
+    },
+
+    /**
+     * The translateService used to convert content
+     *
+     * @type {Ember.Service}
+     */
+    translateService: Ember.inject.service( 'translate' )
 });
