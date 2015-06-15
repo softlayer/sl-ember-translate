@@ -21,6 +21,13 @@ export default Ember.Mixin.create({
     // -------------------------------------------------------------------------
     // Properties
 
+    /**
+     * The translateService used to convert content
+     *
+     * @type {Ember.Service}
+     */
+    translateService: Ember.inject.service( 'translate' ),
+
     // -------------------------------------------------------------------------
     // Observers
 
@@ -50,12 +57,6 @@ export default Ember.Mixin.create({
      */
     translate( key ) {
         return this.get( 'translateService' ).getKeyValue( key );
-    },
+    }
 
-    /**
-     * The translateService used to convert content
-     *
-     * @type {Ember.Service}
-     */
-    translateService: Ember.inject.service( 'translate' )
 });
