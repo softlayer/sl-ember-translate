@@ -1,14 +1,16 @@
 import Ember from 'ember';
-import { test, moduleFor } from 'ember-qunit';
+import { moduleFor, test } from 'ember-qunit';
 import TranslateService from 'sl-ember-translate/services/translate';
 import { requires } from '../../helpers/sl/synchronous';
 
 var TS;
 
-module( 'Unit - services:translate', {
+moduleFor( 'service:translate', 'Unit | Service | translate', {
     beforeEach() {
         TS = TranslateService.create();
-    }
+    },
+
+    unit: true
 });
 
 test( 'container property defaults to null', function( assert ) {

@@ -12,7 +12,9 @@ var translateService = Ember.Object.create({
     }
 });
 
-moduleForComponent( 'sl-translate', 'Unit - component:sl-translate' );
+moduleForComponent( 'sl-translate', 'Unit | Component | sl translate', {
+    unit: true
+});
 
 /**
  * Ensures that the template is wrapping the content in a span tag and not in
