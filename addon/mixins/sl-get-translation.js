@@ -1,8 +1,8 @@
 import Ember from 'ember';
 
 /**
- * @module mixins
- * @class  sl-get-translation
+ * @module
+ * @augments ember/Mixin
  */
 export default Ember.Mixin.create({
 
@@ -22,7 +22,7 @@ export default Ember.Mixin.create({
     // Properties
 
     /**
-     * The translateService used to convert content
+     * Translation Service, used to convert content
      *
      * @type {Ember.Service}
      */
@@ -37,26 +37,26 @@ export default Ember.Mixin.create({
     /**
      * Based on value of key, retrieve translation or usual get() value
      *
-     * @function get
-     * @argument {Ember.String} key property to retrieve
-     * @returns  {Ember.String}
+     * @function
+     * @param {String} key property to retrieve
+     * @returns {String}
      */
     get( key ) {
-        var translationsRegex = /translate\.(.*)/,
-            matches = key.match( translationsRegex );
+        let matches = key.match( /translate\.(.*)/ );
 
-        return ( matches ) ? this.translate( matches[1] ) : this._super( key );
+        return matches ?
+            this.translate( matches[1] ) :
+            this._super( key );
     },
 
     /**
      * Retrieve translated key without support for token replacement or pluralization
      *
-     * @function translate
-     * @argument {Ember.String} key key to translate
-     * @returns  {Ember.String} translated key
+     * @function
+     * @param {String} key key to translate
+     * @returns {String}
      */
     translate( key ) {
         return this.get( 'translateService' ).getKeyValue( key );
     }
-
 });
