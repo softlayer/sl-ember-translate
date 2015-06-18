@@ -1,8 +1,8 @@
 import Ember from 'ember';
 
 /**
- * @module services
- * @class  translate
+ * @module
+ * @augments ember/Service
  */
 export default Ember.Service.extend({
 
@@ -24,8 +24,7 @@ export default Ember.Service.extend({
     /**
      * Translations
      *
-     * @property {Ember.Object} dictionary
-     * @default  null
+     * @type {?Object|ember/Object}
      */
     dictionary: null,
 
@@ -38,15 +37,16 @@ export default Ember.Service.extend({
     /**
      * Set translation dictionary data
      *
-     * @function setDictionary
-     * @argument {Ember.Object} translations  Translation model
-     * @throws   {Ember.assert}
-     * @returns  {void}
+     * @function
+     * @param {Object|ember/Object} translations
+     * @throws {ember.assert}
+     * @returns {undefined}
      */
     setDictionary( translations ) {
         Ember.assert(
             'services/translation.setDictionary() expects parameter to be an object',
-            'object' === typeof translations && !Array.isArray( translations )
+            'object' === typeof translations &&
+            !Array.isArray( translations )
         );
 
         this.set( 'dictionary', translations );
@@ -55,14 +55,14 @@ export default Ember.Service.extend({
     /**
      * Retrieve value for specified dictionary key
      *
-     * @function getKeyValue
-     * @argument {Ember.String} key Dictionary key to retrieve value for
-     * @returns  {Ember.String}
+     * @function
+     * @param {String} key - Dictionary key to retrieve value for
+     * @returns {String}
      */
     getKeyValue( key ) {
-        var defaultKeyValue = 'KEY__NOT__PRESENT',
-            retrievedKey    = this.get( 'dictionary' ).getWithDefault( key, defaultKeyValue ),
-            returnValue;
+        let defaultKeyValue = 'KEY__NOT__PRESENT';
+        let retrievedKey = this.get( 'dictionary' ).getWithDefault( key, defaultKeyValue );
+        let returnValue;
 
         if ( defaultKeyValue !== retrievedKey ) {
             returnValue = retrievedKey;
@@ -76,44 +76,35 @@ export default Ember.Service.extend({
     },
 
     /**
+     * @typedef {Object} translateKeyParameter
+     * @property {String} key
+     * @property {String} [pluralKey]
+     * @property {String} [pluralCount]
+     * @property {Object} [parameters]
+     */
+
+    /**
      * Translate provided key
      *
      * Supports
      * - singular/plural string substitution
      * - replacement of placeholder tokens in translation strings with passed parameters
      *
-     * @function translateKey
-     * @argument {Ember.Object} data
-     * @example
-     * // Example object that can be passed as argument
-     * {
-     *     key
-     *     pluralKey
-     *     pluralCount
-     *     parameters: {
-     *         $0: value
-     *     }
-     * }
-     * @return {Ember.String}       Translated string
+     * @function
+     * @param {translateKeyParameter} data
+     * @returns {String}
      */
     translateKey( data ) {
 
-        Ember.assert( 'Argument must be an object', 'object' === typeof data && !Array.isArray( data ) );
+        Ember.assert(
+            'Argument must be an object',
+            'object' === typeof data &&
+            !Array.isArray( data )
+        );
 
         data.parameters = data.parameters || {};
 
-        var pluralErrorTracker = 0,
-            token              = data.key,
-            getTokenValue      = ( value ) => {
-                try {
-                    value = this.getKeyValue( value );
-                } catch ( e ) {
-                    Ember.warn( 'Unable to translate key "' + value + '".' );
-                }
-
-                return value;
-            },
-            translatedString;
+        let pluralErrorTracker = 0;
 
         // BEGIN: Pluralization error checking
         if ( !Ember.isEmpty( data.pluralKey ) ) {
@@ -124,9 +115,22 @@ export default Ember.Service.extend({
             pluralErrorTracker++;
         }
 
+        let token = data.key;
+
+        let getTokenValue = ( value ) => {
+            try {
+                value = this.getKeyValue( value );
+            } catch ( e ) {
+                Ember.warn( 'Unable to translate key "' + value + '".' );
+            }
+
+            return value;
+        };
+
         if ( 1 === pluralErrorTracker ) {
             Ember.warn( 'If either "pluralKey" or "pluralCount" are provided then both must be.' +
                 'Singular key value was returned.' );
+
             return getTokenValue( token );
         }
         // END: Pluralization error checking
@@ -136,6 +140,7 @@ export default Ember.Service.extend({
             token = data.pluralKey;
         }
 
+        let translatedString;
         translatedString = getTokenValue( token );
 
         // Parameter replacement
