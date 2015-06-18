@@ -1,5 +1,6 @@
 import Ember from 'ember';
 import { moduleFor, test } from 'ember-qunit';
+/** In order for this import to work correctly the /tests/dummy/app/services/translate.js file has to exist */
 import TranslateService from 'sl-ember-translate/services/translate';
 import { requires } from '../../helpers/sl/synchronous';
 
