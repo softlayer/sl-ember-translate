@@ -78,33 +78,36 @@ test( 'Can be used alongside other properties or attribute bindings', function( 
 
 test( 'On initialization, extractParameterKeys() filters passed parameters', function( assert ) {
     var component = this.subject({
-            key         : 'the_key',
-            pluralKey   : 'plural_key',
-            pluralCount : 'plural_count',
-            $0          : 'a',
-            $1Binding   : 'b',
-            $2          : 'c'
+            key: 'the_key',
+            pluralKey: 'plural_key',
+            pluralCount: 'plural_count',
+            $1: 'a',
+            2: 'b',
+            other: 'c'
         });
 
     assert.deepEqual(
-        component.get('parameters' ).sort(),
-        [ '$0', '$1', '$2' ]
+        component.get( 'parameters' ).sort(),
+        [ '$1' ]
     );
 });
 
 test( 'On initialization, extractParameterKeys() filters passed parameters to be bound', function( assert ) {
+    var boundProperty = null;
     var component = this.subject({
-            key         : 'the_key',
-            pluralKey   : 'plural_key',
-            pluralCount : 'plural_count',
-            $0          : 'a',
-            $1Binding   : 'b',
-            $2          : 'c'
-        });
+        key: 'the_key',
+        pluralKey: 'plural_key',
+        pluralCount: 'plural_count',
+        $1: 'a',
+        2: 'b',
+        $3: boundProperty,
+        $3Binding: 'hack; should test this more correctly',
+        other: 'c'
+    });
 
     assert.deepEqual(
         component.get( 'observedParameters' ),
-        [ '$1' ]
+        [ '$3' ]
     );
 });
 

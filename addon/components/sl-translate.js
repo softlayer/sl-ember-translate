@@ -77,8 +77,8 @@ export default Ember.Component.extend({
 
             Ember.keys( this ).map( key => {
 
-                // Is a number that begins with $ but doesn't also end with "Binding"
-                if ( /^\$/.test( key ) && !/^\$.*(Binding)$/.test( key ) ) {
+                // Is a number that begins with $
+                if ( /^\$/.test( key ) ) {
                     parameters.push( key );
                 }
 
@@ -86,14 +86,14 @@ export default Ember.Component.extend({
                 if ( /^\$[0-9]*$/.test( key ) && this.hasOwnProperty( key + 'Binding' ) ) {
                     observedParameters.push( key );
                 }
-            }
-        );
+            });
 
-        this.setProperties({
-            observedParameters,
-            parameters
-        });
-    }),
+            this.setProperties({
+                observedParameters,
+                parameters
+            });
+        }
+    ),
 
     /**
      * Register observers on filtered parameter list
