@@ -257,12 +257,12 @@ Employs [Semantic Versioning 2.0.0](http://semver.org/)
 ---
 
 # Contribution
-[See CONTRIBUTING.md](CONTRIBUTING.md)
+[See CONTRIBUTING.md](https://github.com/softlayer/sl-ember-translate/blob/develop/CONTRIBUTING.md)
 
 ---
 
 # Copyright and License
-sl-ember-translate and its source files are Copyright © 2014-2015 [SoftLayer Technologies, Inc.](http://www.softlayer.com/) The software is [MIT Licensed](LICENSE.md)
+sl-ember-translate and its source files are Copyright © 2014-2015 [SoftLayer Technologies, Inc.](http://www.softlayer.com/) The software is [MIT Licensed](https://github.com/softlayer/sl-ember-translate/blob/develop/LICENSE.md)
 
 ---
 
