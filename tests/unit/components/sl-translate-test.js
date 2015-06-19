@@ -1,7 +1,7 @@
 import Ember from 'ember';
 import { moduleForComponent, test } from 'ember-qunit';
 
-var translateService = Ember.Object.create({
+let translateService = Ember.Object.create({
     translateKey( data ) {
         this.set( 'key', data.key );
         this.set( 'pluralKey', data.pluralKey );
@@ -57,9 +57,9 @@ test( 'DOM and content of rendered translation', function( assert ) {
 test( 'Can be used alongside other properties or attribute bindings', function( assert ) {
     this.subject({
         translateService,
-        key        : 'key_alongside',
-        tagName    : 'h1',
-        classNames : [ 'testClass' ]
+        key: 'key_alongside',
+        tagName: 'h1',
+        classNames: [ 'testClass' ]
     });
 
     assert.equal(
@@ -77,7 +77,7 @@ test( 'Can be used alongside other properties or attribute bindings', function( 
 });
 
 test( 'On initialization, extractParameterKeys() filters passed parameters', function( assert ) {
-    var component = this.subject({
+    let component = this.subject({
             key: 'the_key',
             pluralKey: 'plural_key',
             pluralCount: 'plural_count',
@@ -93,8 +93,8 @@ test( 'On initialization, extractParameterKeys() filters passed parameters', fun
 });
 
 test( 'On initialization, extractParameterKeys() filters passed parameters to be bound', function( assert ) {
-    var boundProperty = null;
-    var component = this.subject({
+    let boundProperty = null;
+    let component = this.subject({
         key: 'the_key',
         pluralKey: 'plural_key',
         pluralCount: 'plural_count',
@@ -112,7 +112,7 @@ test( 'On initialization, extractParameterKeys() filters passed parameters to be
 });
 
 test( 'setTranslatedString() sets translatedString property with value from translateString()', function( assert ) {
-    var component = this.subject();
+    let component = this.subject();
 
     component.translateString = function() {
         return 'test value';
@@ -129,11 +129,11 @@ test( 'setTranslatedString() sets translatedString property with value from tran
 test( 'translateString() calls translateKey() on the translation service', function( assert ) {
     this.subject({
         translateService,
-        key         : 'the_key',
-        pluralKey   : 'plural_key',
-        pluralCount : 'plural_count',
-        $0          : 'a',
-        $1          : 'b'
+        key: 'the_key',
+        pluralKey: 'plural_key',
+        pluralCount: 'plural_count',
+        $0: 'a',
+        $1: 'b'
     });
 
     this.render();
@@ -157,8 +157,8 @@ test( 'translateString() calls translateKey() on the translation service', funct
 });
 
 test( 'willInsertElement event causes setTranslatedString() to be called', function( assert ) {
-    var component                    = this.subject(),
-        setTranslatedStringWasCalled = false;
+    let component = this.subject();
+    let setTranslatedStringWasCalled = false;
 
     component.setTranslatedString = function() {
         setTranslatedStringWasCalled = true;
@@ -174,13 +174,13 @@ test( 'willInsertElement event causes setTranslatedString() to be called', funct
 });
 
 test( 'willInsertElement event causes observers to be added to each entry in observedParameters property', function( assert ) {
-    var component = this.subject({
-            translateService,
-            key       : 'the_key',
-            $0Binding : 'a',
-            $1        : 'b'
-        }),
-        setTranslatedStringWasCalled = false;
+    let component = this.subject({
+        translateService,
+        key: 'the_key',
+        $0Binding: 'a',
+        $1: 'b'
+    });
+    let setTranslatedStringWasCalled = false;
 
     component.setTranslatedString = function() {
         setTranslatedStringWasCalled = true;
@@ -206,13 +206,13 @@ test( 'willInsertElement event causes observers to be added to each entry in obs
 });
 
 test( 'willClearRender event causes observers to be removed', function( assert ) {
-    var component = this.subject({
-            translateService,
-            key       : 'the_key',
-            $0Binding : 'a',
-            $1        : 'b'
-        }),
-        setTranslatedStringWasCalled = false;
+    let component = this.subject({
+        translateService,
+        key: 'the_key',
+        $0Binding: 'a',
+        $1: 'b'
+    });
+    let setTranslatedStringWasCalled = false;
 
     component.setTranslatedString = () => {
         setTranslatedStringWasCalled = true;
