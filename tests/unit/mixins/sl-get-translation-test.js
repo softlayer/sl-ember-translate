@@ -23,7 +23,10 @@ test( 'Call to get() with a key not beginning with "translate." is not intercept
         }),
         subject    = testObject.create();
 
-    assert.equal( subject.get( 'testKey' ), 'testValue' );
+    assert.equal(
+        subject.get( 'testKey' ),
+        'testValue'
+    );
 });
 
 test( 'Call to get() with a key beginning with "translate." calls this.translate()', function( assert ) {
@@ -36,7 +39,10 @@ test( 'Call to get() with a key beginning with "translate." calls this.translate
         }),
         subject    = testObject.create();
 
-    assert.equal( subject.get( 'translate.testingKey' ), 'testingKey' );
+    assert.equal(
+        subject.get( 'translate.testingKey' ),
+        'testingKey'
+    );
 });
 
 test( 'translate() returns call to this.translateService.getKeyValue()', function( assert ) {
@@ -51,5 +57,8 @@ test( 'translate() returns call to this.translateService.getKeyValue()', functio
         }),
         subject    = testObject.create();
 
-    assert.equal( subject.translate( 'called' ), 'called' );
+    assert.equal(
+        subject.translate( 'called' ),
+        'called'
+    );
 });
