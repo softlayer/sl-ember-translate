@@ -336,7 +336,7 @@ define('dummy/templates/application', ['exports'], function (exports) {
         dom.appendChild(el5, el6);
         var el6 = dom.createElement("li");
         var el7 = dom.createElement("a");
-        dom.setAttribute(el7,"href","docs");
+        dom.setAttribute(el7,"href","http://softlayer.github.io/sl-ember-translate/docs/");
         dom.setAttribute(el7,"target","new");
         var el8 = dom.createElement("i");
         dom.setAttribute(el8,"class","fa fa-book");
@@ -799,7 +799,7 @@ define('dummy/templates/index', ['exports'], function (exports) {
         dom.appendChild(el2, el3);
         var el3 = dom.createElement("h3");
         var el4 = dom.createElement("a");
-        dom.setAttribute(el4,"href","docs");
+        dom.setAttribute(el4,"href","http://softlayer.github.io/sl-ember-translate/docs/");
         dom.setAttribute(el4,"target","new");
         var el5 = dom.createElement("i");
         dom.setAttribute(el5,"class","fa fa-book fa-5x");
@@ -810,7 +810,7 @@ define('dummy/templates/index', ['exports'], function (exports) {
         dom.appendChild(el2, el3);
         var el3 = dom.createElement("p");
         var el4 = dom.createElement("a");
-        dom.setAttribute(el4,"href","docs");
+        dom.setAttribute(el4,"href","http://softlayer.github.io/sl-ember-translate/docs/");
         dom.setAttribute(el4,"target","new");
         var el5 = dom.createElement("b");
         var el6 = dom.createTextNode("Documentation");
@@ -1787,7 +1787,7 @@ catch(err) {
 if (runningTests) {
   require("dummy/tests/test-helper");
 } else {
-  require("dummy/app")["default"].create({"name":"sl-ember-translate","version":"1.7.0.59a4b4de"});
+  require("dummy/app")["default"].create({"name":"sl-ember-translate","version":"1.7.0.a5432d09"});
 }
 
 /* jshint ignore:end */
