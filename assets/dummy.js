@@ -147,6 +147,12 @@ define('dummy/services/translate', ['exports', 'sl-ember-translate/services/tran
 
 	'use strict';
 
+	/**
+	 * WARNING!!
+	 *
+	 * This file is needed for /tests/unit/services/translate-test.js
+	 * to correctly reference 'sl-ember-translate/services/translate'
+	 */
 	exports['default'] = TranslateService['default'];
 
 });
@@ -198,6 +204,45 @@ define('dummy/templates/application', ['exports'], function (exports) {
           dom.setAttribute(el1,"class","fa fa-home");
           dom.appendChild(el0, el1);
           var el1 = dom.createTextNode(" Home");
+          dom.appendChild(el0, el1);
+          return el0;
+        },
+        render: function render(context, env, contextualElement) {
+          var dom = env.dom;
+          dom.detectNamespace(contextualElement);
+          var fragment;
+          if (env.useFragmentCache && dom.canClone) {
+            if (this.cachedFragment === null) {
+              fragment = this.build(dom);
+              if (this.hasRendered) {
+                this.cachedFragment = fragment;
+              } else {
+                this.hasRendered = true;
+              }
+            }
+            if (this.cachedFragment) {
+              fragment = dom.cloneNode(this.cachedFragment, true);
+            }
+          } else {
+            fragment = this.build(dom);
+          }
+          return fragment;
+        }
+      };
+    }());
+    var child1 = (function() {
+      return {
+        isHTMLBars: true,
+        revision: "Ember@1.12.0",
+        blockParams: 0,
+        cachedFragment: null,
+        hasRendered: false,
+        build: function build(dom) {
+          var el0 = dom.createDocumentFragment();
+          var el1 = dom.createElement("i");
+          dom.setAttribute(el1,"class","fa fa-cubes");
+          dom.appendChild(el0, el1);
+          var el1 = dom.createTextNode(" Demo");
           dom.appendChild(el0, el1);
           return el0;
         },
@@ -284,12 +329,19 @@ define('dummy/templates/application', ['exports'], function (exports) {
         var el6 = dom.createTextNode("\n                ");
         dom.appendChild(el5, el6);
         var el6 = dom.createElement("li");
+        var el7 = dom.createComment("");
+        dom.appendChild(el6, el7);
+        dom.appendChild(el5, el6);
+        var el6 = dom.createTextNode("\n                ");
+        dom.appendChild(el5, el6);
+        var el6 = dom.createElement("li");
         var el7 = dom.createElement("a");
-        dom.setAttribute(el7,"href","https://github.com/softlayer/sl-ember-translate/blob/master/README.md");
+        dom.setAttribute(el7,"href","docs");
+        dom.setAttribute(el7,"target","new");
         var el8 = dom.createElement("i");
-        dom.setAttribute(el8,"class","fa fa-wrench");
+        dom.setAttribute(el8,"class","fa fa-book");
         dom.appendChild(el7, el8);
-        var el8 = dom.createTextNode(" Get Started");
+        var el8 = dom.createTextNode(" Documentation");
         dom.appendChild(el7, el8);
         dom.appendChild(el6, el7);
         dom.appendChild(el5, el6);
@@ -408,10 +460,13 @@ define('dummy/templates/application', ['exports'], function (exports) {
           fragment = this.build(dom);
         }
         var element0 = dom.childAt(fragment, [2]);
-        var morph0 = dom.createMorphAt(dom.childAt(element0, [1, 1, 1, 3, 1]),0,0);
-        var morph1 = dom.createMorphAt(element0,3,3);
+        var element1 = dom.childAt(element0, [1, 1, 1, 3]);
+        var morph0 = dom.createMorphAt(dom.childAt(element1, [1]),0,0);
+        var morph1 = dom.createMorphAt(dom.childAt(element1, [3]),0,0);
+        var morph2 = dom.createMorphAt(element0,3,3);
         block(env, morph0, context, "link-to", ["index"], {}, child0, null);
-        content(env, morph1, context, "outlet");
+        block(env, morph1, context, "link-to", ["demo"], {}, child1, null);
+        content(env, morph2, context, "outlet");
         return fragment;
       }
     };
@@ -744,7 +799,8 @@ define('dummy/templates/index', ['exports'], function (exports) {
         dom.appendChild(el2, el3);
         var el3 = dom.createElement("h3");
         var el4 = dom.createElement("a");
-        dom.setAttribute(el4,"href","https://github.com/softlayer/sl-ember-translate/blob/master/README.md");
+        dom.setAttribute(el4,"href","docs");
+        dom.setAttribute(el4,"target","new");
         var el5 = dom.createElement("i");
         dom.setAttribute(el5,"class","fa fa-book fa-5x");
         dom.appendChild(el4, el5);
@@ -754,7 +810,8 @@ define('dummy/templates/index', ['exports'], function (exports) {
         dom.appendChild(el2, el3);
         var el3 = dom.createElement("p");
         var el4 = dom.createElement("a");
-        dom.setAttribute(el4,"href","https://github.com/softlayer/sl-ember-translate/blob/master/README.md");
+        dom.setAttribute(el4,"href","docs");
+        dom.setAttribute(el4,"target","new");
         var el5 = dom.createElement("b");
         var el6 = dom.createTextNode("Documentation");
         dom.appendChild(el5, el6);
@@ -1179,6 +1236,16 @@ define('dummy/tests/routes/demo.jshint', function () {
   });
 
 });
+define('dummy/tests/services/translate.jshint', function () {
+
+  'use strict';
+
+  module('JSHint - services');
+  test('services/translate.js should pass jshint', function() { 
+    ok(true, 'services/translate.js should pass jshint.'); 
+  });
+
+});
 define('dummy/tests/test-helper', ['dummy/tests/helpers/resolver', 'ember-qunit'], function (resolver, ember_qunit) {
 
 	'use strict';
@@ -1232,7 +1299,10 @@ define('dummy/tests/unit/components/sl-translate-test', ['ember', 'ember-qunit']
      * That it renders and functions as expected
      */
     ember_qunit.test('DOM and content of rendered translation', function (assert) {
-        this.subject({ key: 'the_key', translateService: translateService });
+        this.subject({
+            key: 'the_key',
+            translateService: translateService
+        });
 
         assert.equal(Ember['default'].$.trim(this.$().text()), 'TRANSLATE: the_key');
     });
@@ -1259,25 +1329,28 @@ define('dummy/tests/unit/components/sl-translate-test', ['ember', 'ember-qunit']
             key: 'the_key',
             pluralKey: 'plural_key',
             pluralCount: 'plural_count',
-            $0: 'a',
-            $1Binding: 'b',
-            $2: 'c'
+            $1: 'a',
+            2: 'b',
+            other: 'c'
         });
 
-        assert.deepEqual(component.get('parameters').sort(), ['$0', '$1', '$2']);
+        assert.deepEqual(component.get('parameters').sort(), ['$1']);
     });
 
     ember_qunit.test('On initialization, extractParameterKeys() filters passed parameters to be bound', function (assert) {
+        var boundProperty = null;
         var component = this.subject({
             key: 'the_key',
             pluralKey: 'plural_key',
             pluralCount: 'plural_count',
-            $0: 'a',
-            $1Binding: 'b',
-            $2: 'c'
+            $1: 'a',
+            2: 'b',
+            $3: boundProperty,
+            $3Binding: 'hack; should test this more correctly',
+            other: 'c'
         });
 
-        assert.deepEqual(component.get('observedParameters'), ['$1']);
+        assert.deepEqual(component.get('observedParameters'), ['$3']);
     });
 
     ember_qunit.test('setTranslatedString() sets translatedString property with value from translateString()', function (assert) {
@@ -1311,8 +1384,8 @@ define('dummy/tests/unit/components/sl-translate-test', ['ember', 'ember-qunit']
     });
 
     ember_qunit.test('willInsertElement event causes setTranslatedString() to be called', function (assert) {
-        var component = this.subject(),
-            setTranslatedStringWasCalled = false;
+        var component = this.subject();
+        var setTranslatedStringWasCalled = false;
 
         component.setTranslatedString = function () {
             setTranslatedStringWasCalled = true;
@@ -1330,8 +1403,8 @@ define('dummy/tests/unit/components/sl-translate-test', ['ember', 'ember-qunit']
             key: 'the_key',
             $0Binding: 'a',
             $1: 'b'
-        }),
-            setTranslatedStringWasCalled = false;
+        });
+        var setTranslatedStringWasCalled = false;
 
         component.setTranslatedString = function () {
             setTranslatedStringWasCalled = true;
@@ -1356,8 +1429,8 @@ define('dummy/tests/unit/components/sl-translate-test', ['ember', 'ember-qunit']
             key: 'the_key',
             $0Binding: 'a',
             $1: 'b'
-        }),
-            setTranslatedStringWasCalled = false;
+        });
+        var setTranslatedStringWasCalled = false;
 
         component.setTranslatedString = function () {
             setTranslatedStringWasCalled = true;
@@ -1400,8 +1473,8 @@ define('dummy/tests/unit/mixins/sl-get-translation-test', ['ember', 'sl-ember-tr
     ember_qunit.test('Successfully mixed', function (assert) {
         assert.expect(1);
 
-        var testObject = Ember['default'].Object.extend(mixinUnderTest['default']),
-            subject = testObject.create();
+        var testObject = Ember['default'].Object.extend(mixinUnderTest['default']);
+        var subject = testObject.create();
 
         assert.ok(subject);
     });
@@ -1411,8 +1484,8 @@ define('dummy/tests/unit/mixins/sl-get-translation-test', ['ember', 'sl-ember-tr
 
         var testObject = Ember['default'].Object.extend(mixinUnderTest['default'], {
             testKey: 'testValue'
-        }),
-            subject = testObject.create();
+        });
+        var subject = testObject.create();
 
         assert.equal(subject.get('testKey'), 'testValue');
     });
@@ -1424,8 +1497,8 @@ define('dummy/tests/unit/mixins/sl-get-translation-test', ['ember', 'sl-ember-tr
             translate: function translate(value) {
                 return value;
             }
-        }),
-            subject = testObject.create();
+        });
+        var subject = testObject.create();
 
         assert.equal(subject.get('translate.testingKey'), 'testingKey');
     });
@@ -1439,8 +1512,8 @@ define('dummy/tests/unit/mixins/sl-get-translation-test', ['ember', 'sl-ember-tr
                     return value;
                 }
             }
-        }),
-            subject = testObject.create();
+        });
+        var subject = testObject.create();
 
         assert.equal(subject.translate('called'), 'called');
     });
@@ -1460,7 +1533,7 @@ define('dummy/tests/unit/services/translate-test', ['ember', 'ember-qunit', 'sl-
 
     'use strict';
 
-    var TS;
+    var TS = undefined;
 
     ember_qunit.moduleFor('service:translate', 'Unit | Service | translate', {
         beforeEach: function beforeEach() {
@@ -1563,10 +1636,24 @@ define('dummy/tests/unit/services/translate-test', ['ember', 'ember-qunit', 'sl-
         }
 
         assert.ok(!assertionThrown, 'Parameter was an Object');
+
+        // Ember Object Instance Parameter
+
+        assertionThrown = false;
+
+        try {
+            TS.setDictionary(Ember['default'].Object.create({}));
+        } catch (error) {
+            assertionThrown = true;
+        }
+
+        assert.ok(!assertionThrown, 'Parameter was an Ember.Object instance');
     });
 
     ember_qunit.test('setDictionary() sets data on the dictionary property', function (assert) {
-        var testDictionary = Ember['default'].Object.create({ 'the_key': 'my value' });
+        var testDictionary = Ember['default'].Object.create({
+            'the_key': 'my value'
+        });
 
         TS.setDictionary(testDictionary);
 
@@ -1574,13 +1661,17 @@ define('dummy/tests/unit/services/translate-test', ['ember', 'ember-qunit', 'sl-
     });
 
     ember_qunit.test('getKeyValue() returns requested key if not found in dictionary', function (assert) {
-        TS.setDictionary(Ember['default'].Object.create({ 'the_key': 'my value' }));
+        TS.setDictionary(Ember['default'].Object.create({
+            'the_key': 'my value'
+        }));
 
         assert.notEqual(TS.getKeyValue('wrong_key'), 'the_key');
     });
 
     ember_qunit.test('getKeyValue() returns requested key\'s translated string', function (assert) {
-        TS.setDictionary(Ember['default'].Object.create({ 'the_key': 'my value' }));
+        TS.setDictionary(Ember['default'].Object.create({
+            'the_key': 'my value'
+        }));
 
         assert.equal(TS.getKeyValue('the_key'), 'my value');
     });
@@ -1592,14 +1683,23 @@ define('dummy/tests/unit/services/translate-test', ['ember', 'ember-qunit', 'sl-
     });
 
     ember_qunit.test('translateKey() returns translated string for specified key', function (assert) {
-        TS.setDictionary(Ember['default'].Object.create({ 'the_key': 'my value' }));
+        TS.setDictionary(Ember['default'].Object.create({
+            'the_key': 'my value'
+        }));
 
         assert.equal(TS.getKeyValue('the_key'), 'my value');
     });
 
     ember_qunit.test('If either "pluralKey" or "pluralCount" are provided to translateKey() then both must be', function (assert) {
-        assert.equal(TS.translateKey({ key: 'singular_key', pluralKey: 'plural_key' }), 'singular_key');
-        assert.equal(TS.translateKey({ key: 'singular_key', pluralCount: 3 }), 'singular_key');
+        assert.equal(TS.translateKey({
+            key: 'singular_key',
+            pluralKey: 'plural_key'
+        }), 'singular_key');
+
+        assert.equal(TS.translateKey({
+            key: 'singular_key',
+            pluralCount: 3
+        }), 'singular_key');
     });
 
     ember_qunit.test('Pluralization only works if "pluralCount" is a number', function (assert) {
@@ -1608,7 +1708,11 @@ define('dummy/tests/unit/services/translate-test', ['ember', 'ember-qunit', 'sl-
             'the_plural_key': 'Plural translated value'
         }));
 
-        assert.notEqual(TS.translateKey({ key: 'the_singular_key', pluralKey: 'the_plural_key', pluralCount: 'two' }), 'Plural translated value');
+        assert.notEqual(TS.translateKey({
+            key: 'the_singular_key',
+            pluralKey: 'the_plural_key',
+            pluralCount: 'two'
+        }), 'Plural translated value');
     });
 
     ember_qunit.test('Pluralization occurs when provided the necessary information', function (assert) {
@@ -1617,8 +1721,17 @@ define('dummy/tests/unit/services/translate-test', ['ember', 'ember-qunit', 'sl-
             'the_plural_key': 'Plural translated value'
         }));
 
-        assert.equal(TS.translateKey({ key: 'the_singular_key', pluralKey: 'the_plural_key', pluralCount: 0 }), 'Singular translated value');
-        assert.equal(TS.translateKey({ key: 'the_singular_key', pluralKey: 'the_plural_key', pluralCount: 3 }), 'Plural translated value');
+        assert.equal(TS.translateKey({
+            key: 'the_singular_key',
+            pluralKey: 'the_plural_key',
+            pluralCount: 0
+        }), 'Singular translated value');
+
+        assert.equal(TS.translateKey({
+            key: 'the_singular_key',
+            pluralKey: 'the_plural_key',
+            pluralCount: 3
+        }), 'Plural translated value');
     });
 
     ember_qunit.test('Token replacement in translation string', function (assert) {
@@ -1674,7 +1787,7 @@ catch(err) {
 if (runningTests) {
   require("dummy/tests/test-helper");
 } else {
-  require("dummy/app")["default"].create({"name":"sl-ember-translate","version":"1.6.0.25e4a67c"});
+  require("dummy/app")["default"].create({"name":"sl-ember-translate","version":"1.7.0.59a4b4de"});
 }
 
 /* jshint ignore:end */

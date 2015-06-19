@@ -59184,21 +59184,11 @@ define('sl-ember-translate/components/sl-translate', ['exports', 'ember', 'sl-em
         // -------------------------------------------------------------------------
         // Attributes
 
-        /**
-         * The tag type of the root element
-         *
-         * @property {Ember.String} tagName
-         * @default  "span"
-         */
-        tagName: 'span',
-
-        /**
-         * The template used to render the view
-         *
-         * @property {function} layout
-         * @default  template:components/sl-translate
-         */
+        /** @type {Object} */
         layout: template['default'],
+
+        /** @type {String} */
+        tagName: 'span',
 
         // -------------------------------------------------------------------------
         // Actions
@@ -59212,27 +59202,23 @@ define('sl-ember-translate/components/sl-translate', ['exports', 'ember', 'sl-em
         /**
          * Filtered array of parameters passed to this component
          *
-         * Only contains those that are a number that begin with "$" and are to be
-         * bound to
+         * Only contains those that are a number that begin with "$" and are to be bound to
          *
-         * @property {Ember.Array} observedParameters
-         * @default  null
+         * @type {?Array}
          */
         observedParameters: null,
 
         /**
          * Filtered array of parameters passed to this component
          *
-         * Only contains those that are a number that begin with "$" and also do not
-         * end in "Binding"
+         * Only contains those that are a number that begin with "$" and also do not end in "Binding"
          *
-         * @property {Ember.Array} parameters
-         * @default  null
+         * @type {?Array}
          */
         parameters: null,
 
         /**
-         * The translateService used to translate content
+         * Translation Service, used to translate content
          *
          * @type {ember/Service}
          */
@@ -59241,8 +59227,7 @@ define('sl-ember-translate/components/sl-translate', ['exports', 'ember', 'sl-em
         /**
          * Translated string
          *
-         * @property {Ember.String} translatedString
-         * @default  null
+         * @type {?String}
          */
         translatedString: null,
 
@@ -59252,20 +59237,19 @@ define('sl-ember-translate/components/sl-translate', ['exports', 'ember', 'sl-em
         /**
          * Filter passed parameters on initialization
          *
-         * @function extractParameterKeys
-         * @observes "init" event
-         * @returns  {void}
+         * @function
+         * @returns {undefined}
          */
         extractParameterKeys: Ember['default'].on('init', function () {
             var _this = this;
 
-            var parameters = [],
-                observedParameters = [];
+            var parameters = [];
+            var observedParameters = [];
 
             Ember['default'].keys(this).map(function (key) {
 
-                // Is a number that begins with $ but doesn't also end with "Binding"
-                if (/^\$/.test(key) && !/^\$.*(Binding)$/.test(key)) {
+                // Is a number that begins with $
+                if (/^\$/.test(key)) {
                     parameters.push(key);
                 }
 
@@ -59290,9 +59274,8 @@ define('sl-ember-translate/components/sl-translate', ['exports', 'ember', 'sl-em
          * pass in a variable amount of (potentially) bound properties. There is not
          * a way to specify such a dynamic list of properties in a .property() call.
          *
-         * @function registerObservers
-         * @observes "willInsertElement" event
-         * @returns  {void}
+         * @function
+         * @returns {undefined}
          */
         registerObservers: Ember['default'].on('willInsertElement', function () {
             var _this2 = this;
@@ -59307,9 +59290,8 @@ define('sl-ember-translate/components/sl-translate', ['exports', 'ember', 'sl-em
         /**
          * Remove observers on filtered parameter list
          *
-         * @function unregisterObservers
-         * @observes "willClearRender" event
-         * @returns  {void}
+         * @function
+         * @returns {undefined}
          */
         unregisterObservers: Ember['default'].on('willClearRender', function () {
             var _this3 = this;
@@ -59325,8 +59307,8 @@ define('sl-ember-translate/components/sl-translate', ['exports', 'ember', 'sl-em
         /**
          * Set translated string value on property used by template
          *
-         * @function setTranslatedString
-         * @returns {void}
+         * @function
+         * @returns {undefined}
          */
         setTranslatedString: function setTranslatedString() {
             this.set('translatedString', this.translateString());
@@ -59340,8 +59322,8 @@ define('sl-ember-translate/components/sl-translate', ['exports', 'ember', 'sl-em
          * - replacement of placeholder tokens in translation strings with
          *   passed parameters
          *
-         * @function translateString
-         * @returns {Ember.String} Translated string
+         * @function
+         * @returns {String}
          */
         translateString: function translateString() {
             var _this4 = this;
@@ -59384,7 +59366,7 @@ define('sl-ember-translate/mixins/sl-get-translation', ['exports', 'ember'], fun
     // Properties
 
     /**
-     * The translateService used to convert content
+     * Translation Service, used to convert content
      *
      * @type {Ember.Service}
      */
@@ -59399,13 +59381,12 @@ define('sl-ember-translate/mixins/sl-get-translation', ['exports', 'ember'], fun
     /**
      * Based on value of key, retrieve translation or usual get() value
      *
-     * @function get
-     * @argument {Ember.String} key property to retrieve
-     * @returns  {Ember.String}
+     * @function
+     * @param {String} key property to retrieve
+     * @returns {String}
      */
     get: function get(key) {
-      var translationsRegex = /translate\.(.*)/,
-          matches = key.match(translationsRegex);
+      var matches = key.match(/translate\.(.*)/);
 
       return matches ? this.translate(matches[1]) : this._super(key);
     },
@@ -59413,14 +59394,13 @@ define('sl-ember-translate/mixins/sl-get-translation', ['exports', 'ember'], fun
     /**
      * Retrieve translated key without support for token replacement or pluralization
      *
-     * @function translate
-     * @argument {Ember.String} key key to translate
-     * @returns  {Ember.String} translated key
+     * @function
+     * @param {String} key key to translate
+     * @returns {String}
      */
     translate: function translate(key) {
       return this.get('translateService').getKeyValue(key);
     }
-
   });
 
 });
@@ -59448,8 +59428,7 @@ define('sl-ember-translate/services/translate', ['exports', 'ember'], function (
         /**
          * Translations
          *
-         * @property {Ember.Object} dictionary
-         * @default  null
+         * @type {?Object|ember/Object}
          */
         dictionary: null,
 
@@ -59462,13 +59441,14 @@ define('sl-ember-translate/services/translate', ['exports', 'ember'], function (
         /**
          * Set translation dictionary data
          *
-         * @function setDictionary
-         * @argument {Ember.Object} translations  Translation model
-         * @throws   {Ember.assert}
-         * @returns  {void}
+         * @function
+         * @param {Object|ember/Object} translations
+         * @throws {ember.assert}
+         * @returns {undefined}
          */
         setDictionary: function setDictionary(translations) {
-            Ember['default'].assert('services/translation.setDictionary() expects parameter to be an object', 'object' === typeof translations && !Array.isArray(translations));
+
+            Ember['default'].assert('services/translation.setDictionary() expects parameter to be an object', 'object' === Ember['default'].typeOf(translations) || 'instance' === Ember['default'].typeOf(translations));
 
             this.set('dictionary', translations);
         },
@@ -59476,14 +59456,14 @@ define('sl-ember-translate/services/translate', ['exports', 'ember'], function (
         /**
          * Retrieve value for specified dictionary key
          *
-         * @function getKeyValue
-         * @argument {Ember.String} key Dictionary key to retrieve value for
-         * @returns  {Ember.String}
+         * @function
+         * @param {String} key - Dictionary key to retrieve value for
+         * @returns {String}
          */
         getKeyValue: function getKeyValue(key) {
-            var defaultKeyValue = 'KEY__NOT__PRESENT',
-                retrievedKey = this.get('dictionary').getWithDefault(key, defaultKeyValue),
-                returnValue;
+            var defaultKeyValue = 'KEY__NOT__PRESENT';
+            var retrievedKey = this.get('dictionary').getWithDefault(key, defaultKeyValue);
+            var returnValue = undefined;
 
             if (defaultKeyValue !== retrievedKey) {
                 returnValue = retrievedKey;
@@ -59496,45 +59476,32 @@ define('sl-ember-translate/services/translate', ['exports', 'ember'], function (
         },
 
         /**
+         * @typedef {Object} translateKeyParameter
+         * @property {String} key
+         * @property {String} [pluralKey]
+         * @property {String} [pluralCount]
+         * @property {Object} [parameters]
+         */
+
+        /**
          * Translate provided key
          *
          * Supports
          * - singular/plural string substitution
          * - replacement of placeholder tokens in translation strings with passed parameters
          *
-         * @function translateKey
-         * @argument {Ember.Object} data
-         * @example
-         * // Example object that can be passed as argument
-         * {
-         *     key
-         *     pluralKey
-         *     pluralCount
-         *     parameters: {
-         *         $0: value
-         *     }
-         * }
-         * @return {Ember.String}       Translated string
+         * @function
+         * @param {translateKeyParameter} data
+         * @returns {String}
          */
         translateKey: function translateKey(data) {
             var _this = this;
 
-            Ember['default'].assert('Argument must be an object', 'object' === typeof data && !Array.isArray(data));
+            Ember['default'].assert('Argument must be an object', 'object' === Ember['default'].typeOf(data) && 'array' !== Ember['default'].typeOf(data));
 
             data.parameters = data.parameters || {};
 
-            var pluralErrorTracker = 0,
-                token = data.key,
-                getTokenValue = function getTokenValue(value) {
-                try {
-                    value = _this.getKeyValue(value);
-                } catch (e) {
-                    Ember['default'].warn('Unable to translate key "' + value + '".');
-                }
-
-                return value;
-            },
-                translatedString;
+            var pluralErrorTracker = 0;
 
             // BEGIN: Pluralization error checking
             if (!Ember['default'].isEmpty(data.pluralKey)) {
@@ -59545,8 +59512,21 @@ define('sl-ember-translate/services/translate', ['exports', 'ember'], function (
                 pluralErrorTracker++;
             }
 
+            var token = data.key;
+
+            var getTokenValue = function getTokenValue(value) {
+                try {
+                    value = _this.getKeyValue(value);
+                } catch (e) {
+                    Ember['default'].warn('Unable to translate key "' + value + '".');
+                }
+
+                return value;
+            };
+
             if (1 === pluralErrorTracker) {
                 Ember['default'].warn('If either "pluralKey" or "pluralCount" are provided then both must be.' + 'Singular key value was returned.');
+
                 return getTokenValue(token);
             }
             // END: Pluralization error checking
@@ -59556,6 +59536,7 @@ define('sl-ember-translate/services/translate', ['exports', 'ember'], function (
                 token = data.pluralKey;
             }
 
+            var translatedString = undefined;
             translatedString = getTokenValue(token);
 
             // Parameter replacement
