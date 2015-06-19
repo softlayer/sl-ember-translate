@@ -9,8 +9,8 @@ moduleFor( 'mixin:sl-get-translation', 'Unit | Mixin | sl get translation', {
 test( 'Successfully mixed', function( assert ) {
     assert.expect(1);
 
-    var testObject = Ember.Object.extend( mixinUnderTest ),
-        subject    = testObject.create();
+    let testObject = Ember.Object.extend( mixinUnderTest );
+    let subject = testObject.create();
 
     assert.ok( subject );
 });
@@ -18,10 +18,10 @@ test( 'Successfully mixed', function( assert ) {
 test( 'Call to get() with a key not beginning with "translate." is not intercepted', function( assert ) {
     assert.expect(1);
 
-    var testObject = Ember.Object.extend( mixinUnderTest, {
-            testKey: 'testValue'
-        }),
-        subject    = testObject.create();
+    let testObject = Ember.Object.extend( mixinUnderTest, {
+        testKey: 'testValue'
+    });
+    let subject = testObject.create();
 
     assert.equal(
         subject.get( 'testKey' ),
@@ -32,12 +32,12 @@ test( 'Call to get() with a key not beginning with "translate." is not intercept
 test( 'Call to get() with a key beginning with "translate." calls this.translate()', function( assert ) {
     assert.expect(1);
 
-    var testObject = Ember.Object.extend( mixinUnderTest, {
-            translate: function( value ) {
-                return value;
-            }
-        }),
-        subject    = testObject.create();
+    let testObject = Ember.Object.extend( mixinUnderTest, {
+        translate: function( value ) {
+            return value;
+        }
+    });
+    let subject = testObject.create();
 
     assert.equal(
         subject.get( 'translate.testingKey' ),
@@ -48,14 +48,14 @@ test( 'Call to get() with a key beginning with "translate." calls this.translate
 test( 'translate() returns call to this.translateService.getKeyValue()', function( assert ) {
     assert.expect(1);
 
-    var testObject = Ember.Object.extend( mixinUnderTest, {
-            translateService: {
-                getKeyValue: function( value ) {
-                    return value;
-                }
+    let testObject = Ember.Object.extend( mixinUnderTest, {
+        translateService: {
+            getKeyValue: function( value ) {
+                return value;
             }
-        }),
-        subject    = testObject.create();
+        }
+    });
+    let subject = testObject.create();
 
     assert.equal(
         subject.translate( 'called' ),
