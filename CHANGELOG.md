@@ -1,5 +1,12 @@
 # sl-ember-translate Changelog
 
+### 1.7.0
+
+* [#113](https://github.com/softlayer/sl-ember-translate/pull/113) [BREAKING ENHANCEMENT] Upgrade to Ember CLI 0.2.7
+* [#116](https://github.com/softlayer/sl-ember-translate/pull/116) [ENHANCEMENT] Add support for JSDoc generated documentation
+
+[View complete changeset](https://github.com/softlayer/sl-ember-translate/compare/v1.6.0...v1.7.0)
+
 ### 1.6.0
 
 * [#107](https://github.com/softlayer/sl-ember-translate/pull/107) [BREAKING ENHANCEMENT] Upgrade to Ember CLI 0.2.3
