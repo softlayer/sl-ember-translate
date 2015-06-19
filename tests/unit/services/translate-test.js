@@ -134,6 +134,21 @@ test( 'setDictionary() accepts only an object as a parameter', function( assert 
         !assertionThrown,
         'Parameter was an Object'
     );
+
+    // Ember Object Instance Parameter
+
+    assertionThrown = false;
+
+    try {
+        TS.setDictionary( Ember.Object.create( {} ) );
+    } catch( error ) {
+        assertionThrown = true;
+    }
+
+    assert.ok(
+        !assertionThrown,
+        'Parameter was an Ember.Object instance'
+    );
 });
 
 test( 'setDictionary() sets data on the dictionary property', function( assert ) {

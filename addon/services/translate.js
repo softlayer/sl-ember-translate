@@ -43,10 +43,11 @@ export default Ember.Service.extend({
      * @returns {undefined}
      */
     setDictionary( translations ) {
+
         Ember.assert(
             'services/translation.setDictionary() expects parameter to be an object',
-            'object' === typeof translations &&
-            !Array.isArray( translations )
+            'object' === Ember.typeOf( translations ) ||
+            'instance' === Ember.typeOf( translations )
         );
 
         this.set( 'dictionary', translations );
@@ -98,8 +99,8 @@ export default Ember.Service.extend({
 
         Ember.assert(
             'Argument must be an object',
-            'object' === typeof data &&
-            !Array.isArray( data )
+            'object' === Ember.typeOf( data ) &&
+            'array' !== Ember.typeOf( data )
         );
 
         data.parameters = data.parameters || {};
