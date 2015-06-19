@@ -23,19 +23,31 @@ moduleForComponent( 'sl-translate', 'Unit | Component | sl translate', {
  * component is rendered into the DOM is adhered to.
  */
 test( 'Renders as a span tag with no classes', function( assert ) {
-    this.subject({ translateService });
+    this.subject( { translateService } );
 
-    assert.equal( this.$().prop( 'tagName' ), 'SPAN' );
-    assert.equal( this.$().prop( 'class' ), 'ember-view' );
+    assert.equal(
+        this.$().prop( 'tagName' ),
+        'SPAN'
+    );
+    assert.equal(
+        this.$().prop( 'class' ),
+        'ember-view'
+    );
 });
 
 /**
  * That it renders and functions as expected
  */
 test( 'DOM and content of rendered translation', function( assert ) {
-    this.subject({ key: 'the_key', translateService });
+    this.subject({
+        key: 'the_key',
+        translateService
+    });
 
-    assert.equal( Ember.$.trim( this.$().text() ), 'TRANSLATE: the_key' );
+    assert.equal(
+        Ember.$.trim( this.$().text() ),
+        'TRANSLATE: the_key'
+    );
 });
 
 /**
@@ -50,9 +62,18 @@ test( 'Can be used alongside other properties or attribute bindings', function( 
         classNames : [ 'testClass' ]
     });
 
-    assert.equal( this.$().prop( 'tagName' ), 'H1' );
-    assert.equal( Ember.$.trim( this.$().text() ), 'TRANSLATE: key_alongside' );
-    assert.equal( this.$().prop( 'class'), ['ember-view testClass'] );
+    assert.equal(
+        this.$().prop( 'tagName' ),
+        'H1'
+    );
+    assert.equal(
+        Ember.$.trim( this.$().text() ),
+        'TRANSLATE: key_alongside'
+    );
+    assert.equal(
+        this.$().prop( 'class'),
+        ['ember-view testClass']
+    );
 });
 
 test( 'On initialization, extractParameterKeys() filters passed parameters', function( assert ) {
@@ -65,7 +86,10 @@ test( 'On initialization, extractParameterKeys() filters passed parameters', fun
             $2          : 'c'
         });
 
-    assert.deepEqual( component.get( 'parameters' ).sort(), [ '$0', '$1', '$2' ] );
+    assert.deepEqual(
+        component.get('parameters' ).sort(),
+        [ '$0', '$1', '$2' ]
+    );
 });
 
 test( 'On initialization, extractParameterKeys() filters passed parameters to be bound', function( assert ) {
@@ -78,7 +102,10 @@ test( 'On initialization, extractParameterKeys() filters passed parameters to be
             $2          : 'c'
         });
 
-    assert.deepEqual( component.get( 'observedParameters' ), [ '$1' ] );
+    assert.deepEqual(
+        component.get( 'observedParameters' ),
+        [ '$1' ]
+    );
 });
 
 test( 'setTranslatedString() sets translatedString property with value from translateString()', function( assert ) {
@@ -90,7 +117,10 @@ test( 'setTranslatedString() sets translatedString property with value from tran
 
     component.setTranslatedString();
 
-    assert.equal( component.get( 'translatedString' ), 'test value' );
+    assert.equal(
+        component.get( 'translatedString' ),
+        'test value'
+    );
 });
 
 test( 'translateString() calls translateKey() on the translation service', function( assert ) {
@@ -105,10 +135,22 @@ test( 'translateString() calls translateKey() on the translation service', funct
 
     this.render();
 
-    assert.equal( translateService.get( 'key' ), 'the_key' );
-    assert.equal( translateService.get( 'pluralKey' ), 'plural_key' );
-    assert.equal( translateService.get( 'pluralCount' ), 'plural_count' );
-    assert.deepEqual( translateService.get( 'parameters' ), { $0: 'a', $1: 'b' } );
+    assert.equal(
+        translateService.get( 'key' ),
+        'the_key'
+    );
+    assert.equal(
+        translateService.get( 'pluralKey' ),
+        'plural_key'
+    );
+    assert.equal(
+        translateService.get( 'pluralCount' ),
+        'plural_count'
+    );
+    assert.deepEqual(
+        translateService.get( 'parameters' ),
+        { $0: 'a', $1: 'b' }
+    );
 });
 
 test( 'willInsertElement event causes setTranslatedString() to be called', function( assert ) {
@@ -122,7 +164,10 @@ test( 'willInsertElement event causes setTranslatedString() to be called', funct
     // Render in DOM to trigger willInsertElement event
     this.render();
 
-    assert.equal( setTranslatedStringWasCalled, true );
+    assert.equal(
+        setTranslatedStringWasCalled,
+        true
+    );
 });
 
 test( 'willInsertElement event causes observers to be added to each entry in observedParameters property', function( assert ) {
@@ -145,10 +190,16 @@ test( 'willInsertElement event causes observers to be added to each entry in obs
     setTranslatedStringWasCalled = false;
 
     Ember.run( function(){
-        component.set( '$0', 'c' );
+        component.set(
+            '$0',
+            'c'
+        );
     });
 
-    assert.equal( setTranslatedStringWasCalled, true );
+    assert.equal(
+        setTranslatedStringWasCalled,
+        true
+    );
 });
 
 test( 'willClearRender event causes observers to be removed', function( assert ) {
@@ -173,8 +224,14 @@ test( 'willClearRender event causes observers to be removed', function( assert )
     component.trigger( 'willClearRender' );
 
     Ember.run( () => {
-        component.set( '$0', 'c' );
+        component.set(
+            '$0',
+            'c'
+        );
     });
 
-    assert.equal( setTranslatedStringWasCalled, false );
+    assert.equal(
+        setTranslatedStringWasCalled,
+        false
+    );
 });
