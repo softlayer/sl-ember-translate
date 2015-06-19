@@ -1,0 +1,225 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>JSDoc: Source: components/sl-translate.js</title>
+
+    <script src="scripts/prettify/prettify.js"> </script>
+    <script src="scripts/prettify/lang-css.js"> </script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+</head>
+
+<body>
+
+<div id="main">
+
+    <h1 class="page-title">Source: components/sl-translate.js</h1>
+
+    
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>import Ember from 'ember';
+import template from '../templates/components/sl-translate';
+
+/**
+ * @module
+ * @augments ember/Component
+ */
+export default Ember.Component.extend({
+
+    // -------------------------------------------------------------------------
+    // Dependencies
+
+    // -------------------------------------------------------------------------
+    // Attributes
+
+    /** @type {Object} */
+    layout: template,
+
+    /** @type {String} */
+    tagName: 'span',
+
+    // -------------------------------------------------------------------------
+    // Actions
+
+    // -------------------------------------------------------------------------
+    // Events
+
+    // -------------------------------------------------------------------------
+    // Properties
+
+    /**
+     * Filtered array of parameters passed to this component
+     *
+     * Only contains those that are a number that begin with "$" and are to be bound to
+     *
+     * @type {?Array}
+     */
+    observedParameters: null,
+
+    /**
+     * Filtered array of parameters passed to this component
+     *
+     * Only contains those that are a number that begin with "$" and also do not end in "Binding"
+     *
+     * @type {?Array}
+     */
+    parameters: null,
+
+    /**
+     * Translation Service, used to translate content
+     *
+     * @type {ember/Service}
+     */
+    translateService: Ember.inject.service( 'translate' ),
+
+    /**
+     * Translated string
+     *
+     * @type {?String}
+     */
+    translatedString: null,
+
+    // -------------------------------------------------------------------------
+    // Observers
+
+    /**
+     * Filter passed parameters on initialization
+     *
+     * @function
+     * @returns {undefined}
+     */
+    extractParameterKeys: Ember.on(
+        'init',
+        function() {
+            let parameters = [];
+            let observedParameters = [];
+
+            Ember.keys( this ).map( key => {
+
+                // Is a number that begins with $
+                if ( /^\$/.test( key ) ) {
+                    parameters.push( key );
+                }
+
+                // Is a number that begins with $ and was passed as a binding
+                if ( /^\$[0-9]*$/.test( key ) &amp;&amp; this.hasOwnProperty( key + 'Binding' ) ) {
+                    observedParameters.push( key );
+                }
+            });
+
+            this.setProperties({
+                observedParameters,
+                parameters
+            });
+        }
+    ),
+
+    /**
+     * Register observers on filtered parameter list
+     *
+     * The reason observers have to be manually (de)registered rather than
+     * calling .property() on translateString() is because in order to support
+     * token replacement within a tranlsation string a user needs to be able to
+     * pass in a variable amount of (potentially) bound properties. There is not
+     * a way to specify such a dynamic list of properties in a .property() call.
+     *
+     * @function
+     * @returns {undefined}
+     */
+    registerObservers: Ember.on(
+        'willInsertElement',
+        function() {
+            this.get( 'observedParameters' ).map( key => {
+                this.addObserver( key, this, this.setTranslatedString );
+            }
+        );
+
+        this.setTranslatedString();
+    }),
+
+    /**
+     * Remove observers on filtered parameter list
+     *
+     * @function
+     * @returns {undefined}
+     */
+    unregisterObservers: Ember.on(
+        'willClearRender',
+        function() {
+            this.get( 'observedParameters' ).map( key => {
+                this.removeObserver( key, this, this.setTranslatedString );
+            }
+        );
+    }),
+
+    // -------------------------------------------------------------------------
+    // Methods
+
+    /**
+     * Set translated string value on property used by template
+     *
+     * @function
+     * @returns {undefined}
+     */
+    setTranslatedString() {
+        this.set( 'translatedString', this.translateString() );
+    },
+
+    /**
+     * Translate provided key
+     *
+     * Supports
+     * - singular/plural string substitution
+     * - replacement of placeholder tokens in translation strings with
+     *   passed parameters
+     *
+     * @function
+     * @returns {String}
+     */
+    translateString() {
+        let parametersHash = {};
+
+        this.get( 'parameters' ).map( key => {
+            parametersHash[key] = this.get( key );
+        });
+
+        return this.get( 'translateService' ).translateKey({
+            key: this.get( 'key' ),
+            pluralKey: this.get( 'pluralKey' ),
+            pluralCount: this.get( 'pluralCount' ),
+            parameters: parametersHash
+        });
+    }
+});
+</code></pre>
+        </article>
+    </section>
+
+
+
+
+</div>
+
+<nav>
+    <h2><a href="index.html">Home</a></h2><h3>Modules</h3><ul><li><a href="module-addon_components_sl-translate.html">addon/components/sl-translate</a></li><li><a href="module-addon_mixins_sl-get-translation.html">addon/mixins/sl-get-translation</a></li><li><a href="module-addon_services_translate.html">addon/services/translate</a></li></ul>
+</nav>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.4.0-dev</a> on Fri Jun 19 2015 14:50:51 GMT-0500 (CDT)
+</footer>
+
+<script> prettyPrint(); </script>
+<script src="scripts/linenumber.js"> </script>
+</body>
+</html>

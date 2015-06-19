@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>JSDoc: Home</title>
+
+    <script src="scripts/prettify/prettify.js"> </script>
+    <script src="scripts/prettify/lang-css.js"> </script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+</head>
+
+<body>
+
+<div id="main">
+
+    <h1 class="page-title">Home</h1>
+
+    
+
+
+
+    
+
+
+    <h3> </h3>
+
+
+
+
+
+
+
+
+
+
+    
+
+
+
+
+    <section>
+        <article><p><a href="https://github.com/softlayer/sl-ember-translate/releases"><img src="https://img.shields.io/github/release/softlayer/sl-ember-translate.svg" alt="Latest Release"></a> <img src="https://img.shields.io/badge/ember%20cli-0.2.7-orange.svg" alt="Ember CLI version"> <a href="LICENSE.md"><img src="https://img.shields.io/npm/l/sl-ember-translate.svg" alt="License"></a> <a href="https://www.npmjs.com/package/sl-ember-translate"><img src="https://img.shields.io/npm/dm/sl-ember-translate.svg" alt="Downloads"></a></p>
+<p><a href="https://david-dm.org/softlayer/sl-ember-translate"><img src="https://img.shields.io/david/softlayer/sl-ember-translate.svg" alt="Dependencies"></a> <a href="https://david-dm.org/softlayer/sl-ember-translate#info=devDependencies"><img src="https://img.shields.io/david/dev/softlayer/sl-ember-translate.svg" alt="Dev Dependencies"></a></p>
+<p><a href="https://travis-ci.org/softlayer/sl-ember-translate"><img src="https://img.shields.io/travis/softlayer/sl-ember-translate/develop.svg" alt="Build Status"></a> <a href="https://codeclimate.com/github/softlayer/sl-ember-translate"><img src="https://img.shields.io/codeclimate/github/softlayer/sl-ember-translate.svg" alt="Code Climate"></a></p>
+<p>To see which issues are currently being worked on or are scheduled to be worked on next, visit <a href="https://huboard.com/softlayer/sl-ember-translate/#/">https://huboard.com/softlayer/sl-ember-translate/#/</a></p>
+<hr>
+<h1>What sl-ember-translate is</h1><p>An <a href="http://www.ember-cli.com">Ember CLI Addon</a> that provides the ability to lookup a dictionary value either through method calls or via a component in your templates. It supports:</p>
+<ul>
+<li>singular/plural string substitution</li>
+<li>replacement of placeholder tokens in translation strings with passed parameters</li>
+<li>bindings</li>
+</ul>
+<h1>What it is not</h1><p>This addon does not translate text strings or provide internationalization (i18n) support for your application.  You will need to provide content to this addon that is already translated and/or localized.</p>
+<h1>Then why is it called sl-ember-translate?</h1><p>sl-ember-dictionary or something similar might in fact be a better name for this addon but in our opinion, which could very well turn out to be incorrect, this addon will most usually be used in conjuction with the displaying of translated text in an application.  Then when you take into account support for token replacement it seemed to move away from just a dictionary lookup into something &quot;more&quot;.</p>
+<hr>
+<h1>Demo</h1><h2>Live</h2><p><a href="http://softlayer.github.io/sl-ember-translate/#/demo">http://softlayer.github.io/sl-ember-translate/#/demo</a></p>
+<h2>Development Environment</h2><h3>Installation</h3><ul>
+<li><code>git clone</code> this repository</li>
+<li><code>npm install</code></li>
+<li><code>bower install</code></li>
+</ul>
+<h3>Running</h3><ul>
+<li><code>ember server</code></li>
+<li>View the demo at http://localhost:4200</li>
+</ul>
+<p>For more information on using ember-cli, visit <a href="http://www.ember-cli.com/">http://www.ember-cli.com/</a>.</p>
+<hr>
+<h1>How to use this addon in your application</h1><h2>Install this addon as a Node module</h2><pre class="prettyprint source"><code>ember install sl-ember-translate</code></pre><h2>Create a service</h2><pre class="prettyprint source"><code>ember g service translation</code></pre><p>Then, within this file:</p>
+<pre class="prettyprint source"><code>import TranslateService from 'sl-ember-translate/services/translate';
+
+export default TranslateService;</code></pre><h2>Set dictionary data on Translate Service</h2><p>Get a reference to the Translate Service and pass your dictionary as the only argument to <em>setDictionary()</em></p>
+<p>In a route, for example:</p>
+<pre class="prettyprint source"><code>translate: Ember.inject.service(),
+
+beforeModel() {
+    this.get( 'translate' ).setDictionary( yourDictionaryData );
+}</code></pre><h2>Use as a Component</h2><h3>Single Key</h3><p>The simplest use of the <em>sl-translate</em> component is when you only need to translate a single key that will not be bound to or need any strings replaced within it.  Such use looks like:</p>
+<pre class="prettyprint source lang-handlebars"><code>{{sl-translate key=&quot;CLOSE&quot;}}</code></pre><hr>
+<h3>Singular/Plural</h3><p>If a different key needs to be used based on whether or not a singular or plural context needs to be represented, then use the following format:</p>
+<pre class="prettyprint source lang-handlebars"><code>{{sl-translate key=&quot;DEVICE_COUNT_SINGULAR&quot; pluralKey=&quot;DEVICE_COUNT_PLURAL&quot; pluralCount=&quot;3&quot;}}</code></pre><p>The order of the parameters does not matter.</p>
+<hr>
+<h3>String Replacement</h3><p>If the translated string has tokens within it (e.g {0}, {1}, etc) that need to be replaced with values, use the following format:</p>
+<pre class="prettyprint source lang-handlebars"><code>{{sl-translate key=&quot;ACCESSLOG_LIST_PAGINATION&quot; $0=&quot;5&quot; $1=&quot;10&quot; $2=&quot;200&quot;}}</code></pre><p>where each &quot;$x&quot; parameter numerically corresponds to the tokens in the translation string.  The order of the parameters does not matter.</p>
+<hr>
+<h3>Used alongside other properties or attribute bindings</h3><p>You can still use the <em>sl-translate</em> component alongside other properties or attribute bindings as well:</p>
+<pre class="prettyprint source lang-handlebars"><code>{{sl-translate tagName=&quot;div&quot; class=&quot;btn :btn-primary&quot; key=&quot;CLOSE&quot;}}</code></pre><h2>Call Translation Service directly</h2><h3>getKeyValue()</h3><p>If you know that your translation string does not need pluralization support or you do not need to replace any tokens you can use this method to keep from having to build up the data object needed by <em>translateKey()</em>.</p>
+<p>It accepts one argument which is your key and will either return the translated string for this key or the original key text if the key is not found in the dictionary.</p>
+<h3>translateKey()</h3><p>This method provides the pluralization and token replacement support of the Tranlsate Service.  To call this method direclty, you must pass on object to it of the following format in any of the following combinations:</p>
+<p><strong>No pluralization or token replacement</strong></p>
+<pre class="prettyprint source"><code>{
+    key: 'KEY_STRING'
+}</code></pre><p><strong>Pluralization</strong></p>
+<pre class="prettyprint source"><code>{
+    key         : 'KEY_STRING',
+    pluralKey   : 'PLURALKEY_STRING',
+    pluralCount : PLURALCOUNT_VALUE
+}</code></pre><p><strong>Token replacement</strong></p>
+<pre class="prettyprint source"><code>{
+    key        : 'KEY_STRING',
+    parameters : {
+        $0: 'REPLACEMENT_VALUE',
+        $1: 'REPLACEMENT_VALUE'
+        ...
+    }
+}</code></pre><p><strong>Pluralization and Token replacement</strong></p>
+<pre class="prettyprint source"><code>{
+    key         : 'KEY_STRING',
+    pluralKey   : 'PLURALKEY_STRING',
+    pluralCount : PLURALCOUNT_VALUE,
+    parameters  : {
+        $0: 'REPLACEMENT_VALUE',
+        $1: 'REPLACEMENT_VALUE'
+        ...
+    }
+}</code></pre><h2>Use as a Mixin</h2><p>By using the <em>sl-get-translation</em> mixin on your controllers you can enable quick access to translations through the standard <em>Ember.get</em> method by simply prepending &quot;translation.&quot; to the beginning of the key you want translated.  This is especially useful in templates where the use of the <em>sl-translate</em> component is not possible.  In those situations the path <em>controller.translate.[key]</em> will provide the translation for the specified key.</p>
+<hr>
+<h1>How all the parts work</h1><h2>Initializer</h2><p>A singleton instance of the Translate Service is injected on every View, Controller and Component as the <em>translateService</em> property via an initializer named <em>translate-service</em>.</p>
+<h2>Setting the dictionary data</h2><p>Though the Translate Service has been injected it is not ready for use until a dictionary object is set on it via a call to <em>setDictionary()</em>.  The dictionary object should be simple key-value pairings, such as</p>
+<pre class="prettyprint source"><code>{
+    'SUBMIT_BUTTON': 'Submit',
+    'CANCEL_BUTTON': 'Cancel',
+    ...
+}</code></pre><h2>Single key lookup, pluralization, and token replacement</h2><p>The Translate Service supports single key lookup, pluralization, token replacement and any combination of these together.</p>
+<p>When a single key is provided but cannot be found in the dictionary, or an error occurs during the dictionary lookup, a warning is written to the console and the original key string is returned.</p>
+<p>When pluralization is desired the <em>pluralKey</em> value is used instead of the one for <em>key</em> and the same error handling just described is still employed.</p>
+<p>To invoke pluralization, you must populate both of the <em>pluralKey</em> and <em>pluralCount</em> properties.  If only one of these values is provided then a warning is written to the console and the <em>key</em> value is returned.  If the value for <em>pluralCount</em> is greater than 0 (zero) then the <em>pluralKey</em> will be retrieved from the dictionary, otherwise <em>key</em> will be.</p>
+<p>The Translate Service supports the replacement of tokens within the translation string via simple string replacement without the application of any additional logic.  This is why pluralization is supported in the manner already described and not as a mechanism of token replacement.  While calling <em>translateKey()</em> directly does not place any restrictions on the text patterns of the replacement tokens you can use the <em>sl-component</em> presently does, therefore the safest pattern to use is a number surrounded by curly braces.  For example:</p>
+<pre class="prettyprint source"><code>{
+    'ITEM_PAGINATION': 'You are viewing items {3} of {1} of {0} pages',
+}</code></pre><p>The numerical values within each set of curly braces does not have any signifigance.  Just make sure that you correctly specify parameter values for each of these keys via the <em>sl-translate</em> component or via calls to <em>translateKey()</em> to ensure the desired substitution.  If you use the same token within the translation string more than once then each occurrence of the same string will be replaced with the same content specified as the replacement text.</p>
+<p>Suffice it to say, the values of your translation strings should not themselves have any numbers surrounded by curly braces that you desire to be presented in this manner.  If you do then you will need to encode the curly braces as HTML entities, as one possible solution.</p>
+<h2>sl-translate Component</h2><p>The simplest use of the <em>sl-translate</em> component is</p>
+<pre class="prettyprint source"><code>{{sl-translate key=&quot;SUBMIT_BUTTON&quot;}}</code></pre><p>The reason it is necessary to specify the <em>key</em> portion instead of just being able to pass in <em>&quot;SUBMIT_BUTTON&quot;</em> as a lone parameter in this usage is because a component is not able to accept both named and un-named parameters and support binding the way that is required.  We contemplated creating two different components, one to handle single keys and one to handle pluralizations, but that quickly became messy due to needing to support token replacments.  When we first set out to make this component we wanted to make it as easy as possible for a developer to use it in their templates and it quickly became evident that having a single <em>sl-translate</em> component that would be used everywhere, in every scenario, was a better pattern than different components for different scenarios, and that having to specify a <em>key</em> portion for single key translations was an acceptable trade-off.</p>
+<p>Though a value can be bound to a property passed to the <em>sl-translate</em> component, due to how components work in Ember, these properties are not observed from within the component.  This is desired functionality of the <em>sl-translate</em> component so there is logic within it that distills the passed parameters to ones which should be observed and then on <em>willInsertElement()</em> and <em>willClearRender()</em> observers are added and removed.</p>
+<hr>
+<h1>Versioning</h1><p>Employs <a href="http://semver.org/">Semantic Versioning 2.0.0</a></p>
+<hr>
+<h1>Contribution</h1><p><a href="https://github.com/softlayer/sl-ember-translate/blob/develop/CONTRIBUTING.md">See CONTRIBUTING.md</a></p>
+<hr>
+<h1>Copyright and License</h1><p>sl-ember-translate and its source files are Copyright © 2014-2015 <a href="http://www.softlayer.com/">SoftLayer Technologies, Inc.</a> The software is <a href="https://github.com/softlayer/sl-ember-translate/blob/develop/LICENSE.md">MIT Licensed</a></p>
+<hr>
+<h1>Warranty</h1><p>This software is provided “as is” and without any express or implied warranties, including, without limitation, the implied warranties of merchantability and fitness for a particular purpose.</p></article>
+    </section>
+
+
+
+
+
+
+</div>
+
+<nav>
+    <h2><a href="index.html">Home</a></h2><h3>Modules</h3><ul><li><a href="module-addon_components_sl-translate.html">addon/components/sl-translate</a></li><li><a href="module-addon_mixins_sl-get-translation.html">addon/mixins/sl-get-translation</a></li><li><a href="module-addon_services_translate.html">addon/services/translate</a></li></ul>
+</nav>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.4.0-dev</a> on Fri Jun 19 2015 14:50:51 GMT-0500 (CDT)
+</footer>
+
+<script> prettyPrint(); </script>
+<script src="scripts/linenumber.js"> </script>
+</body>
+</html>
