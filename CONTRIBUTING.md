@@ -75,42 +75,12 @@ functionality or fixing a bug, we need a test!
 We try to be quick about responding to tickets but sometimes we get a bit backlogged.  If the response is slow, try to
 find someone on IRC(#softlayer) to give the ticket a review.
 
-Some things that will increase the chance that your pull request is accepted, taken straight from the Ruby on Rails
-guide:
+Some things that will increase the chance that your pull request is accepted include:
 
-    * Use Node idioms and helpers.
-    * Include tests that fail without your code, and pass with it.
-    * Update the documentation, the surrounding one, examples elsewhere, guides, whatever is affected by your
-    contribution.
+* Include tests that fail without your code, and pass with it.
+* Update the documentation, the surrounding one, examples elsewhere, guides, whatever is affected by your contribution.
+* Follow the [Ember.js Style Guide](https://github.com/softlayer/ember-style-guide).
 
-#### Syntax ####
-
-    * Four spaces, no tabs.
-    * No trailing whitespace. Blank lines should not have any space.
-    * Follow the conventions you see used in the source already.
-
-#### Inline Documentation Guidelines ####
-
-All inline documentation is written using [JSDoc](http://usejsdoc.org/). Follow these rules when updating or writing
-new documentation:
-
-    1. All code blocks must be fenced.
-    3. All code blocks must be valid code for syntax highlighting.
-    4. All examples in code blocks must be aligned.
-    5. Use two spaces between the code and the example: `foo(); // result`.
-    6. All references to code words must be enclosed in backticks.
-    7. Prefer a single space between sentences.
-    8. Wrap long markdown blocks > 120 characters.
-    9. Don't include blank lines after `@param` definitions.
-
-
-#### Style Conventions ####
-
-* `thisPropertyName`
-* `Global.Class.attribute`
-* `thisFunction()`
-* `Global.CONSTANT_NAME`
-* `true`, `false`, `null`, `undefined` (when referring to programming values)
 
 And in case we didn't emphasize it enough: **we love tests!**
 
