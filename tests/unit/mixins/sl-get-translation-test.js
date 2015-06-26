@@ -6,6 +6,17 @@ moduleFor( 'mixin:sl-get-translation', 'Unit | Mixin | sl get translation', {
     unit: true
 });
 
+test( 'The correct service is being injected into the mixin', function( assert ) {
+    let testObject = Ember.Object.extend( mixinUnderTest );
+    let subject = testObject.create();
+
+    assert.equal(
+        subject.translateService['name'],
+        'sl-translate',
+        'The correct service is being injected into the mixin'
+    );
+});
+
 test( 'Successfully mixed', function( assert ) {
     assert.expect(1);
 
