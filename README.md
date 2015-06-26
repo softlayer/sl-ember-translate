@@ -60,18 +60,6 @@ For more information on using ember-cli, visit [http://www.ember-cli.com/](http:
 ember install sl-ember-translate
 ```
 
-## Create a service
-```
-ember g service translation
-```
-
-Then, within this file:
-
-```
-import TranslateService from 'sl-ember-translate/services/translate';
-
-export default TranslateService;
-```
 
 
 ## Set dictionary data on Translate Service
@@ -81,10 +69,10 @@ Get a reference to the Translate Service and pass your dictionary as the only ar
 In a route, for example:
 
 ```
-translate: Ember.inject.service(),
+translateService: Ember.inject.service( 'sl-translate' ),
 
 beforeModel() {
-    this.get( 'translate' ).setDictionary( yourDictionaryData );
+    this.get( 'translateService' ).setDictionary( yourDictionaryData );
 }
 ```
 

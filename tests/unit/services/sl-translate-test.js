@@ -1,12 +1,11 @@
 import Ember from 'ember';
 import { moduleFor, test } from 'ember-qunit';
-/** In order for this import to work correctly the /tests/dummy/app/services/translate.js file has to exist */
-import TranslateService from 'sl-ember-translate/services/translate';
+import TranslateService from 'sl-ember-translate/services/sl-translate';
 import { requires } from '../../helpers/sl/synchronous';
 
 let TS;
 
-moduleFor( 'service:translate', 'Unit | Service | translate', {
+moduleFor( 'service:sl-translate', 'Unit | Service | sl translate', {
     beforeEach() {
         TS = TranslateService.create();
     },
