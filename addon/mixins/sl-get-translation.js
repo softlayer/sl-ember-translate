@@ -26,7 +26,7 @@ export default Ember.Mixin.create({
      *
      * @type {Ember.Service}
      */
-    translateService: Ember.inject.service( 'translate' ),
+    translateService: Ember.inject.service( 'sl-translate' ),
 
     // -------------------------------------------------------------------------
     // Observers

@@ -21,5 +21,5 @@ export default Ember.Route.extend({
         this.get( 'translateService' ).setDictionary( model );
     },
 
-    translateService: Ember.inject.service( 'translate' )
+    translateService: Ember.inject.service( 'sl-translate' )
 });

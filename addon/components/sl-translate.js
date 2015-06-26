@@ -51,7 +51,7 @@ export default Ember.Component.extend({
      *
      * @type {ember/Service}
      */
-    translateService: Ember.inject.service( 'translate' ),
+    translateService: Ember.inject.service( 'sl-translate' ),
 
     /**
      * Translated string
