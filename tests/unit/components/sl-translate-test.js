@@ -16,6 +16,16 @@ moduleForComponent( 'sl-translate', 'Unit | Component | sl translate', {
     unit: true
 });
 
+test ( 'The correct service is being injected into the component', function( assert ) {
+    let component = this.subject();
+
+    assert.equal(
+        component.translateService['name'],
+        'sl-translate',
+        'The correct service is being injected into the component'
+    );
+});
+
 /**
  * Ensures that the template is wrapping the content in a span tag and not in
  * any block-level tags. While it appears that core Ember functionality is being
