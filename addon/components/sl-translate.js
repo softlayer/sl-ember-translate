@@ -75,7 +75,7 @@ export default Ember.Component.extend({
             let parameters = [];
             let observedParameters = [];
 
-            Ember.keys( this ).map( key => {
+            Object.keys( this ).map( key => {
 
                 // Is a number that begins with $
                 if ( /^\$/.test( key ) ) {

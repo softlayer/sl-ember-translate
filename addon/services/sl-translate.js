@@ -145,7 +145,7 @@ export default Ember.Service.extend({
         translatedString = getTokenValue( token );
 
         // Parameter replacement
-        Ember.keys( data.parameters ).map( key => {
+        Object.keys( data.parameters ).map( key => {
             translatedString = translatedString.replace( '{' + key.replace( '$', '' ) + '}' , data.parameters[key] );
         });
 
