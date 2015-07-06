@@ -3,7 +3,7 @@
 
 [![Dependencies](https://img.shields.io/david/softlayer/sl-ember-translate.svg)](https://david-dm.org/softlayer/sl-ember-translate) [![Dev Dependencies](https://img.shields.io/david/dev/softlayer/sl-ember-translate.svg)](https://david-dm.org/softlayer/sl-ember-translate#info=devDependencies)
 
-[![Build Status](https://img.shields.io/travis/softlayer/sl-ember-translate/develop.svg)](https://travis-ci.org/softlayer/sl-ember-translate) [![Code Climate](https://img.shields.io/codeclimate/github/softlayer/sl-ember-translate.svg)](https://codeclimate.com/github/softlayer/sl-ember-translate)
+[![Build Status](https://img.shields.io/travis/softlayer/sl-ember-translate/master.svg)](https://travis-ci.org/softlayer/sl-ember-translate) [![Code Climate](https://img.shields.io/codeclimate/github/softlayer/sl-ember-translate.svg)](https://codeclimate.com/github/softlayer/sl-ember-translate)
 
 To see which issues are currently being worked on or are scheduled to be worked on next, visit [https://huboard.com/softlayer/sl-ember-translate/#/](https://huboard.com/softlayer/sl-ember-translate/#/)
 
