@@ -1,5 +1,16 @@
 # sl-ember-translate Changelog
 
+### 1.8.0
+
+* [#129](https://github.com/softlayer/sl-ember-translate/issues/129) [INTERNAL] Replace instances of Ember.keys with Object.keys
+* [#132](https://github.com/softlayer/sl-ember-translate/issues/132) [BREAKING ENHANCEMENT] Reverse the changes introduced in [Issue #114](https://github.com/softlayer/sl-ember-translate/issues/114) and give service a unique name
+* [#138](https://github.com/softlayer/sl-ember-translate/pull/138) Update CONTRIBUTING.md
+* [#142](https://github.com/softlayer/sl-ember-translate/pull/142) [ENHANCEMENT] Uninstall ember-jsdoc; install ember-cli-jsdoc
+* [#144](https://github.com/softlayer/sl-ember-translate/pull/144) Add information about how to generate documentation
+* [Remove develop branch](https://github.com/softlayer/sl-ember-translate/commit/67e046f0b255f2c538d57bd86f90f91efb4a758e)
+
+[View complete changeset](https://github.com/softlayer/sl-ember-translate/compare/v1.7.0...v1.8.0)
+
 ### 1.7.0
 
 * [#113](https://github.com/softlayer/sl-ember-translate/pull/113) [BREAKING ENHANCEMENT] Upgrade to Ember CLI 0.2.7
