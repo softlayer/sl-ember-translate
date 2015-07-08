@@ -6,7 +6,10 @@ var replace = require( 'broccoli-string-replace' );
 var packageConfig = require( './package.json' );
 var app = new EmberAddon();
 var tree = replace( app.toTree(), {
-    files: [ 'index.html' ],
+    files: [
+        'index.html',
+        'assets/dummy.js'
+    ],
     patterns: [
         {
             match: /REPLACE_META_DESCRIPTION/g,
@@ -15,6 +18,9 @@ var tree = replace( app.toTree(), {
         {
             match: /REPLACE_META_KEYWORDS/g,
             replacement: packageConfig['keywords'].join( ', ' ) + ', ember, ember cli'
+        }, {
+            match: /REPLACE_APPLICATION_VERSION/g,
+            replacement: packageConfig[ 'version' ]
         }
     ]
 });
