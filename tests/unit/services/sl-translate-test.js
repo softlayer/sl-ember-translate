@@ -56,7 +56,7 @@ test( 'setDictionary() accepts only an object as a parameter', function( assert 
 
     assert.ok(
         assertionThrown,
-        'Parameter was a Number'
+        'Parameter was null'
     );
 
     // Number parameter
