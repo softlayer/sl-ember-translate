@@ -44,6 +44,21 @@ test( 'setDictionary() accepts only an object as a parameter', function( assert 
         'Parameter was empty'
     );
 
+    // Null parameter
+
+    assertionThrown = false;
+
+    try {
+        TS.setDictionary( null );
+    } catch( error ) {
+        assertionThrown = true;
+    }
+
+    assert.ok(
+        assertionThrown,
+        'Parameter was null'
+    );
+
     // Number parameter
 
     assertionThrown = false;
