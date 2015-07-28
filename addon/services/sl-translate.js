@@ -44,11 +44,16 @@ export default Ember.Service.extend({
      */
     setDictionary( translations ) {
 
+        /* jshint ignore:start */
         Ember.assert(
             'services/translation.setDictionary() expects parameter to be an object',
-            'object' === Ember.typeOf( translations ) ||
-            'instance' === Ember.typeOf( translations )
+            (
+                'object' === Ember.typeOf( translations ) ||
+                'instance' === Ember.typeOf( translations )
+            ) &&
+            'symbol' !== typeof translations
         );
+        /* jshint ignore:end */
 
         this.set( 'dictionary', translations );
     },
@@ -97,11 +102,14 @@ export default Ember.Service.extend({
      */
     translateKey( data ) {
 
+        /* jshint ignore:start */
         Ember.assert(
             'Argument must be an object',
             'object' === Ember.typeOf( data ) &&
-            'array' !== Ember.typeOf( data )
+            'array' !== Ember.typeOf( data ) &&
+            'symbol' !== typeof data
         );
+        /* jshint ignore:end */
 
         data.parameters = data.parameters || {};
 
