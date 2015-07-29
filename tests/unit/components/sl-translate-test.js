@@ -1,7 +1,7 @@
 import Ember from 'ember';
 import { moduleForComponent, test } from 'ember-qunit';
 
-let translateService = Ember.Object.create({
+const translateService = Ember.Object.create({
     translateKey( data ) {
         this.set( 'key', data.key );
         this.set( 'pluralKey', data.pluralKey );
@@ -16,11 +16,11 @@ moduleForComponent( 'sl-translate', 'Unit | Component | sl translate', {
     unit: true
 });
 
-test ( 'The correct service is being injected into the component', function( assert ) {
-    let component = this.subject();
+test( 'The correct service is being injected into the component', function( assert ) {
+    const component = this.subject();
 
     assert.equal(
-        component.translateService['name'],
+        component.translateService.name,
         'sl-translate',
         'The correct service is being injected into the component'
     );
@@ -81,13 +81,13 @@ test( 'Can be used alongside other properties or attribute bindings', function( 
         'TRANSLATE: key_alongside'
     );
     assert.equal(
-        this.$().prop( 'class'),
-        ['ember-view testClass']
+        this.$().prop( 'class' ),
+        [ 'ember-view testClass' ]
     );
 });
 
 test( 'On initialization, extractParameterKeys() filters passed parameters', function( assert ) {
-    let component = this.subject({
+    const component = this.subject({
             key: 'the_key',
             pluralKey: 'plural_key',
             pluralCount: 'plural_count',
@@ -103,8 +103,8 @@ test( 'On initialization, extractParameterKeys() filters passed parameters', fun
 });
 
 test( 'On initialization, extractParameterKeys() filters passed parameters to be bound', function( assert ) {
-    let boundProperty = null;
-    let component = this.subject({
+    const boundProperty = null;
+    const component = this.subject({
         key: 'the_key',
         pluralKey: 'plural_key',
         pluralCount: 'plural_count',
@@ -122,7 +122,7 @@ test( 'On initialization, extractParameterKeys() filters passed parameters to be
 });
 
 test( 'setTranslatedString() sets translatedString property with value from translateString()', function( assert ) {
-    let component = this.subject();
+    const component = this.subject();
 
     component.translateString = function() {
         return 'test value';
@@ -167,7 +167,7 @@ test( 'translateString() calls translateKey() on the translation service', funct
 });
 
 test( 'willInsertElement event causes setTranslatedString() to be called', function( assert ) {
-    let component = this.subject();
+    const component = this.subject();
     let setTranslatedStringWasCalled = false;
 
     component.setTranslatedString = function() {
@@ -183,40 +183,43 @@ test( 'willInsertElement event causes setTranslatedString() to be called', funct
     );
 });
 
-test( 'willInsertElement event causes observers to be added to each entry in observedParameters property', function( assert ) {
-    let component = this.subject({
-        translateService,
-        key: 'the_key',
-        $0Binding: 'a',
-        $1: 'b'
-    });
-    let setTranslatedStringWasCalled = false;
+test(
+    'willInsertElement event causes observers to be added to each entry in observedParameters property',
+    function( assert ) {
+        const component = this.subject({
+            translateService,
+            key: 'the_key',
+            $0Binding: 'a',
+            $1: 'b'
+        });
+        let setTranslatedStringWasCalled = false;
 
-    component.setTranslatedString = function() {
-        setTranslatedStringWasCalled = true;
-    };
+        component.setTranslatedString = function() {
+            setTranslatedStringWasCalled = true;
+        };
 
-    // Render in DOM to trigger willInsertElement event
-    this.render();
+        // Render in DOM to trigger willInsertElement event
+        this.render();
 
-    // Change value so can monitor for change
-    setTranslatedStringWasCalled = false;
+        // Change value so can monitor for change
+        setTranslatedStringWasCalled = false;
 
-    Ember.run( function(){
-        component.set(
-            '$0',
-            'c'
+        Ember.run( function() {
+            component.set(
+                '$0',
+                'c'
+            );
+        });
+
+        assert.equal(
+            setTranslatedStringWasCalled,
+            true
         );
-    });
-
-    assert.equal(
-        setTranslatedStringWasCalled,
-        true
-    );
-});
+    }
+);
 
 test( 'willClearRender event causes observers to be removed', function( assert ) {
-    let component = this.subject({
+    const component = this.subject({
         translateService,
         key: 'the_key',
         $0Binding: 'a',
