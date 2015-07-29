@@ -94,7 +94,7 @@ test( 'setDictionary() accepts only an object as a parameter', function( assert 
     assertionThrown = false;
 
     try {
-        TS.setDictionary( function(){} );
+        TS.setDictionary( function() {} );
     } catch( error ) {
         assertionThrown = true;
     }
@@ -166,7 +166,7 @@ test( 'setDictionary() accepts only an object as a parameter', function( assert 
 });
 
 test( 'setDictionary() sets data on the dictionary property', function( assert ) {
-    let testDictionary = Ember.Object.create({
+    const testDictionary = Ember.Object.create({
         'the_key': 'my value'
     });
 
@@ -181,7 +181,7 @@ test( 'setDictionary() sets data on the dictionary property', function( assert )
 test( 'getKeyValue() returns requested key if not found in dictionary', function( assert ) {
     TS.setDictionary( Ember.Object.create({
         'the_key': 'my value'
-    }));
+    }) );
 
     assert.notEqual(
         TS.getKeyValue( 'wrong_key' ),
@@ -192,7 +192,7 @@ test( 'getKeyValue() returns requested key if not found in dictionary', function
 test( 'getKeyValue() returns requested key\'s translated string', function( assert ) {
     TS.setDictionary( Ember.Object.create({
         'the_key': 'my value'
-    }));
+    }) );
 
     assert.equal(
         TS.getKeyValue( 'the_key' ),
@@ -201,21 +201,21 @@ test( 'getKeyValue() returns requested key\'s translated string', function( asse
 });
 
 test( 'translateKey() accepts only an object as a parameter', function( assert ) {
-    let test = requires(
+    const testDefinition = requires(
         TS.translateKey,
         [ 'object' ]
     );
 
     assert.ok(
-        test.requires,
-        test.messages
+        testDefinition.requires,
+        testDefinition.messages
     );
 });
 
 test( 'translateKey() returns translated string for specified key', function( assert ) {
     TS.setDictionary( Ember.Object.create({
         'the_key': 'my value'
-    }));
+    }) );
 
     assert.equal(
         TS.getKeyValue( 'the_key' ),
@@ -245,7 +245,7 @@ test( 'Pluralization only works if "pluralCount" is a number', function( assert 
     TS.setDictionary( Ember.Object.create({
         'the_singular_key': 'Singular translated value',
         'the_plural_key': 'Plural translated value'
-    }));
+    }) );
 
     assert.notEqual(
         TS.translateKey({
@@ -261,7 +261,7 @@ test( 'Pluralization occurs when provided the necessary information', function( 
     TS.setDictionary( Ember.Object.create({
         'the_singular_key': 'Singular translated value',
         'the_plural_key': 'Plural translated value'
-    }));
+    }) );
 
     assert.equal(
         TS.translateKey({
@@ -285,7 +285,7 @@ test( 'Pluralization occurs when provided the necessary information', function( 
 test( 'Token replacement in translation string', function( assert ) {
     TS.setDictionary( Ember.Object.create({
         'the_key': 'Replaced values: {0} and {1}'
-    }));
+    }) );
 
     assert.equal(
         TS.translateKey({

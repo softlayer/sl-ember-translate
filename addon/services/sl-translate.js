@@ -66,8 +66,8 @@ export default Ember.Service.extend({
      * @returns {String}
      */
     getKeyValue( key ) {
-        let defaultKeyValue = 'KEY__NOT__PRESENT';
-        let retrievedKey = this.get( 'dictionary' ).getWithDefault( key, defaultKeyValue );
+        const defaultKeyValue = 'KEY__NOT__PRESENT';
+        const retrievedKey = this.get( 'dictionary' ).getWithDefault( key, defaultKeyValue );
         let returnValue;
 
         if ( defaultKeyValue !== retrievedKey ) {
@@ -126,7 +126,7 @@ export default Ember.Service.extend({
 
         let token = data.key;
 
-        let getTokenValue = ( value ) => {
+        const getTokenValue = ( value ) => {
             try {
                 value = this.getKeyValue( value );
             } catch ( e ) {
@@ -145,7 +145,7 @@ export default Ember.Service.extend({
         // END: Pluralization error checking
 
         // Pluralization
-        if ( !Ember.isEmpty( data.pluralCount ) && Number(data.pluralCount) > 1 ) {
+        if ( !Ember.isEmpty( data.pluralCount ) && Number( data.pluralCount ) > 1 ) {
             token = data.pluralKey;
         }
 
@@ -154,7 +154,7 @@ export default Ember.Service.extend({
 
         // Parameter replacement
         Object.keys( data.parameters ).map( key => {
-            translatedString = translatedString.replace( '{' + key.replace( '$', '' ) + '}' , data.parameters[key] );
+            translatedString = translatedString.replace( '{' + key.replace( '$', '' ) + '}', data.parameters[key] );
         });
 
         return translatedString;

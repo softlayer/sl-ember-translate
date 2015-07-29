@@ -42,11 +42,11 @@ export default Ember.Mixin.create({
      * @returns {String}
      */
     get( key ) {
-        let matches = key.match( /translate\.(.*)/ );
+        const matches = key.match( /translate\.(.*)/ );
 
         return matches ?
             this.translate( matches[1] ) :
-            this._super( key );
+            Ember.get( this, key );
     },
 
     /**

@@ -72,8 +72,8 @@ export default Ember.Component.extend({
     extractParameterKeys: Ember.on(
         'init',
         function() {
-            let parameters = [];
-            let observedParameters = [];
+            const parameters = [];
+            const observedParameters = [];
 
             Object.keys( this ).map( key => {
 
@@ -110,13 +110,15 @@ export default Ember.Component.extend({
     registerObservers: Ember.on(
         'willInsertElement',
         function() {
-            this.get( 'observedParameters' ).map( key => {
-                this.addObserver( key, this, this.setTranslatedString );
-            }
-        );
+            this.get( 'observedParameters' ).map(
+                key => {
+                    this.addObserver( key, this, this.setTranslatedString );
+                }
+            );
 
-        this.setTranslatedString();
-    }),
+            this.setTranslatedString();
+        }
+    ),
 
     /**
      * Remove observers on filtered parameter list
@@ -127,11 +129,13 @@ export default Ember.Component.extend({
     unregisterObservers: Ember.on(
         'willClearRender',
         function() {
-            this.get( 'observedParameters' ).map( key => {
-                this.removeObserver( key, this, this.setTranslatedString );
-            }
-        );
-    }),
+            this.get( 'observedParameters' ).map(
+                key => {
+                    this.removeObserver( key, this, this.setTranslatedString );
+                }
+            );
+        }
+    ),
 
     // -------------------------------------------------------------------------
     // Methods
@@ -158,7 +162,7 @@ export default Ember.Component.extend({
      * @returns {String}
      */
     translateString() {
-        let parametersHash = {};
+        const parametersHash = {};
 
         this.get( 'parameters' ).map( key => {
             parametersHash[key] = this.get( key );
