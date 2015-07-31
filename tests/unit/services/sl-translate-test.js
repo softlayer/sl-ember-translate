@@ -34,6 +34,15 @@ test( 'setDictionary() accepts only an object as a parameter', function( assert 
 
     const callSetDictionary = () => TS.setDictionary( testProperty.parameter );
 
+    // Undefined
+    testProperty.set( 'parameter', undefined );
+
+    assert.throws(
+        callSetDictionary,
+        'Parameter was undefined'
+    );
+
+    // Array
     testProperty.set( 'parameter', [] );
 
     assert.throws(
@@ -41,6 +50,7 @@ test( 'setDictionary() accepts only an object as a parameter', function( assert 
         'Parameter was an array'
     );
 
+    // Null
     testProperty.set( 'parameter', null );
 
     assert.throws(
@@ -48,6 +58,7 @@ test( 'setDictionary() accepts only an object as a parameter', function( assert 
         'Parameter was null'
     );
 
+    // Number
     testProperty.set( 'parameter', 123 );
 
     assert.throws(
@@ -55,6 +66,7 @@ test( 'setDictionary() accepts only an object as a parameter', function( assert 
         'Parameter was a number'
     );
 
+    // Function
     testProperty.set( 'parameter', function() {} );
 
     assert.throws(
@@ -62,6 +74,7 @@ test( 'setDictionary() accepts only an object as a parameter', function( assert 
         'Parameter was a function'
     );
 
+    // String
     testProperty.set( 'parameter', 'testString' );
 
     assert.throws(
@@ -69,6 +82,7 @@ test( 'setDictionary() accepts only an object as a parameter', function( assert 
         'Parameter was a string'
     );
 
+    // Boolean
     testProperty.set( 'parameter', false );
 
     assert.throws(
@@ -76,6 +90,7 @@ test( 'setDictionary() accepts only an object as a parameter', function( assert 
         'Parameter was false'
     );
 
+    // Object
     testProperty.set( 'parameter', {} );
 
     assert.equal(
@@ -84,6 +99,7 @@ test( 'setDictionary() accepts only an object as a parameter', function( assert 
         'Parameter was an object'
     );
 
+    // Ember.Object instance
     testProperty.set( 'parameter', Ember.Object.create( {} ) );
 
     assert.equal(
