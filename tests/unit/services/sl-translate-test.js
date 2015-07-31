@@ -28,139 +28,67 @@ test( 'dictionary property defaults to null', function( assert ) {
 });
 
 test( 'setDictionary() accepts only an object as a parameter', function( assert ) {
+    const testProperty = Ember.Object.create({
+        parameter: ''
+    });
 
-    // Empty parameter
+    const callSetDictionary = () => TS.setDictionary( testProperty.parameter );
 
-    let assertionThrown = false;
+    testProperty.set( 'parameter', [] );
 
-    try {
-        TS.setDictionary();
-    } catch( error ) {
-        assertionThrown = true;
-    }
-
-    assert.ok(
-        assertionThrown,
-        'Parameter was empty'
+    assert.throws(
+        callSetDictionary,
+        'Parameter was an array'
     );
 
-    // Null parameter
+    testProperty.set( 'parameter', null );
 
-    assertionThrown = false;
-
-    try {
-        TS.setDictionary( null );
-    } catch( error ) {
-        assertionThrown = true;
-    }
-
-    assert.ok(
-        assertionThrown,
+    assert.throws(
+        callSetDictionary,
         'Parameter was null'
     );
 
-    // Number parameter
+    testProperty.set( 'parameter', 123 );
 
-    assertionThrown = false;
-
-    try {
-        TS.setDictionary( 4 );
-    } catch( error ) {
-        assertionThrown = true;
-    }
-
-    assert.ok(
-        assertionThrown,
-        'Parameter was a Number'
+    assert.throws(
+        callSetDictionary,
+        'Parameter was a number'
     );
 
-    // Array Parameter
+    testProperty.set( 'parameter', function() {} );
 
-    assertionThrown = false;
-
-    try {
-        TS.setDictionary( [] );
-    } catch( error ) {
-        assertionThrown = true;
-    }
-
-    assert.ok(
-        assertionThrown,
-        'Parameter was an Array'
+    assert.throws(
+        callSetDictionary,
+        'Parameter was a function'
     );
 
-    // Function
+    testProperty.set( 'parameter', 'testString' );
 
-    assertionThrown = false;
-
-    try {
-        TS.setDictionary( function() {} );
-    } catch( error ) {
-        assertionThrown = true;
-    }
-
-    assert.ok(
-        assertionThrown,
-        'Parameter was a Function'
+    assert.throws(
+        callSetDictionary,
+        'Parameter was a string'
     );
 
-    // String Parameter
+    testProperty.set( 'parameter', false );
 
-    assertionThrown = false;
-
-    try {
-        TS.setDictionary( 'test' );
-    } catch( error ) {
-        assertionThrown = true;
-    }
-
-    assert.ok(
-        assertionThrown,
-        'Parameter was a String'
+    assert.throws(
+        callSetDictionary,
+        'Parameter was false'
     );
 
-    // Boolean Parameter
+    testProperty.set( 'parameter', {} );
 
-    assertionThrown = false;
-
-    try {
-        TS.setDictionary( false );
-    } catch( error ) {
-        assertionThrown = true;
-    }
-
-    assert.ok(
-        assertionThrown,
-        'Parameter was a Boolean'
+    assert.equal(
+        callSetDictionary(),
+        undefined,
+        'Parameter was an object'
     );
 
-    // Object Parameter
+    testProperty.set( 'parameter', Ember.Object.create( {} ) );
 
-    assertionThrown = false;
-
-    try {
-        TS.setDictionary( {} );
-    } catch( error ) {
-        assertionThrown = true;
-    }
-
-    assert.ok(
-        !assertionThrown,
-        'Parameter was an Object'
-    );
-
-    // Ember Object Instance Parameter
-
-    assertionThrown = false;
-
-    try {
-        TS.setDictionary( Ember.Object.create( {} ) );
-    } catch( error ) {
-        assertionThrown = true;
-    }
-
-    assert.ok(
-        !assertionThrown,
+    assert.equal(
+        callSetDictionary(),
+        undefined,
         'Parameter was an Ember.Object instance'
     );
 });
