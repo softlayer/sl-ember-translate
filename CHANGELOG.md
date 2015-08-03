@@ -1,5 +1,11 @@
 # sl-ember-translate Changelog
 
+### 1.9.0
+
+* [#146](https://github.com/softlayer/sl-ember-translate/issues/146) [BUGFIX] Support type of `Symbol`
+
+[View complete changeset](https://github.com/softlayer/sl-ember-translate/compare/v1.8.0...v1.9.0)
+
 ### 1.8.0
 
 * [#129](https://github.com/softlayer/sl-ember-translate/issues/129) [INTERNAL] Replace instances of Ember.keys with Object.keys
