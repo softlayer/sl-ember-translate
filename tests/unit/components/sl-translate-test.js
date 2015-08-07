@@ -45,21 +45,6 @@ test( 'Renders as a span tag with no classes', function( assert ) {
     );
 });
 
-/**
- * That it renders and functions as expected
- */
-test( 'DOM and content of rendered translation', function( assert ) {
-    this.subject({
-        key: 'the_key',
-        translateService
-    });
-
-    assert.equal(
-        Ember.$.trim( this.$().text() ),
-        'TRANSLATE: the_key'
-    );
-});
-
 test( 'On initialization, extractParameterKeys() filters passed parameters', function( assert ) {
     const component = this.subject({
             key: 'the_key',
