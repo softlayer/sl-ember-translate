@@ -60,32 +60,6 @@ test( 'DOM and content of rendered translation', function( assert ) {
     );
 });
 
-/**
- * Ensure haven't broken any default behavior of Ember, since manipulate properties passed to the component
- * A side effect of this test is the appearance that core Ember functionality is being tested
- */
-test( 'Can be used alongside other properties or attribute bindings', function( assert ) {
-    this.subject({
-        translateService,
-        key: 'key_alongside',
-        tagName: 'h1',
-        classNames: [ 'testClass' ]
-    });
-
-    assert.equal(
-        this.$().prop( 'tagName' ),
-        'H1'
-    );
-    assert.equal(
-        Ember.$.trim( this.$().text() ),
-        'TRANSLATE: key_alongside'
-    );
-    assert.equal(
-        this.$().prop( 'class' ),
-        [ 'ember-view testClass' ]
-    );
-});
-
 test( 'On initialization, extractParameterKeys() filters passed parameters', function( assert ) {
     const component = this.subject({
             key: 'the_key',
