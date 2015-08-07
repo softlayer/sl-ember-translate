@@ -19,7 +19,6 @@ moduleForComponent( 'sl-translate', 'Integration | Component | sl translate', {
 });
 
 test( 'Simple Key Translation', function( assert ) {
-    assert.expect( 1 );
 
     this.render( hbs`
         {{sl-translate key="SIMPLE_KEY" }}
@@ -33,7 +32,6 @@ test( 'Simple Key Translation', function( assert ) {
 });
 
 test( 'Single/Plural Keys', function( assert ) {
-    assert.expect( 2 );
 
     this.render( hbs`
         {{sl-translate key="SINGULAR_KEY" pluralKey="PLURAL_KEY" pluralCount="1"}}
@@ -57,7 +55,6 @@ test( 'Single/Plural Keys', function( assert ) {
 });
 
 test( 'Replaced Values In Keys', function( assert ) {
-    assert.expect( 2 );
 
     this.render( hbs`
         {{sl-translate key="REPLACED_KEY"}}
@@ -82,7 +79,6 @@ test( 'Replaced Values In Keys', function( assert ) {
 });
 
 test( 'Bound Replacement Values In Keys', function( assert ) {
-    assert.expect( 1 );
 
     this.set( 'valueToDisplay', 'the Bound Value' );
 
@@ -102,7 +98,6 @@ test( 'Bound Replacement Values In Keys', function( assert ) {
  * A side effect of this test is the appearance that core Ember functionality is being tested
  */
 test( 'Used Alongside Other Properties', function( assert ) {
-    assert.expect( 2 );
 
     this.render( hbs`
         {{sl-translate key="SIMPLE_KEY"}}
