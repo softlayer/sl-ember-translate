@@ -39,10 +39,6 @@ test( 'Renders as a span tag with no classes', function( assert ) {
         this.$().prop( 'tagName' ),
         'SPAN'
     );
-    assert.equal(
-        this.$().prop( 'class' ),
-        'ember-view'
-    );
 });
 
 test( 'On initialization, extractParameterKeys() filters passed parameters', function( assert ) {

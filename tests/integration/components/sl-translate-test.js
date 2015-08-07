@@ -59,12 +59,8 @@ test( 'Single/Plural Keys', function( assert ) {
 test( 'Replaced Values In Keys', function( assert ) {
     assert.expect( 2 );
 
-    const replacedKey = 'I have replaced {0} and {1}';
-
-    this.set( 'replacedKey', replacedKey );
-
     this.render( hbs`
-        {{sl-translate key=replacedKey}}
+        {{sl-translate key="REPLACED_KEY"}}
     ` );
 
     assert.equal(
@@ -74,7 +70,7 @@ test( 'Replaced Values In Keys', function( assert ) {
     );
 
     this.render( hbs`
-        {{sl-translate key=replacedKey $0="First" $1="Unicorn"}}
+        {{sl-translate key="REPLACED_KEY" $0="First" $1="Unicorn"}}
     ` );
 
     assert.equal(
@@ -88,13 +84,10 @@ test( 'Replaced Values In Keys', function( assert ) {
 test( 'Bound Replacement Values In Keys', function( assert ) {
     assert.expect( 1 );
 
-    const replacedKey = 'I have replaced {0} and {1}';
-
-    this.set( 'replacedKey', replacedKey );
     this.set( 'valueToDisplay', 'the Bound Value' );
 
     this.render( hbs`
-        {{sl-translate key=replacedKey $0="First" $1=valueToDisplay}}
+        {{sl-translate key="REPLACED_KEY" $0="First" $1=valueToDisplay}}
     ` );
 
     assert.equal(
@@ -109,20 +102,25 @@ test( 'Bound Replacement Values In Keys', function( assert ) {
  * A side effect of this test is the appearance that core Ember functionality is being tested
  */
 test( 'Used Alongside Other Properties', function( assert ) {
-    assert.expect( 1 );
-
-    const replacedKey = 'I have replaced {0} and {1}';
-
-    this.set( 'replacedKey', replacedKey );
+    assert.expect( 2 );
 
     this.render( hbs`
-        {{sl-translate tagName="em" key=replacedKey $0="First" $1="Dragon"}}
+        {{sl-translate key="SIMPLE_KEY"}}
     ` );
 
-    const $em = this.$( 'em.ember-view' );
     assert.equal(
-        $em.text().trim(),
-        'I have replaced First and Dragon',
-        'Replaced String used alongside another property works'
+        this.$( 'em' ).length,
+        0,
+        'Translate used without another property works'
+    );
+
+    this.render( hbs`
+        {{sl-translate tagName="em" key="SIMPLE_KEY"}}
+    ` );
+
+    assert.equal(
+        this.$( 'em' ).length,
+        1,
+        'Translate used alongside another property works'
     );
 });
