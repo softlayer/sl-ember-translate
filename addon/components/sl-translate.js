@@ -35,7 +35,7 @@ export default Ember.Component.extend({
      *
      * @type {?Array}
      */
-    observedParameters: null,
+    observedParameters: [],
 
     /**
      * Filtered array of parameters passed to this component
@@ -44,7 +44,7 @@ export default Ember.Component.extend({
      *
      * @type {?Array}
      */
-    parameters: null,
+    parameters: [],
 
     /**
      * Translation Service, used to translate content
@@ -60,6 +60,11 @@ export default Ember.Component.extend({
      */
     translatedString: null,
 
+    init: function() {
+        this._super.apply(this, arguments);
+        this.set( 'translatedString', this.translateString() );
+    },
+
     // -------------------------------------------------------------------------
     // Observers
 
@@ -72,26 +77,32 @@ export default Ember.Component.extend({
     extractParameterKeys: Ember.on(
         'init',
         function() {
-            const parameters = [];
-            const observedParameters = [];
+            if ( 'object' === Ember.typeOf( this.get( 'attrs' ) ) ||
+                 'instance' === Ember.typeOf( this.get( 'attrs' ) )
+            ) {
+                const parameters = [];
+                const observedParameters = [];
 
-            Object.keys( this ).map( key => {
+                Object.keys( this.get( 'attrs' ) ).map( key => {
 
-                // Is a number that begins with $
-                if ( /^\$/.test( key ) ) {
-                    parameters.push( key );
-                }
+                    // Is a number that begins with $
+                    if ( /^\$/.test( key ) ) {
+                        parameters.push( key );
+                    }
 
-                // Is a number that begins with $ and was passed as a binding
-                if ( /^\$[0-9]*$/.test( key ) && this.hasOwnProperty( key + 'Binding' ) ) {
-                    observedParameters.push( key );
-                }
-            });
+                    // Is a number that begins with $ and was passed as a binding
+                    if ( /^\$[0-9]*$/.test( key ) &&
+                        'object' === Ember.typeOf( this.get( 'attrs' )[ key ] )
+                        ) {
+                        observedParameters.push( key );
+                    }
+                });
 
-            this.setProperties({
-                observedParameters,
-                parameters
-            });
+                this.setProperties({
+                    observedParameters,
+                    parameters
+                });
+            }
         }
     ),
 

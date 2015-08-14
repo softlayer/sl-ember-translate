@@ -39,6 +39,51 @@ test( 'Renders as a span tag with no classes', function( assert ) {
         this.$().prop( 'tagName' ),
         'SPAN'
     );
+    assert.equal(
+        this.$().prop( 'class' ),
+        'ember-view'
+    );
+});
+
+/**
+ * That it renders and functions as expected
+ */
+test( 'DOM and content of rendered translation', function( assert ) {
+    this.subject({
+        key: 'the_key',
+        translateService
+    });
+
+    assert.equal(
+        Ember.$.trim( this.$().text() ),
+        'TRANSLATE: the_key'
+    );
+});
+
+/**
+ * Ensure haven't broken any default behavior of Ember, since manipulate properties passed to the component
+ * A side effect of this test is the appearance that core Ember functionality is being tested
+ */
+test( 'Can be used alongside other properties or attribute bindings', function( assert ) {
+    this.subject({
+        translateService,
+        key: 'key_alongside',
+        tagName: 'h1',
+        classNames: [ 'testClass' ]
+    });
+
+    assert.equal(
+        this.$().prop( 'tagName' ),
+        'H1'
+    );
+    assert.equal(
+        Ember.$.trim( this.$().text() ),
+        'TRANSLATE: key_alongside'
+    );
+    assert.equal(
+        this.$().prop( 'class' ),
+        [ 'ember-view testClass' ]
+    );
 });
 
 test( 'On initialization, extractParameterKeys() filters passed parameters', function( assert ) {
@@ -46,9 +91,11 @@ test( 'On initialization, extractParameterKeys() filters passed parameters', fun
             key: 'the_key',
             pluralKey: 'plural_key',
             pluralCount: 'plural_count',
-            $1: 'a',
-            2: 'b',
-            other: 'c'
+            attrs: Ember.Object.create({
+                $1: 'a',
+                2: 'b',
+                other: 'c'
+            })
         });
 
     assert.deepEqual(
@@ -63,15 +110,17 @@ test( 'On initialization, extractParameterKeys() filters passed parameters to be
         key: 'the_key',
         pluralKey: 'plural_key',
         pluralCount: 'plural_count',
-        $1: 'a',
-        2: 'b',
-        $3: boundProperty,
-        $3Binding: 'hack; should test this more correctly',
-        other: 'c'
+        attrs: Ember.Object.create({
+            $1: 'a',
+            2: 'b',
+            $3: boundProperty,
+            $3Binding: 'hack; should test this more correctly',
+            other: 'c'
+        })
     });
 
     assert.deepEqual(
-        component.get( 'observedParameters' ),
+        component.get( 'parameters' ).sort(),
         [ '$3' ]
     );
 });
@@ -97,8 +146,10 @@ test( 'translateString() calls translateKey() on the translation service', funct
         key: 'the_key',
         pluralKey: 'plural_key',
         pluralCount: 'plural_count',
-        $0: 'a',
-        $1: 'b'
+        attrs: Ember.Object.create({
+            $0: 'a',
+            $1: 'b'
+        })
     });
 
     this.render();
@@ -144,8 +195,10 @@ test(
         const component = this.subject({
             translateService,
             key: 'the_key',
-            $0Binding: 'a',
-            $1: 'b'
+            attrs: Ember.Object.create({
+                $0Binding: 'a',
+                $1: 'b'
+            })
         });
         let setTranslatedStringWasCalled = false;
 
