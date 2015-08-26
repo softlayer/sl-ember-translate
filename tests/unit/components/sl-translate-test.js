@@ -43,13 +43,13 @@ test( 'Renders as a span tag with no classes', function( assert ) {
 
 test( 'On initialization, extractParameterKeys() filters passed parameters', function( assert ) {
     const component = this.subject({
-            key: 'the_key',
-            pluralKey: 'plural_key',
-            pluralCount: 'plural_count',
-            $1: 'a',
-            2: 'b',
-            other: 'c'
-        });
+        key: 'the_key',
+        pluralKey: 'plural_key',
+        pluralCount: 'plural_count',
+        $1: 'a',
+        2: 'b',
+        other: 'c'
+    });
 
     assert.deepEqual(
         component.get( 'parameters' ).sort(),
