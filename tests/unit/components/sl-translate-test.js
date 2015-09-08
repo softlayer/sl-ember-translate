@@ -69,7 +69,9 @@ test( 'Can be used alongside other properties or attribute bindings', function( 
         translateService,
         key: 'key_alongside',
         tagName: 'h1',
-        classNames: [ 'testClass' ]
+        classNames: [
+            'testClass'
+        ]
     });
 
     assert.equal(
