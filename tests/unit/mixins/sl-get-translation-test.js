@@ -23,7 +23,9 @@ test( 'Successfully mixed', function( assert ) {
     const testObject = Ember.Object.extend( mixinUnderTest );
     const subject = testObject.create();
 
-    assert.ok( subject );
+    assert.ok(
+        subject
+    );
 });
 
 test( 'Call to get() with a key not beginning with "translate." is not intercepted', function( assert ) {
