@@ -5,7 +5,11 @@
 
 [![Build Status](https://img.shields.io/travis/softlayer/sl-ember-translate/master.svg)](https://travis-ci.org/softlayer/sl-ember-translate) [![Code Climate](https://img.shields.io/codeclimate/github/softlayer/sl-ember-translate.svg)](https://codeclimate.com/github/softlayer/sl-ember-translate) [![Ember Observer](http://emberobserver.com/badges/sl-ember-translate.svg)](http://emberobserver.com/addons/sl-ember-translate) [![Inch CI](http://inch-ci.org/github/softlayer/sl-ember-translate.svg?branch=master)](http://inch-ci.org/github/softlayer/sl-ember-translate)
 
-To see which issues are currently being worked on or are scheduled to be worked on next, visit [https://huboard.com/softlayer/sl-ember-translate/#/](https://huboard.com/softlayer/sl-ember-translate/#/)
+We use [https://waffle.io/softlayer/sl-ember-translate](https://waffle.io/softlayer/sl-ember-translate) to work our issues.
+
+[![Stories in Ready](https://badge.waffle.io/softlayer/sl-ember-translate.png?label=ready&title=Ready)](https://waffle.io/softlayer/sl-ember-translate) [![Stories in In Progress](https://badge.waffle.io/softlayer/sl-ember-translate.png?label=in%20progress&title=In%20Progress)](https://waffle.io/softlayer/sl-ember-translate) [![Stories in Ready For Review](https://badge.waffle.io/softlayer/sl-ember-translate.png?label=ready%20for%20review&title=Ready%20For%20Review)](https://waffle.io/softlayer/sl-ember-translate) [![Stories in In Review](https://badge.waffle.io/softlayer/sl-ember-translate.png?label=in%20review&title=In%20Review)](https://waffle.io/softlayer/sl-ember-translate)
+
+[![Throughput Graph](https://graphs.waffle.io/softlayer/sl-ember-translate/throughput.svg)](https://waffle.io/softlayer/sl-ember-translate/metrics)
 
 
 
