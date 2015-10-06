@@ -120,8 +120,8 @@ test( 'On initialization, extractParameterKeys() filters passed parameters to be
     });
 
     assert.deepEqual(
-        component.get( 'parameters' ).sort(),
-        [ '$3' ]
+        component.get( 'parameters' )[1],
+        '$3'
     );
 });
 

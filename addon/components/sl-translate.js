@@ -54,16 +54,23 @@ export default Ember.Component.extend({
     translateService: Ember.inject.service( 'sl-translate' ),
 
     /**
+     * Internal Translated String
+     *
+     * a property used as an internal Translated String in order to modify property only once upon render
+     *
+     * @type {?String}
+     */
+    internalTranslatedString: null,
+
+    /**
      * Translated string
      *
      * @type {?String}
      */
-    translatedString: null,
-
-    init: function() {
-        this._super.apply(this, arguments);
-        this.set( 'translatedString', this.translateString() );
-    },
+    translatedString: Ember.computed( 'internalTranslatedString', function() {
+        this.setTranslatedString();
+        return this.get( 'internalTranslatedString' );
+    }),
 
     // -------------------------------------------------------------------------
     // Observers
@@ -158,7 +165,7 @@ export default Ember.Component.extend({
      * @returns {undefined}
      */
     setTranslatedString() {
-        this.set( 'translatedString', this.translateString() );
+        this.set( 'internalTranslatedString', this.translateString() );
     },
 
     /**
