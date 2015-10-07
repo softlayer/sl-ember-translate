@@ -122,8 +122,8 @@ test( 'On initialization, extractParameterKeys() filters passed parameters to be
     });
 
     assert.deepEqual(
-        component.get( 'parameters' )[1],
-        '$3'
+        component.observedParameters,
+        [ '$3Binding' ]
     );
 });
 

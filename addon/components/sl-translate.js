@@ -101,7 +101,7 @@ export default Ember.Component.extend({
                     }
 
                     // Is a number that begins with $ and was passed as a binding
-                    if ( /^\$[0-9]*$/.test( key ) &&
+                    if ( /^\$[0-9]Binding/.test( key ) &&
                         'object' === Ember.typeOf( this.get( 'attrs' )[ key ] )
                         ) {
                         observedParameters.push( key );
