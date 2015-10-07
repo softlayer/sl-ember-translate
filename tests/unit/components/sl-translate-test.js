@@ -69,7 +69,9 @@ test( 'Can be used alongside other properties or attribute bindings', function( 
         translateService,
         key: 'key_alongside',
         tagName: 'h1',
-        classNames: [ 'testClass' ]
+        classNames: [
+            'testClass'
+        ]
     });
 
     assert.equal(
@@ -88,15 +90,15 @@ test( 'Can be used alongside other properties or attribute bindings', function( 
 
 test( 'On initialization, extractParameterKeys() filters passed parameters', function( assert ) {
     const component = this.subject({
-            key: 'the_key',
-            pluralKey: 'plural_key',
-            pluralCount: 'plural_count',
-            attrs: Ember.Object.create({
-                $1: 'a',
-                2: 'b',
-                other: 'c'
-            })
-        });
+        key: 'the_key',
+        pluralKey: 'plural_key',
+        pluralCount: 'plural_count',
+        attrs: Ember.Object.create( {
+            $1: 'a',
+            2: 'b',
+            other: 'c'
+        } )
+    });
 
     assert.deepEqual(
         component.get( 'parameters' ).sort(),
@@ -212,7 +214,9 @@ test(
         // Change value so can monitor for change
         setTranslatedStringWasCalled = false;
 
-        Ember.run( function() {
+        component.trigger( 'willInsertElement' );
+
+        Ember.run( () => {
             component.set(
                 '$0',
                 'c'
@@ -230,8 +234,10 @@ test( 'willClearRender event causes observers to be removed', function( assert )
     const component = this.subject({
         translateService,
         key: 'the_key',
-        $0Binding: 'a',
-        $1: 'b'
+        attrs: Ember.Object.create({
+            $0Binding: 'a',
+            $1: 'b'
+        })
     });
     let setTranslatedStringWasCalled = false;
 

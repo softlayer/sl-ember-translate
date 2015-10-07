@@ -67,10 +67,13 @@ export default Ember.Component.extend({
      *
      * @type {?String}
      */
-    translatedString: Ember.computed( 'internalTranslatedString', function() {
-        this.setTranslatedString();
-        return this.get( 'internalTranslatedString' );
-    }),
+    translatedString: Ember.computed(
+        'internalTranslatedString',
+        function() {
+            this.setTranslatedString();
+            return this.get( 'internalTranslatedString' );
+        }
+    ),
 
     // -------------------------------------------------------------------------
     // Observers
