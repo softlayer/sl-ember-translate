@@ -201,6 +201,6 @@ test( 'Dependent keys are correct', function( assert ) {
     assert.deepEqual(
         component.translatedString._dependentKeys,
         translatedStringDependentKeys,
-        'Dependent keys are correct for translatedString()'
+        'Dependent keys are set correctly for translatedString()'
     );
 });
