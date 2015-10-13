@@ -19,7 +19,7 @@ moduleForComponent( 'sl-translate', 'Unit | Component | sl translate', {
 test( 'The correct service is being injected into the component', function( assert ) {
     const component = this.subject();
 
-    assert.equal(
+    assert.strictEqual(
         component.translateService.name,
         'sl-translate',
         'The correct service is being injected into the component'
@@ -35,11 +35,11 @@ test( 'The correct service is being injected into the component', function( asse
 test( 'Renders as a span tag with no classes', function( assert ) {
     this.subject( { translateService } );
 
-    assert.equal(
+    assert.strictEqual(
         this.$().prop( 'tagName' ),
         'SPAN'
     );
-    assert.equal(
+    assert.strictEqual(
         this.$().prop( 'class' ),
         'ember-view'
     );
@@ -54,7 +54,7 @@ test( 'DOM and content of rendered translation', function( assert ) {
         translateService
     });
 
-    assert.equal(
+    assert.strictEqual(
         Ember.$.trim( this.$().text() ),
         'TRANSLATE: the_key'
     );
@@ -74,17 +74,17 @@ test( 'Can be used alongside other properties or attribute bindings', function( 
         ]
     });
 
-    assert.equal(
+    assert.strictEqual(
         this.$().prop( 'tagName' ),
         'H1'
     );
-    assert.equal(
+    assert.strictEqual(
         Ember.$.trim( this.$().text() ),
         'TRANSLATE: key_alongside'
     );
-    assert.equal(
+    assert.strictEqual(
         this.$().prop( 'class' ),
-        [ 'ember-view testClass' ]
+        'ember-view testClass'
     );
 });
 
@@ -136,7 +136,7 @@ test( 'setTranslatedString() sets translatedString property with value from tran
 
     component.setTranslatedString();
 
-    assert.equal(
+    assert.strictEqual(
         component.get( 'translatedString' ),
         'test value'
     );
@@ -156,15 +156,15 @@ test( 'translateString() calls translateKey() on the translation service', funct
 
     this.render();
 
-    assert.equal(
+    assert.strictEqual(
         translateService.get( 'key' ),
         'the_key'
     );
-    assert.equal(
+    assert.strictEqual(
         translateService.get( 'pluralKey' ),
         'plural_key'
     );
-    assert.equal(
+    assert.strictEqual(
         translateService.get( 'pluralCount' ),
         'plural_count'
     );
@@ -185,103 +185,22 @@ test( 'willInsertElement event causes setTranslatedString() to be called', funct
     // Render in DOM to trigger willInsertElement event
     this.render();
 
-    assert.equal(
+    assert.strictEqual(
         setTranslatedStringWasCalled,
         true
     );
 });
 
-test( '"atrs" property needs to be a string', function( assert ) {
+test( 'Dependent keys are correct', function( assert ) {
+    const component = this.subject();
 
-    const properties = Ember.Object.create();
+    const translatedStringDependentKeys = [
+        'internalTranslatedString'
+    ];
 
-    const callSubject = this.subject({
-        translateService,
-        key: 'the_key',
-        pluralKey: 'plural_key',
-        pluralCount: 'plural_count',
-        attrs: {
-            $0: 'a',
-            $1: 'b'
-        }
-    });
-
-    // Empty Property
-
-    assert.throws(
-        callSubject,
-        'Property was empty'
-    );
-
-    // Null Property
-
-    properties.set( 'title', null );
-
-    assert.throws(
-        callSubject,
-        'Property was null'
-    );
-
-
-    // Number Property
-
-    properties.set( 'title', 3 );
-
-    assert.throws(
-        callSubject,
-        'Property was a number'
-    );
-
-    // Boolean Property
-
-    properties.set( 'title', true );
-
-    assert.throws(
-        callSubject,
-        'Property was a boolean'
-    );
-
-    // Array Property
-
-    properties.set( 'title', [] );
-
-    assert.throws(
-        callSubject,
-        'Property was an array'
-    );
-
-    // Function Property
-
-    properties.set( 'title', function() { } );
-
-    assert.throws(
-        callSubject,
-        'Property was a function'
-    );
-
-    // Object Property
-
-    properties.set( 'title', {} );
-
-    assert.throws(
-        callSubject,
-        'Property was an object'
-    );
-
-    // Undefined Property
-
-    properties.set( 'title', undefined );
-
-    assert.throws(
-        callSubject,
-        'Property was undefined'
-    );
-
-    // String Property
-
-
-    assert.ok(
-        callSubject,
-        'Property was a string'
+    assert.deepEqual(
+        component.translatedString._dependentKeys,
+        translatedStringDependentKeys,
+        'Dependent keys are correct for translatedString()'
     );
 });
