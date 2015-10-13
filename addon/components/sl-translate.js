@@ -56,24 +56,11 @@ export default Ember.Component.extend({
     /**
      * Internal Translated String
      *
-     * a property used as an internal Translated String in order to modify property only once upon render
+     * A property used as an internal translated string in order to modify property only once upon render
      *
      * @type {?String}
      */
     internalTranslatedString: null,
-
-    /**
-     * Translated string
-     *
-     * @type {?String}
-     */
-    translatedString: Ember.computed(
-        'internalTranslatedString',
-        function() {
-            this.setTranslatedString();
-            return this.get( 'internalTranslatedString' );
-        }
-    ),
 
     // -------------------------------------------------------------------------
     // Observers
@@ -94,69 +81,31 @@ export default Ember.Component.extend({
                 const observedParameters = [];
 
                 Object.keys( this.get( 'attrs' ) ).map( key => {
-
-                    // Is a number that begins with $
                     if ( /^\$/.test( key ) ) {
                         parameters.push( key );
-                    }
-
-                    // Is a number that begins with $ and was passed as a binding
-                    if ( /^\$[0-9]Binding/.test( key ) &&
-                        'object' === Ember.typeOf( this.get( 'attrs' )[ key ] )
-                        ) {
                         observedParameters.push( key );
                     }
                 });
 
-                this.setProperties({
+                this.setProperties( {
                     observedParameters,
                     parameters
-                });
+                } );
             }
         }
     ),
 
     /**
-     * Register observers on filtered parameter list
-     *
-     * The reason observers have to be manually (de)registered rather than
-     * calling .property() on translateString() is because in order to support
-     * token replacement within a tranlsation string a user needs to be able to
-     * pass in a variable amount of (potentially) bound properties. There is not
-     * a way to specify such a dynamic list of properties in a .property() call.
+     *  willRender component lifecycle hook invoked before a component will render,
+     *  either initially or due to an update, and regardless of how the rerender was triggered.
+     *  removes the need to depend to worry about dependent keys.
      *
      * @function
      * @returns {undefined}
      */
-    registerObservers: Ember.on(
-        'willInsertElement',
-        function() {
-            this.get( 'observedParameters' ).map(
-                key => {
-                    this.addObserver( key, this, this.setTranslatedString );
-                }
-            );
-
-            this.setTranslatedString();
-        }
-    ),
-
-    /**
-     * Remove observers on filtered parameter list
-     *
-     * @function
-     * @returns {undefined}
-     */
-    unregisterObservers: Ember.on(
-        'willClearRender',
-        function() {
-            this.get( 'observedParameters' ).map(
-                key => {
-                    this.removeObserver( key, this, this.setTranslatedString );
-                }
-            );
-        }
-    ),
+    willRender: function() {
+        this.setTranslatedString();
+    },
 
     // -------------------------------------------------------------------------
     // Methods
@@ -195,5 +144,19 @@ export default Ember.Component.extend({
             pluralCount: this.get( 'pluralCount' ),
             parameters: parametersHash
         });
-    }
+    },
+
+    /**
+     * Sets translatedString value once per render based on internalTranslatedString
+     *
+     * @function
+     * @returns {?String}
+     */
+    translatedString: Ember.computed(
+        'internalTranslatedString',
+        function() {
+            this.setTranslatedString();
+            return this.get( 'internalTranslatedString' );
+        }
+    )
 });

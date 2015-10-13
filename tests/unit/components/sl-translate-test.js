@@ -93,11 +93,11 @@ test( 'On initialization, extractParameterKeys() filters passed parameters', fun
         key: 'the_key',
         pluralKey: 'plural_key',
         pluralCount: 'plural_count',
-        attrs: Ember.Object.create( {
+        attrs: {
             $1: 'a',
             2: 'b',
             other: 'c'
-        } )
+        }
     });
 
     assert.deepEqual(
@@ -107,23 +107,23 @@ test( 'On initialization, extractParameterKeys() filters passed parameters', fun
 });
 
 test( 'On initialization, extractParameterKeys() filters passed parameters to be bound', function( assert ) {
-    const boundProperty = null;
+    const boundProperty = 'test';
     const component = this.subject({
         key: 'the_key',
         pluralKey: 'plural_key',
         pluralCount: 'plural_count',
-        attrs: Ember.Object.create({
+        attrs: {
             $1: 'a',
             2: 'b',
             $3: boundProperty,
             $3Binding: 'hack; should test this more correctly',
             other: 'c'
-        })
+        }
     });
 
     assert.deepEqual(
-        component.observedParameters,
-        [ '$3Binding' ]
+        component.get( 'attrs' )['$3'],
+        boundProperty
     );
 });
 
@@ -148,10 +148,10 @@ test( 'translateString() calls translateKey() on the translation service', funct
         key: 'the_key',
         pluralKey: 'plural_key',
         pluralCount: 'plural_count',
-        attrs: Ember.Object.create({
+        attrs: {
             $0: 'a',
             $1: 'b'
-        })
+        }
     });
 
     this.render();
@@ -191,77 +191,97 @@ test( 'willInsertElement event causes setTranslatedString() to be called', funct
     );
 });
 
-test(
-    'willInsertElement event causes observers to be added to each entry in observedParameters property',
-    function( assert ) {
-        const component = this.subject({
-            translateService,
-            key: 'the_key',
-            attrs: Ember.Object.create({
-                $0Binding: 'a',
-                $1: 'b'
-            })
-        });
-        let setTranslatedStringWasCalled = false;
+test( '"atrs" property needs to be a string', function( assert ) {
 
-        component.setTranslatedString = function() {
-            setTranslatedStringWasCalled = true;
-        };
+    const properties = Ember.Object.create();
 
-        // Render in DOM to trigger willInsertElement event
-        this.render();
-
-        // Change value so can monitor for change
-        setTranslatedStringWasCalled = false;
-
-        component.trigger( 'willInsertElement' );
-
-        Ember.run( () => {
-            component.set(
-                '$0',
-                'c'
-            );
-        });
-
-        assert.equal(
-            setTranslatedStringWasCalled,
-            true
-        );
-    }
-);
-
-test( 'willClearRender event causes observers to be removed', function( assert ) {
-    const component = this.subject({
+    const callSubject = this.subject({
         translateService,
         key: 'the_key',
-        attrs: Ember.Object.create({
-            $0Binding: 'a',
+        pluralKey: 'plural_key',
+        pluralCount: 'plural_count',
+        attrs: {
+            $0: 'a',
             $1: 'b'
-        })
-    });
-    let setTranslatedStringWasCalled = false;
-
-    component.setTranslatedString = () => {
-        setTranslatedStringWasCalled = true;
-    };
-
-    // Render in DOM to trigger willInsertElement event
-    this.render();
-
-    // Change value so can monitor for change
-    setTranslatedStringWasCalled = false;
-
-    component.trigger( 'willClearRender' );
-
-    Ember.run( () => {
-        component.set(
-            '$0',
-            'c'
-        );
+        }
     });
 
-    assert.equal(
-        setTranslatedStringWasCalled,
-        false
+    // Empty Property
+
+    assert.throws(
+        callSubject,
+        'Property was empty'
+    );
+
+    // Null Property
+
+    properties.set( 'title', null );
+
+    assert.throws(
+        callSubject,
+        'Property was null'
+    );
+
+
+    // Number Property
+
+    properties.set( 'title', 3 );
+
+    assert.throws(
+        callSubject,
+        'Property was a number'
+    );
+
+    // Boolean Property
+
+    properties.set( 'title', true );
+
+    assert.throws(
+        callSubject,
+        'Property was a boolean'
+    );
+
+    // Array Property
+
+    properties.set( 'title', [] );
+
+    assert.throws(
+        callSubject,
+        'Property was an array'
+    );
+
+    // Function Property
+
+    properties.set( 'title', function() { } );
+
+    assert.throws(
+        callSubject,
+        'Property was a function'
+    );
+
+    // Object Property
+
+    properties.set( 'title', {} );
+
+    assert.throws(
+        callSubject,
+        'Property was an object'
+    );
+
+    // Undefined Property
+
+    properties.set( 'title', undefined );
+
+    assert.throws(
+        callSubject,
+        'Property was undefined'
+    );
+
+    // String Property
+
+
+    assert.ok(
+        callSubject,
+        'Property was a string'
     );
 });

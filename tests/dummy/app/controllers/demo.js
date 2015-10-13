@@ -6,5 +6,6 @@ export default Ember.Controller.extend({
             this.set( 'valueToDisplay', 'New Updated Value - ' + Math.random() );
         }
     },
+
     valueToDisplay: 'Unicorn'
 });
