@@ -1,4 +1,3 @@
-
 import Ember from 'ember';
 import template from '../templates/components/sl-translate';
 
@@ -48,7 +47,13 @@ export default Ember.Component.extend({
     // -------------------------------------------------------------------------
     // Observers
 
-    test: Ember.on(
+    /**
+     * Set translated string on render
+     *
+     * @function
+     * @returns {undefined}
+     */
+    setTranslatedStringUponRender: Ember.on(
         'willRender',
         function() {
             this.setTranslatedString();
@@ -97,7 +102,7 @@ export default Ember.Component.extend({
     },
 
     /**
-     * Sets translatedString value once per render based on internalTranslatedString
+     * Sets translatedString value once per render based on internal translated string
      *
      * @function
      * @returns {?String}
