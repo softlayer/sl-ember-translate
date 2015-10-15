@@ -19,7 +19,7 @@ moduleForComponent( 'sl-translate', 'Unit | Component | sl translate', {
 test( 'The correct service is being injected into the component', function( assert ) {
     const component = this.subject();
 
-    assert.strictEqual(
+    assert.equal(
         component.translateService.name,
         'sl-translate',
         'The correct service is being injected into the component'
@@ -35,94 +35,27 @@ test( 'The correct service is being injected into the component', function( asse
 test( 'Renders as a span tag with no classes', function( assert ) {
     this.subject( { translateService } );
 
-    assert.strictEqual(
+    assert.equal(
         this.$().prop( 'tagName' ),
         'SPAN'
     );
-    assert.strictEqual(
-        this.$().prop( 'class' ),
-        'ember-view'
-    );
 });
 
-/**
- * That it renders and functions as expected
- */
-test( 'DOM and content of rendered translation', function( assert ) {
-    this.subject({
-        key: 'the_key',
-        translateService
-    });
-
-    assert.strictEqual(
-        Ember.$.trim( this.$().text() ),
-        'TRANSLATE: the_key'
-    );
-});
-
-/**
- * Ensure haven't broken any default behavior of Ember, since manipulate properties passed to the component
- * A side effect of this test is the appearance that core Ember functionality is being tested
- */
-test( 'Can be used alongside other properties or attribute bindings', function( assert ) {
-    this.subject({
-        translateService,
-        key: 'key_alongside',
-        tagName: 'h1',
-        classNames: [
-            'testClass'
-        ]
-    });
-
-    assert.strictEqual(
-        this.$().prop( 'tagName' ),
-        'H1'
-    );
-    assert.strictEqual(
-        Ember.$.trim( this.$().text() ),
-        'TRANSLATE: key_alongside'
-    );
-    assert.strictEqual(
-        this.$().prop( 'class' ),
-        'ember-view testClass'
-    );
-});
-
-test( 'On initialization, extractParameterKeys() filters passed parameters', function( assert ) {
-    const component = this.subject({
-        key: 'the_key',
-        pluralKey: 'plural_key',
-        pluralCount: 'plural_count',
-        attrs: {
-            $1: 'a',
-            2: 'b',
-            other: 'c'
-        }
-    });
-
-    assert.deepEqual(
-        component.get( 'parameters' ).sort(),
-        [ '$1' ]
-    );
-});
 
 test( 'On initialization, extractParameterKeys() filters passed parameters to be bound', function( assert ) {
-    const boundProperty = 'test';
+    const boundProperty = "test";
     const component = this.subject({
         key: 'the_key',
         pluralKey: 'plural_key',
         pluralCount: 'plural_count',
-        attrs: {
-            $1: 'a',
-            2: 'b',
-            $3: boundProperty,
-            $3Binding: 'hack; should test this more correctly',
-            other: 'c'
-        }
+        $1: 'a',
+        2: 'b',
+        $3: boundProperty,
+        other: 'c'
     });
 
     assert.deepEqual(
-        component.get( 'attrs' )['$3'],
+        component.get( '$3' ),
         boundProperty
     );
 });
@@ -136,58 +69,9 @@ test( 'setTranslatedString() sets translatedString property with value from tran
 
     component.setTranslatedString();
 
-    assert.strictEqual(
+    assert.equal(
         component.get( 'translatedString' ),
         'test value'
-    );
-});
-
-test( 'translateString() calls translateKey() on the translation service', function( assert ) {
-    this.subject({
-        translateService,
-        key: 'the_key',
-        pluralKey: 'plural_key',
-        pluralCount: 'plural_count',
-        attrs: {
-            $0: 'a',
-            $1: 'b'
-        }
-    });
-
-    this.render();
-
-    assert.strictEqual(
-        translateService.get( 'key' ),
-        'the_key'
-    );
-    assert.strictEqual(
-        translateService.get( 'pluralKey' ),
-        'plural_key'
-    );
-    assert.strictEqual(
-        translateService.get( 'pluralCount' ),
-        'plural_count'
-    );
-    assert.deepEqual(
-        translateService.get( 'parameters' ),
-        { $0: 'a', $1: 'b' }
-    );
-});
-
-test( 'willInsertElement event causes setTranslatedString() to be called', function( assert ) {
-    const component = this.subject();
-    let setTranslatedStringWasCalled = false;
-
-    component.setTranslatedString = function() {
-        setTranslatedStringWasCalled = true;
-    };
-
-    // Render in DOM to trigger willInsertElement event
-    this.render();
-
-    assert.strictEqual(
-        setTranslatedStringWasCalled,
-        true
     );
 });
 
