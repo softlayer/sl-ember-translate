@@ -43,7 +43,7 @@ test( 'Renders as a span tag with no classes', function( assert ) {
 
 
 test( 'On initialization, extractParameterKeys() filters passed parameters to be bound', function( assert ) {
-    const boundProperty = "test";
+    const boundProperty = 'test';
     const component = this.subject({
         key: 'the_key',
         pluralKey: 'plural_key',

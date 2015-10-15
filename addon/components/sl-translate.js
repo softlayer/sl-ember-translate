@@ -69,7 +69,7 @@ export default Ember.Component.extend({
      * @function
      * @returns {undefined}
      */
-     setTranslatedString() {
+    setTranslatedString() {
         this.set( 'internalTranslatedString', this.translateString() );
     },
 
@@ -87,7 +87,7 @@ export default Ember.Component.extend({
     translateString() {
         const parametersHash = {};
 
-        Object.keys(this).map( key => {
+        Object.keys( this ).map( key => {
             if ( /^\$[0-9]/.test( key ) ) {
                 parametersHash[key] = this.get( key );
             }
