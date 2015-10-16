@@ -44,36 +44,35 @@ test( 'Renders as a span tag with no classes', function( assert ) {
 
 test( 'setTranslatedString() sets internalTranslatedString property with value from translateString()',
     function( assert ) {
-        const component = this.subject({
-            translateService,
-            key: 'the_key',
-            pluralKey: 'plural_key',
-            pluralCount: 'plural_count',
-            $0: 'a',
-            $1: 'b'
-        });
+    const component = this.subject({
+        translateService,
+        key: 'the_key',
+        pluralKey: 'plural_key',
+        pluralCount: 'plural_count',
+        $0: 'a',
+        $1: 'b'
+    });
 
-        this.render();
+    this.render();
 
-        const spy = sinon.spy( component, 'translateString' );
+    const spy = sinon.spy( component, 'translateString' );
 
-        Ember.run( () => {
-            component.setTranslatedString();
-        });
+    Ember.run( () => {
+        component.setTranslatedString();
+    });
 
-        assert.equal(
-            component.get( 'internalTranslatedString' ),
-            'TRANSLATE: the_key',
-            'the property "internalTranslatedString" has the correct value'
-        );
+    assert.equal(
+        component.get( 'internalTranslatedString' ),
+        'TRANSLATE: the_key',
+        'the property "internalTranslatedString" has the correct value'
+    );
 
-        assert.equal(
-            spy.calledOnce,
-            true,
-            'translateString() is called successfully once'
-        );
-    }
-);
+    assert.equal(
+        spy.calledOnce,
+        true,
+        'translateString() is called successfully once'
+    );
+});
 
 test( 'Dependent keys are correct', function( assert ) {
     const component = this.subject();
