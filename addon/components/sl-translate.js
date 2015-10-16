@@ -10,6 +10,13 @@ export default Ember.Component.extend({
     // -------------------------------------------------------------------------
     // Dependencies
 
+    /**
+     * Translation Service, used to translate content
+     *
+     * @type {ember/Service}
+     */
+    translateService: Ember.inject.service( 'sl-translate' ),
+
     // -------------------------------------------------------------------------
     // Attributes
 
@@ -36,13 +43,6 @@ export default Ember.Component.extend({
      * @type {?String}
      */
     internalTranslatedString: null,
-
-    /**
-     * Translation Service, used to translate content
-     *
-     * @type {ember/Service}
-     */
-    translateService: Ember.inject.service( 'sl-translate' ),
 
     // -------------------------------------------------------------------------
     // Observers

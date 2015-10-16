@@ -1,5 +1,6 @@
 import Ember from 'ember';
 import { moduleForComponent, test } from 'ember-qunit';
+import sinon from 'sinon';
 
 const translateService = Ember.Object.create({
     translateKey( data ) {
@@ -41,39 +42,38 @@ test( 'Renders as a span tag with no classes', function( assert ) {
     );
 });
 
+test( 'setTranslatedString() sets internalTranslatedString property with value from translateString()',
+    function( assert ) {
+        const component = this.subject({
+            translateService,
+            key: 'the_key',
+            pluralKey: 'plural_key',
+            pluralCount: 'plural_count',
+            $0: 'a',
+            $1: 'b'
+        });
 
-test( 'On initialization, extractParameterKeys() filters passed parameters to be bound', function( assert ) {
-    const boundProperty = 'test';
-    const component = this.subject({
-        key: 'the_key',
-        pluralKey: 'plural_key',
-        pluralCount: 'plural_count',
-        $1: 'a',
-        2: 'b',
-        $3: boundProperty,
-        other: 'c'
-    });
+        this.render();
 
-    assert.deepEqual(
-        component.get( '$3' ),
-        boundProperty
-    );
-});
+        const spy = sinon.spy( component, 'translateString' );
 
-test( 'setTranslatedString() sets translatedString property with value from translateString()', function( assert ) {
-    const component = this.subject();
+        Ember.run( () => {
+            component.setTranslatedString();
+        });
 
-    component.translateString = function() {
-        return 'test value';
-    };
+        assert.equal(
+            component.get( 'internalTranslatedString' ),
+            'TRANSLATE: the_key',
+            'the property "internalTranslatedString" has the correct value'
+        );
 
-    component.setTranslatedString();
-
-    assert.equal(
-        component.get( 'translatedString' ),
-        'test value'
-    );
-});
+        assert.equal(
+            spy.calledOnce,
+            true,
+            'translateString() is called successfully once'
+        );
+    }
+);
 
 test( 'Dependent keys are correct', function( assert ) {
     const component = this.subject();
