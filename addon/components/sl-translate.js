@@ -56,8 +56,9 @@ export default Ember.Component.extend({
     setTranslatedStringUponRender: Ember.on(
         'willRender',
         function() {
-        this.setTranslatedString();
-    }),
+            this.setTranslatedString();
+        }
+    ),
 
     // -------------------------------------------------------------------------
     // Methods
@@ -109,6 +110,7 @@ export default Ember.Component.extend({
     translatedString: Ember.computed(
         'internalTranslatedString',
             function() {
-        return this.get( 'internalTranslatedString' );
-    })
+                return this.get( 'internalTranslatedString' );
+            }
+    )
 });

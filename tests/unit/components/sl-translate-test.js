@@ -38,55 +38,57 @@ test( 'Renders as a span tag with no classes', function( assert ) {
 
 test( 'setTranslatedString() sets internalTranslatedString property with value from translateString()',
     function( assert ) {
-    const component = this.subject({
-        translateService,
-        key: 'the_key',
-        pluralKey: 'plural_key',
-        pluralCount: 'plural_count',
-        $0: 'a',
-        $1: 'b'
-    });
+        const component = this.subject({
+            translateService,
+            key: 'the_key',
+            pluralKey: 'plural_key',
+            pluralCount: 'plural_count',
+            $0: 'a',
+            $1: 'b'
+        });
 
-    const spy = sinon.spy( component, 'translateString' );
+        const spy = sinon.spy( component, 'translateString' );
 
-    Ember.run( () => {
-        component.setTranslatedString();
-    });
+        Ember.run( () => {
+            component.setTranslatedString();
+        });
 
-    assert.strictEqual(
-        component.get( 'internalTranslatedString' ),
-        'TRANSLATE: the_key',
-        'the property "internalTranslatedString" has the correct value'
-    );
+        assert.strictEqual(
+            component.get( 'internalTranslatedString' ),
+            'TRANSLATE: the_key',
+            'the property "internalTranslatedString" has the correct value'
+        );
 
-    assert.strictEqual(
-        spy.calledOnce,
-        true,
-        'translateString() is called successfully once'
-    );
-});
+        assert.strictEqual(
+            spy.calledOnce,
+            true,
+            'translateString() is called successfully once'
+        );
+    }
+);
 
 test( 'setTranslatedString() sets internalTranslatedString and translatedString sets correct value',
     function( assert ) {
-    const component = this.subject( {
-        translateService,
-        key: 'the_key',
-        pluralKey: 'plural_key',
-        pluralCount: 'plural_count',
-        $0: 'a',
-        $1: 'b'
-    });
+        const component = this.subject( {
+            translateService,
+            key: 'the_key',
+            pluralKey: 'plural_key',
+            pluralCount: 'plural_count',
+            $0: 'a',
+            $1: 'b'
+        });
 
-    Ember.run( () => {
-        component.setTranslatedString();
-    });
+        Ember.run( () => {
+            component.setTranslatedString();
+        });
 
-    assert.strictEqual(
-        component.get( 'translatedString' ),
-        'TRANSLATE: the_key',
-        'translatedString computed property sets correct string'
-    );
-});
+        assert.strictEqual(
+            component.get( 'translatedString' ),
+            'TRANSLATE: the_key',
+            'translatedString computed property sets correct string'
+        );
+    }
+);
 
 test( 'translateString() calls translateKey() on the translation service with given values', function( assert ) {
     this.subject({
