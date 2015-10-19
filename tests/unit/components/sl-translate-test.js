@@ -19,7 +19,7 @@ moduleForComponent( 'sl-translate', 'Unit | Component | sl translate', {
 test( 'The correct service is being injected into the component', function( assert ) {
     const component = this.subject();
 
-    assert.equal(
+    assert.strictEqual(
         component.translateService.name,
         'sl-translate',
         'The correct service is being injected into the component'
@@ -35,7 +35,7 @@ test( 'The correct service is being injected into the component', function( asse
 test( 'Renders as a span tag with no classes', function( assert ) {
     this.subject( { translateService } );
 
-    assert.equal(
+    assert.strictEqual(
         this.$().prop( 'tagName' ),
         'SPAN'
     );
@@ -85,7 +85,7 @@ test( 'setTranslatedString() sets translatedString property with value from tran
 
     component.setTranslatedString();
 
-    assert.equal(
+    assert.strictEqual(
         component.get( 'translatedString' ),
         'test value'
     );
@@ -103,15 +103,15 @@ test( 'translateString() calls translateKey() on the translation service', funct
 
     this.render();
 
-    assert.equal(
+    assert.strictEqual(
         translateService.get( 'key' ),
         'the_key'
     );
-    assert.equal(
+    assert.strictEqual(
         translateService.get( 'pluralKey' ),
         'plural_key'
     );
-    assert.equal(
+    assert.strictEqual(
         translateService.get( 'pluralCount' ),
         'plural_count'
     );
@@ -132,7 +132,7 @@ test( 'willInsertElement event causes setTranslatedString() to be called', funct
     // Render in DOM to trigger willInsertElement event
     this.render();
 
-    assert.equal(
+    assert.strictEqual(
         setTranslatedStringWasCalled,
         true
     );
@@ -166,7 +166,7 @@ test(
             );
         });
 
-        assert.equal(
+        assert.strictEqual(
             setTranslatedStringWasCalled,
             true
         );
@@ -201,7 +201,7 @@ test( 'willClearRender event causes observers to be removed', function( assert )
         );
     });
 
-    assert.equal(
+    assert.strictEqual(
         setTranslatedStringWasCalled,
         false
     );

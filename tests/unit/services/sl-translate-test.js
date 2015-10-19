@@ -13,15 +13,15 @@ moduleFor( 'service:sl-translate', 'Unit | Service | sl translate', {
     unit: true
 });
 
-test( 'container property defaults to null', function( assert ) {
-    assert.equal(
+test( 'container property defaults to undefined', function( assert ) {
+    assert.strictEqual(
         TS.get( 'container' ),
-        null
+        undefined
     );
 });
 
 test( 'dictionary property defaults to null', function( assert ) {
-    assert.equal(
+    assert.strictEqual(
         TS.get( 'dictionary' ),
         null
     );
@@ -93,7 +93,7 @@ test( 'setDictionary() accepts only an object as a parameter', function( assert 
     // Object
     testProperty.set( 'parameter', {} );
 
-    assert.equal(
+    assert.strictEqual(
         callSetDictionary(),
         undefined,
         'Parameter was an object'
@@ -102,7 +102,7 @@ test( 'setDictionary() accepts only an object as a parameter', function( assert 
     // Ember.Object instance
     testProperty.set( 'parameter', Ember.Object.create( {} ) );
 
-    assert.equal(
+    assert.strictEqual(
         callSetDictionary(),
         undefined,
         'Parameter was an Ember.Object instance'
@@ -138,7 +138,7 @@ test( 'getKeyValue() returns requested key\'s translated string', function( asse
         'the_key': 'my value'
     }) );
 
-    assert.equal(
+    assert.strictEqual(
         TS.getKeyValue( 'the_key' ),
         'my value'
     );
@@ -161,14 +161,14 @@ test( 'translateKey() returns translated string for specified key', function( as
         'the_key': 'my value'
     }) );
 
-    assert.equal(
+    assert.strictEqual(
         TS.getKeyValue( 'the_key' ),
         'my value'
     );
 });
 
 test( 'If either "pluralKey" or "pluralCount" are provided to translateKey() then both must be', function( assert ) {
-    assert.equal(
+    assert.strictEqual(
         TS.translateKey({
             key: 'singular_key',
             pluralKey: 'plural_key'
@@ -176,7 +176,7 @@ test( 'If either "pluralKey" or "pluralCount" are provided to translateKey() the
         'singular_key'
     );
 
-    assert.equal(
+    assert.strictEqual(
         TS.translateKey({
             key: 'singular_key',
             pluralCount: 3
@@ -207,7 +207,7 @@ test( 'Pluralization occurs when provided the necessary information', function( 
         'the_plural_key': 'Plural translated value'
     }) );
 
-    assert.equal(
+    assert.strictEqual(
         TS.translateKey({
             key: 'the_singular_key',
             pluralKey: 'the_plural_key',
@@ -216,7 +216,7 @@ test( 'Pluralization occurs when provided the necessary information', function( 
         'Singular translated value'
         );
 
-    assert.equal(
+    assert.strictEqual(
         TS.translateKey({
             key: 'the_singular_key',
             pluralKey: 'the_plural_key',
@@ -231,7 +231,7 @@ test( 'Token replacement in translation string', function( assert ) {
         'the_key': 'Replaced values: {0} and {1}'
     }) );
 
-    assert.equal(
+    assert.strictEqual(
         TS.translateKey({
             key: 'the_key',
             parameters: {
