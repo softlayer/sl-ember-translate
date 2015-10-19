@@ -36,7 +36,8 @@ test( 'Renders as a span tag with no classes', function( assert ) {
     );
 });
 
-test( 'setTranslatedString() sets internalTranslatedString property with value from translateString()',
+test(
+    'setTranslatedString() sets internalTranslatedString property with value from translateString()',
     function( assert ) {
         const component = this.subject({
             translateService,
@@ -120,21 +121,24 @@ test( 'translateString() calls translateKey() on the translation service with gi
 });
 
 test( 'translateString() only accepts the correct parameter key pattern', function( assert ) {
-    this.subject({
+    const component = this.subject({
         translateService,
         key: 'the_key',
         pluralKey: 'plural_key',
         pluralCount: 'plural_count',
         $0: 'a',
-        $1: 'b',
-        c: 'c',
-        $: 'd',
-        $19: 'e'
+        $12: 'b',
+        r: 'c',
+        $10000: 'd'
+    });
+
+    Ember.run( () => {
+        component.translateString();
     });
 
     assert.deepEqual(
         translateService.get( 'parameters' ),
-        { $0: 'a', $1: 'b' }
+        { $0: 'a', $12: 'b', $10000: 'd' }
     );
 });
 
@@ -149,5 +153,26 @@ test( 'Dependent keys are correct', function( assert ) {
         component.translatedString._dependentKeys,
         translatedStringDependentKeys,
         'Dependent keys are set correctly for translatedString()'
+    );
+});
+
+test( 'setTranslatedString() is called when the willRender() evenet occurs', function( assert ) {
+    const component = this.subject( {
+        translateService,
+        key: 'the_key',
+        pluralKey: 'plural_key',
+        pluralCount: 'plural_count',
+        $0: 'a',
+        $1: 'b'
+    });
+
+    const spy = sinon.spy( component, 'setTranslatedString' );
+
+    component.trigger( 'willRender' );
+
+    assert.strictEqual(
+        spy.calledOnce,
+        true,
+        'setTranslatedString() is called successfully'
     );
 });
