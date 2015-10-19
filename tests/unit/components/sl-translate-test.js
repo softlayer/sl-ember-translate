@@ -20,23 +20,17 @@ moduleForComponent( 'sl-translate', 'Unit | Component | sl translate', {
 test( 'The correct service is being injected into the component', function( assert ) {
     const component = this.subject();
 
-    assert.equal(
+    assert.strictEqual(
         component.translateService.name,
         'sl-translate',
         'The correct service is being injected into the component'
     );
 });
 
-/**
- * Ensures that the template is wrapping the content in a span tag and not in
- * any block-level tags. While it appears that core Ember functionality is being
- * tested this test is ensuring that the implied contract about how this non-UI
- * component is rendered into the DOM is adhered to.
- */
 test( 'Renders as a span tag with no classes', function( assert ) {
     this.subject( { translateService } );
 
-    assert.equal(
+    assert.strictEqual(
         this.$().prop( 'tagName' ),
         'SPAN'
     );
@@ -53,24 +47,92 @@ test( 'setTranslatedString() sets internalTranslatedString property with value f
         $1: 'b'
     });
 
-    this.render();
-
     const spy = sinon.spy( component, 'translateString' );
 
     Ember.run( () => {
         component.setTranslatedString();
     });
 
-    assert.equal(
+    assert.strictEqual(
         component.get( 'internalTranslatedString' ),
         'TRANSLATE: the_key',
         'the property "internalTranslatedString" has the correct value'
     );
 
-    assert.equal(
+    assert.strictEqual(
         spy.calledOnce,
         true,
         'translateString() is called successfully once'
+    );
+});
+
+test( 'setTranslatedString() sets internalTranslatedString and translatedString sets correct value',
+    function( assert ) {
+    const component = this.subject( {
+        translateService,
+        key: 'the_key',
+        pluralKey: 'plural_key',
+        pluralCount: 'plural_count',
+        $0: 'a',
+        $1: 'b'
+    });
+
+    Ember.run( () => {
+        component.setTranslatedString();
+    });
+
+    assert.strictEqual(
+        component.get( 'translatedString' ),
+        'TRANSLATE: the_key',
+        'translatedString computed property sets correct string'
+    );
+});
+
+test( 'translateString() calls translateKey() on the translation service with given values', function( assert ) {
+    this.subject({
+        translateService,
+        key: 'the_key',
+        pluralKey: 'plural_key',
+        pluralCount: 'plural_count',
+        $0: 'a',
+        $1: 'b',
+        c: 'c'
+    });
+
+    assert.strictEqual(
+        translateService.get( 'key' ),
+        'the_key'
+    );
+    assert.strictEqual(
+        translateService.get( 'pluralKey' ),
+        'plural_key'
+    );
+    assert.strictEqual(
+        translateService.get( 'pluralCount' ),
+        'plural_count'
+    );
+    assert.deepEqual(
+        translateService.get( 'parameters' ),
+        { $0: 'a', $1: 'b' }
+    );
+});
+
+test( 'translateString() only accepts the correct parameter key pattern', function( assert ) {
+    this.subject({
+        translateService,
+        key: 'the_key',
+        pluralKey: 'plural_key',
+        pluralCount: 'plural_count',
+        $0: 'a',
+        $1: 'b',
+        c: 'c',
+        $: 'd',
+        $19: 'e'
+    });
+
+    assert.deepEqual(
+        translateService.get( 'parameters' ),
+        { $0: 'a', $1: 'b' }
     );
 });
 
