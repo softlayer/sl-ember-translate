@@ -10,6 +10,13 @@ export default Ember.Component.extend({
     // -------------------------------------------------------------------------
     // Dependencies
 
+    /**
+     * Translation Service, used to translate content
+     *
+     * @type {ember/Service}
+     */
+    translateService: Ember.inject.service( 'sl-translate' ),
+
     // -------------------------------------------------------------------------
     // Attributes
 
@@ -29,111 +36,27 @@ export default Ember.Component.extend({
     // Properties
 
     /**
-     * Filtered array of parameters passed to this component
+     * Internal Translated String
      *
-     * Only contains those that are a number that begin with "$" and are to be bound to
-     *
-     * @type {?Array}
-     */
-    observedParameters: null,
-
-    /**
-     * Filtered array of parameters passed to this component
-     *
-     * Only contains those that are a number that begin with "$" and also do not end in "Binding"
-     *
-     * @type {?Array}
-     */
-    parameters: null,
-
-    /**
-     * Translation Service, used to translate content
-     *
-     * @type {ember/Service}
-     */
-    translateService: Ember.inject.service( 'sl-translate' ),
-
-    /**
-     * Translated string
+     * A property used as an internal translated string in order to modify property only once upon render
      *
      * @type {?String}
      */
-    translatedString: null,
+    internalTranslatedString: null,
 
     // -------------------------------------------------------------------------
     // Observers
 
     /**
-     * Filter passed parameters on initialization
+     * Set translated string on render
      *
      * @function
      * @returns {undefined}
      */
-    extractParameterKeys: Ember.on(
-        'init',
+    setTranslatedStringUponRender: Ember.on(
+        'willRender',
         function() {
-            const parameters = [];
-            const observedParameters = [];
-
-            Object.keys( this ).map( key => {
-
-                // Is a number that begins with $
-                if ( /^\$/.test( key ) ) {
-                    parameters.push( key );
-                }
-
-                // Is a number that begins with $ and was passed as a binding
-                if ( /^\$[0-9]*$/.test( key ) && this.hasOwnProperty( key + 'Binding' ) ) {
-                    observedParameters.push( key );
-                }
-            });
-
-            this.setProperties({
-                observedParameters,
-                parameters
-            });
-        }
-    ),
-
-    /**
-     * Register observers on filtered parameter list
-     *
-     * The reason observers have to be manually (de)registered rather than
-     * calling .property() on translateString() is because in order to support
-     * token replacement within a tranlsation string a user needs to be able to
-     * pass in a variable amount of (potentially) bound properties. There is not
-     * a way to specify such a dynamic list of properties in a .property() call.
-     *
-     * @function
-     * @returns {undefined}
-     */
-    registerObservers: Ember.on(
-        'willInsertElement',
-        function() {
-            this.get( 'observedParameters' ).map(
-                key => {
-                    this.addObserver( key, this, this.setTranslatedString );
-                }
-            );
-
             this.setTranslatedString();
-        }
-    ),
-
-    /**
-     * Remove observers on filtered parameter list
-     *
-     * @function
-     * @returns {undefined}
-     */
-    unregisterObservers: Ember.on(
-        'willClearRender',
-        function() {
-            this.get( 'observedParameters' ).map(
-                key => {
-                    this.removeObserver( key, this, this.setTranslatedString );
-                }
-            );
         }
     ),
 
@@ -147,7 +70,7 @@ export default Ember.Component.extend({
      * @returns {undefined}
      */
     setTranslatedString() {
-        this.set( 'translatedString', this.translateString() );
+        this.set( 'internalTranslatedString', this.translateString() );
     },
 
     /**
@@ -164,8 +87,10 @@ export default Ember.Component.extend({
     translateString() {
         const parametersHash = {};
 
-        this.get( 'parameters' ).map( key => {
-            parametersHash[key] = this.get( key );
+        Object.keys( this ).map( key => {
+            if ( /^\$\d+/.test( key ) ) {
+                parametersHash[key] = this.get( key );
+            }
         });
 
         return this.get( 'translateService' ).translateKey({
@@ -174,5 +99,18 @@ export default Ember.Component.extend({
             pluralCount: this.get( 'pluralCount' ),
             parameters: parametersHash
         });
-    }
+    },
+
+    /**
+     * Sets translatedString value once per render based on internal translated string
+     *
+     * @function
+     * @returns {?String}
+     */
+    translatedString: Ember.computed(
+        'internalTranslatedString',
+            function() {
+                return this.get( 'internalTranslatedString' );
+            }
+    )
 });

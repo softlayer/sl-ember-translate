@@ -1,13 +1,6 @@
 import Ember from 'ember';
 
 export default Ember.Route.extend({
-
-    actions: {
-        updateStringValues: function() {
-            this.controllerFor( 'demo' ).set( 'valueToDisplay', 'New Updated Value - ' + Math.random() );
-        }
-    },
-
     model: function() {
         return Ember.Object.create({
             'SIMPLE_KEY': 'I have been translated',

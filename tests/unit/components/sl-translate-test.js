@@ -1,5 +1,6 @@
 import Ember from 'ember';
 import { moduleForComponent, test } from 'ember-qunit';
+import sinon from 'sinon';
 
 const translateService = Ember.Object.create({
     translateKey( data ) {
@@ -19,99 +20,97 @@ moduleForComponent( 'sl-translate', 'Unit | Component | sl translate', {
 test( 'The correct service is being injected into the component', function( assert ) {
     const component = this.subject();
 
-    assert.equal(
+    assert.strictEqual(
         component.translateService.name,
         'sl-translate',
         'The correct service is being injected into the component'
     );
 });
 
-/**
- * Ensures that the template is wrapping the content in a span tag and not in
- * any block-level tags. While it appears that core Ember functionality is being
- * tested this test is ensuring that the implied contract about how this non-UI
- * component is rendered into the DOM is adhered to.
- */
 test( 'Renders as a span tag with no classes', function( assert ) {
     this.subject( { translateService } );
 
-    assert.equal(
+    assert.strictEqual(
         this.$().prop( 'tagName' ),
         'SPAN'
     );
 });
 
-test( 'On initialization, extractParameterKeys() filters passed parameters', function( assert ) {
-    const component = this.subject({
-        key: 'the_key',
-        pluralKey: 'plural_key',
-        pluralCount: 'plural_count',
-        $1: 'a',
-        2: 'b',
-        other: 'c'
-    });
+test(
+    'setTranslatedString() sets internalTranslatedString property with value from translateString()',
+    function( assert ) {
+        const component = this.subject({
+            translateService,
+            key: 'the_key',
+            pluralKey: 'plural_key',
+            pluralCount: 'plural_count',
+            $0: 'a',
+            $1: 'b'
+        });
 
-    assert.deepEqual(
-        component.get( 'parameters' ).sort(),
-        [ '$1' ]
-    );
-});
+        const spy = sinon.spy( component, 'translateString' );
 
-test( 'On initialization, extractParameterKeys() filters passed parameters to be bound', function( assert ) {
-    const boundProperty = null;
-    const component = this.subject({
-        key: 'the_key',
-        pluralKey: 'plural_key',
-        pluralCount: 'plural_count',
-        $1: 'a',
-        2: 'b',
-        $3: boundProperty,
-        $3Binding: 'hack; should test this more correctly',
-        other: 'c'
-    });
+        Ember.run( () => {
+            component.setTranslatedString();
+        });
 
-    assert.deepEqual(
-        component.get( 'observedParameters' ),
-        [ '$3' ]
-    );
-});
+        assert.strictEqual(
+            component.get( 'internalTranslatedString' ),
+            'TRANSLATE: the_key',
+            'the property "internalTranslatedString" has the correct value'
+        );
 
-test( 'setTranslatedString() sets translatedString property with value from translateString()', function( assert ) {
-    const component = this.subject();
+        assert.strictEqual(
+            spy.calledOnce,
+            true,
+            'translateString() is called successfully once'
+        );
+    }
+);
 
-    component.translateString = function() {
-        return 'test value';
-    };
+test( 'setTranslatedString() sets internalTranslatedString and translatedString sets correct value',
+    function( assert ) {
+        const component = this.subject( {
+            translateService,
+            key: 'the_key',
+            pluralKey: 'plural_key',
+            pluralCount: 'plural_count',
+            $0: 'a',
+            $1: 'b'
+        });
 
-    component.setTranslatedString();
+        Ember.run( () => {
+            component.setTranslatedString();
+        });
 
-    assert.equal(
-        component.get( 'translatedString' ),
-        'test value'
-    );
-});
+        assert.strictEqual(
+            component.get( 'translatedString' ),
+            'TRANSLATE: the_key',
+            'translatedString computed property sets correct string'
+        );
+    }
+);
 
-test( 'translateString() calls translateKey() on the translation service', function( assert ) {
+test( 'translateString() calls translateKey() on the translation service with given values', function( assert ) {
     this.subject({
         translateService,
         key: 'the_key',
         pluralKey: 'plural_key',
         pluralCount: 'plural_count',
         $0: 'a',
-        $1: 'b'
+        $1: 'b',
+        c: 'c'
     });
 
-    this.render();
-
-    assert.equal(
+    assert.strictEqual(
         translateService.get( 'key' ),
         'the_key'
     );
-    assert.equal(
+    assert.strictEqual(
         translateService.get( 'pluralKey' ),
         'plural_key'
     );
-    assert.equal(
+    assert.strictEqual(
         translateService.get( 'pluralCount' ),
         'plural_count'
     );
@@ -121,88 +120,59 @@ test( 'translateString() calls translateKey() on the translation service', funct
     );
 });
 
-test( 'willInsertElement event causes setTranslatedString() to be called', function( assert ) {
-    const component = this.subject();
-    let setTranslatedStringWasCalled = false;
-
-    component.setTranslatedString = function() {
-        setTranslatedStringWasCalled = true;
-    };
-
-    // Render in DOM to trigger willInsertElement event
-    this.render();
-
-    assert.equal(
-        setTranslatedStringWasCalled,
-        true
-    );
-});
-
-test(
-    'willInsertElement event causes observers to be added to each entry in observedParameters property',
-    function( assert ) {
-        const component = this.subject({
-            translateService,
-            key: 'the_key',
-            $0Binding: 'a',
-            $1: 'b'
-        });
-        let setTranslatedStringWasCalled = false;
-
-        component.setTranslatedString = function() {
-            setTranslatedStringWasCalled = true;
-        };
-
-        // Render in DOM to trigger willInsertElement event
-        this.render();
-
-        // Change value so can monitor for change
-        setTranslatedStringWasCalled = false;
-
-        Ember.run( function() {
-            component.set(
-                '$0',
-                'c'
-            );
-        });
-
-        assert.equal(
-            setTranslatedStringWasCalled,
-            true
-        );
-    }
-);
-
-test( 'willClearRender event causes observers to be removed', function( assert ) {
+test( 'translateString() only accepts the correct parameter key pattern', function( assert ) {
     const component = this.subject({
         translateService,
         key: 'the_key',
-        $0Binding: 'a',
-        $1: 'b'
+        pluralKey: 'plural_key',
+        pluralCount: 'plural_count',
+        $0: 'a',
+        $12: 'b',
+        r: 'c',
+        $10000: 'd'
     });
-    let setTranslatedStringWasCalled = false;
-
-    component.setTranslatedString = () => {
-        setTranslatedStringWasCalled = true;
-    };
-
-    // Render in DOM to trigger willInsertElement event
-    this.render();
-
-    // Change value so can monitor for change
-    setTranslatedStringWasCalled = false;
-
-    component.trigger( 'willClearRender' );
 
     Ember.run( () => {
-        component.set(
-            '$0',
-            'c'
-        );
+        component.translateString();
     });
 
-    assert.equal(
-        setTranslatedStringWasCalled,
-        false
+    assert.deepEqual(
+        translateService.get( 'parameters' ),
+        { $0: 'a', $12: 'b', $10000: 'd' }
+    );
+});
+
+test( 'Dependent keys are correct', function( assert ) {
+    const component = this.subject();
+
+    const translatedStringDependentKeys = [
+        'internalTranslatedString'
+    ];
+
+    assert.deepEqual(
+        component.translatedString._dependentKeys,
+        translatedStringDependentKeys,
+        'Dependent keys are set correctly for translatedString()'
+    );
+});
+
+test( 'setTranslatedString() is called when the willRender() event occurs', function( assert ) {
+    const component = this.subject( {
+        translateService,
+        key: 'the_key',
+        pluralKey: 'plural_key',
+        pluralCount: 'plural_count',
+        $0: 'a',
+        $1: 'b'
+    });
+
+    const spy = sinon.spy( component, 'setTranslatedString' );
+
+    component.trigger( 'willRender' );
+
+    assert.strictEqual(
+        spy.calledOnce,
+        true,
+        'setTranslatedString() is called successfully'
     );
 });
