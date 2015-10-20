@@ -156,7 +156,7 @@ test( 'Dependent keys are correct', function( assert ) {
     );
 });
 
-test( 'setTranslatedString() is called when the willRender() evenet occurs', function( assert ) {
+test( 'setTranslatedString() is called when the willRender() event occurs', function( assert ) {
     const component = this.subject( {
         translateService,
         key: 'the_key',
