@@ -13,13 +13,6 @@ moduleFor( 'service:sl-translate', 'Unit | Service | sl translate', {
     unit: true
 });
 
-test( 'container property defaults to undefined', function( assert ) {
-    assert.strictEqual(
-        TS.get( 'container' ),
-        undefined
-    );
-});
-
 test( 'dictionary property defaults to null', function( assert ) {
     assert.strictEqual(
         TS.get( 'dictionary' ),
