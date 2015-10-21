@@ -24,7 +24,7 @@ export default Ember.Mixin.create({
     /**
      * Translation Service, used to convert content
      *
-     * @type {Ember.Service}
+     * @type {module:addon/services/sl-translate}
      */
     translateService: Ember.inject.service( 'sl-translate' ),
 

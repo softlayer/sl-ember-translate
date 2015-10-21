@@ -13,7 +13,7 @@ export default Ember.Component.extend({
     /**
      * Translation Service, used to translate content
      *
-     * @type {ember/Service}
+     * @type {module:addon/services/sl-translate}
      */
     translateService: Ember.inject.service( 'sl-translate' ),
 
