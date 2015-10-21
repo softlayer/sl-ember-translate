@@ -10,7 +10,7 @@ test( 'The correct service is being injected into the mixin', function( assert )
     const testObject = Ember.Object.extend( mixinUnderTest );
     const subject = testObject.create();
 
-    assert.equal(
+    assert.strictEqual(
         subject.translateService.name,
         'sl-translate',
         'The correct service is being injected into the mixin'
@@ -36,7 +36,7 @@ test( 'Call to get() with a key not beginning with "translate." is not intercept
     });
     const subject = testObject.create();
 
-    assert.equal(
+    assert.strictEqual(
         subject.get( 'testKey' ),
         'testValue'
     );
@@ -52,7 +52,7 @@ test( 'Call to get() with a key beginning with "translate." calls this.translate
     });
     const subject = testObject.create();
 
-    assert.equal(
+    assert.strictEqual(
         subject.get( 'translate.testingKey' ),
         'testingKey'
     );
@@ -70,7 +70,7 @@ test( 'translate() returns call to this.translateService.getKeyValue()', functio
     });
     const subject = testObject.create();
 
-    assert.equal(
+    assert.strictEqual(
         subject.translate( 'called' ),
         'called'
     );
