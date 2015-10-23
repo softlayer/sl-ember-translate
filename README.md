@@ -211,13 +211,9 @@ situations the path *controller.translate.[key]* will provide the translation fo
 
 # How all the parts work
 
-## Initializer
-A singleton instance of the Translate Service is injected on every View, Controller and Component as the *
-translateService* property via an initializer named *translate-service*.
-
 ## Setting the dictionary data
-Though the Translate Service has been injected it is not ready for use until a dictionary object is set on it via a
-call to *setDictionary()*.  The dictionary object should be simple key-value pairings, such as
+A dictionary must be set on the Translation Service via a call to *setDictionary()*.  This method accepts an object
+which should be simple key-value pairings, such as
 
 ```
 {
