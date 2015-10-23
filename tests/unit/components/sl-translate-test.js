@@ -36,6 +36,39 @@ test( 'Renders as a span tag with no classes', function( assert ) {
     );
 });
 
+test( '"internalTranslatedString" default value is null', function( assert ) {
+    const component = this.subject();
+
+    assert.strictEqual(
+        component.get( 'internalTranslatedString' ),
+        null,
+        '"internalTranslatedString" defaults to null'
+    );
+});
+
+test( 'setTranslatedString() is called when the willRender() event occurs', function( assert ) {
+    const component = this.subject( {
+        translateService,
+        key: 'the_key',
+        pluralKey: 'plural_key',
+        pluralCount: 'plural_count',
+        $0: 'a',
+        $1: 'b'
+    });
+
+    const spy = sinon.spy( component, 'setTranslatedString' );
+
+    component.trigger( 'willRender' );
+    component.trigger( 'willRender' );
+    component.trigger( 'willRender' );
+
+    assert.strictEqual(
+        spy.calledThrice,
+        true,
+        'setTranslatedString() is called successfully'
+    );
+});
+
 test(
     'setTranslatedString() sets internalTranslatedString property with value from translateString()',
     function( assert ) {
@@ -153,26 +186,5 @@ test( 'Dependent keys are correct', function( assert ) {
         component.translatedString._dependentKeys,
         translatedStringDependentKeys,
         'Dependent keys are set correctly for translatedString()'
-    );
-});
-
-test( 'setTranslatedString() is called when the willRender() event occurs', function( assert ) {
-    const component = this.subject( {
-        translateService,
-        key: 'the_key',
-        pluralKey: 'plural_key',
-        pluralCount: 'plural_count',
-        $0: 'a',
-        $1: 'b'
-    });
-
-    const spy = sinon.spy( component, 'setTranslatedString' );
-
-    component.trigger( 'willRender' );
-
-    assert.strictEqual(
-        spy.calledOnce,
-        true,
-        'setTranslatedString() is called successfully'
     );
 });
