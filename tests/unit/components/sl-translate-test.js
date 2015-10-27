@@ -110,14 +110,8 @@ test( 'translateString() returns expected value', function( assert ) {
         $1: 'b'
     });
 
-    const spy = sinon.spy( component, 'translateString' );
-
-    Ember.run( () => {
-        component.translateString();
-    });
-
     assert.equal(
-        spy.returnValues,
+        component.translateString(),
         'TRANSLATE: the_key',
         'setTranslatedString() returns expected value successfully'
     );

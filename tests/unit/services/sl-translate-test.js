@@ -1,7 +1,6 @@
 import Ember from 'ember';
 import { moduleFor, test } from 'ember-qunit';
 import TranslateService from 'sl-ember-translate/services/sl-translate';
-import { requires } from '../../helpers/sl/synchronous';
 import sinon from 'sinon';
 
 let TS;
@@ -22,14 +21,84 @@ test( 'dictionary property defaults to null', function( assert ) {
 });
 
 test( 'setDictionary() accepts only an object as a parameter', function( assert ) {
-    const testDefinition = requires(
-        TS.setDictionary,
-        [ 'object' ]
+    const testProperty = Ember.Object.create({
+        parameter: ''
+    });
+
+    const callSetDictionary = () => TS.setDictionary( testProperty.parameter );
+
+    // Undefined
+    testProperty.set( 'parameter', undefined );
+
+    assert.throws(
+        callSetDictionary,
+        'Parameter was undefined'
     );
 
-    assert.ok(
-        testDefinition.requires,
-        testDefinition.messages
+    // Array
+    testProperty.set( 'parameter', [] );
+
+    assert.throws(
+        callSetDictionary,
+        'Parameter was an array'
+    );
+
+    // Null
+    testProperty.set( 'parameter', null );
+
+    assert.throws(
+        callSetDictionary,
+        'Parameter was null'
+    );
+
+    // Number
+    testProperty.set( 'parameter', 123 );
+
+    assert.throws(
+        callSetDictionary,
+        'Parameter was a number'
+    );
+
+    // Function
+    testProperty.set( 'parameter', function() {} );
+
+    assert.throws(
+        callSetDictionary,
+        'Parameter was a function'
+    );
+
+    // String
+    testProperty.set( 'parameter', 'testString' );
+
+    assert.throws(
+        callSetDictionary,
+        'Parameter was a string'
+    );
+
+    // Boolean
+    testProperty.set( 'parameter', false );
+
+    assert.throws(
+        callSetDictionary,
+        'Parameter was false'
+    );
+
+    // Object
+    testProperty.set( 'parameter', {} );
+
+    assert.strictEqual(
+        callSetDictionary(),
+        undefined,
+        'Parameter was an object'
+    );
+
+    // Ember.Object instance
+    testProperty.set( 'parameter', Ember.Object.create( {} ) );
+
+    assert.strictEqual(
+        callSetDictionary(),
+        undefined,
+        'Parameter was an Ember.Object instance'
     );
 });
 
@@ -77,15 +146,85 @@ test( 'getKeyValue() is gets called by translateKey', function( assert ) {
     );
 });
 
-test( 'translateKey() accepts only an object as a parameter', function( assert ) {
-    const testDefinition = requires(
-        TS.translateKey,
-        [ 'object' ]
+test( 'setDictionary() accepts only an object as a parameter', function( assert ) {
+    const testProperty = Ember.Object.create({
+        parameter: ''
+    });
+
+    const callTranslateKey = () => TS.translateKey( testProperty.parameter );
+
+    // Undefined
+    testProperty.set( 'parameter', undefined );
+
+    assert.throws(
+        callTranslateKey,
+        'Parameter was undefined'
     );
 
-    assert.ok(
-        testDefinition.requires,
-        testDefinition.messages
+    // Array
+    testProperty.set( 'parameter', [] );
+
+    assert.throws(
+        callTranslateKey,
+        'Parameter was an array'
+    );
+
+    // Null
+    testProperty.set( 'parameter', null );
+
+    assert.throws(
+        callTranslateKey,
+        'Parameter was null'
+    );
+
+    // Number
+    testProperty.set( 'parameter', 123 );
+
+    assert.throws(
+        callTranslateKey,
+        'Parameter was a number'
+    );
+
+    // Function
+    testProperty.set( 'parameter', function() {} );
+
+    assert.throws(
+        callTranslateKey,
+        'Parameter was a function'
+    );
+
+    // String
+    testProperty.set( 'parameter', 'testString' );
+
+    assert.throws(
+        callTranslateKey,
+        'Parameter was a string'
+    );
+
+    // Boolean
+    testProperty.set( 'parameter', false );
+
+    assert.throws(
+        callTranslateKey,
+        'Parameter was false'
+    );
+
+    // Object
+    testProperty.set( 'parameter', {} );
+
+    assert.strictEqual(
+        callTranslateKey(),
+        undefined,
+        'Parameter was an object'
+    );
+
+    // Ember.Object instance
+    testProperty.set( 'parameter', Ember.Object.create( {} ) );
+
+    assert.strictEqual(
+        callTranslateKey(),
+        undefined,
+        'Parameter was an Ember.Object instance'
     );
 });
 
