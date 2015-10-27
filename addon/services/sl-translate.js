@@ -46,7 +46,7 @@ export default Ember.Service.extend({
 
         /* jshint ignore:start */
         Ember.assert(
-            'services/translation.setDictionary() expects parameter to be an object',
+            'Argument must be an object',
             (
                 'object' === Ember.typeOf( translations ) ||
                 'instance' === Ember.typeOf( translations )

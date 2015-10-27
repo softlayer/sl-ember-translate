@@ -1,6 +1,8 @@
 import Ember from 'ember';
 import { moduleFor, test } from 'ember-qunit';
 import TranslateService from 'sl-ember-translate/services/sl-translate';
+import { requires } from '../../helpers/sl/synchronous';
+import sinon from 'sinon';
 
 let TS;
 
@@ -20,84 +22,14 @@ test( 'dictionary property defaults to null', function( assert ) {
 });
 
 test( 'setDictionary() accepts only an object as a parameter', function( assert ) {
-    const testProperty = Ember.Object.create({
-        parameter: ''
-    });
-
-    const callSetDictionary = () => TS.setDictionary( testProperty.parameter );
-
-    // Undefined
-    testProperty.set( 'parameter', undefined );
-
-    assert.throws(
-        callSetDictionary,
-        'Parameter was undefined'
+    const testDefinition = requires(
+        TS.setDictionary,
+        [ 'object' ]
     );
 
-    // Array
-    testProperty.set( 'parameter', [] );
-
-    assert.throws(
-        callSetDictionary,
-        'Parameter was an array'
-    );
-
-    // Null
-    testProperty.set( 'parameter', null );
-
-    assert.throws(
-        callSetDictionary,
-        'Parameter was null'
-    );
-
-    // Number
-    testProperty.set( 'parameter', 123 );
-
-    assert.throws(
-        callSetDictionary,
-        'Parameter was a number'
-    );
-
-    // Function
-    testProperty.set( 'parameter', function() {} );
-
-    assert.throws(
-        callSetDictionary,
-        'Parameter was a function'
-    );
-
-    // String
-    testProperty.set( 'parameter', 'testString' );
-
-    assert.throws(
-        callSetDictionary,
-        'Parameter was a string'
-    );
-
-    // Boolean
-    testProperty.set( 'parameter', false );
-
-    assert.throws(
-        callSetDictionary,
-        'Parameter was false'
-    );
-
-    // Object
-    testProperty.set( 'parameter', {} );
-
-    assert.strictEqual(
-        callSetDictionary(),
-        undefined,
-        'Parameter was an object'
-    );
-
-    // Ember.Object instance
-    testProperty.set( 'parameter', Ember.Object.create( {} ) );
-
-    assert.strictEqual(
-        callSetDictionary(),
-        undefined,
-        'Parameter was an Ember.Object instance'
+    assert.ok(
+        testDefinition.requires,
+        testDefinition.messages
     );
 });
 
@@ -114,14 +46,14 @@ test( 'setDictionary() sets data on the dictionary property', function( assert )
     );
 });
 
-test( 'getKeyValue() returns requested key if found in dictionary', function( assert ) {
+test( 'getKeyValue() Nonexistent key requested returns key, if existent returns value', function( assert ) {
     TS.setDictionary( Ember.Object.create({
         'the_key': 'my value'
     }) );
 
     assert.notStrictEqual(
         TS.getKeyValue( 'wrong_key' ),
-        'my value'
+        'the_key'
     );
 
     assert.strictEqual(
@@ -130,85 +62,30 @@ test( 'getKeyValue() returns requested key if found in dictionary', function( as
     );
 });
 
-test( 'translateKey() accepts only an object as a parameter', function( assert ) {
-    const testProperty = Ember.Object.create({
-        parameter: null
+test( 'getKeyValue() is gets called by translateKey', function( assert ) {
+    const spy = sinon.spy( TS, 'getKeyValue' );
+
+    TS.translateKey({
+        key: 'singular_key',
+        pluralKey: 'plural_key'
     });
 
-    const callTranslateKey = () => TS.translateKey( testProperty.parameter );
-
-    // Null
-    testProperty.set( 'parameter', null );
-
-    assert.throws(
-        callTranslateKey,
-        'Parameter was null'
-    );
-
-    // Undefined
-    testProperty.set( 'parameter', undefined );
-
-    assert.throws(
-        callTranslateKey,
-        'Parameter was undefined'
-    );
-
-    // Array
-    testProperty.set( 'parameter', [] );
-
-    assert.throws(
-        callTranslateKey,
-        'Parameter was an array'
-    );
-
-    // Number
-    testProperty.set( 'parameter', 123 );
-
-    assert.throws(
-        callTranslateKey,
-        'Parameter was a number'
-    );
-
-    // Function
-    testProperty.set( 'parameter', function() {} );
-
-    assert.throws(
-        callTranslateKey,
-        'Parameter was a function'
-    );
-
-    // String
-    testProperty.set( 'parameter', 'testString' );
-
-    assert.throws(
-        callTranslateKey,
-        'Parameter was a string'
-    );
-
-    // Boolean
-    testProperty.set( 'parameter', false );
-
-    assert.throws(
-        callTranslateKey,
-        'Parameter was false'
-    );
-
-    // Object
-    testProperty.set( 'parameter', {} );
-
     assert.strictEqual(
-        callTranslateKey(),
-        undefined,
-        'Parameter was an object'
+        spy.calledOnce,
+        true,
+        'getKeyValue() is called once'
+    );
+});
+
+test( 'translateKey() accepts only an object as a parameter', function( assert ) {
+    const testDefinition = requires(
+        TS.translateKey,
+        [ 'object' ]
     );
 
-    // Ember.Object instance
-    testProperty.set( 'parameter', Ember.Object.create( {} ) );
-
-    assert.strictEqual(
-        callTranslateKey(),
-        undefined,
-        'Parameter was an Ember.Object instance'
+    assert.ok(
+        testDefinition.requires,
+        testDefinition.messages
     );
 });
 
@@ -216,11 +93,6 @@ test( 'translateKey() returns translated string for specified key', function( as
     TS.setDictionary( Ember.Object.create({
         'the_key': 'my value'
     }) );
-
-    assert.notStrictEqual(
-        TS.getKeyValue( 'wrong_key' ),
-        'my value'
-    );
 
     assert.strictEqual(
         TS.getKeyValue( 'the_key' ),
@@ -243,97 +115,6 @@ test( 'If either "pluralKey" or "pluralCount" are provided to translateKey() the
             pluralCount: 3
         }),
         'singular_key'
-    );
-});
-
-test( 'Pluralization only works if "pluralCount" is a number', function( assert ) {
-    TS.setDictionary( Ember.Object.create({
-        'the_singular_key': 'Singular translated value',
-        'the_plural_key': 'Plural translated value'
-    }) );
-
-    const testProperty = Ember.Object.create({
-        parameter: ''
-    });
-
-    const callTranslateKey = () => TS.translateKey(
-        {
-            key: 'the_singular_key',
-            pluralKey: 'the_plural_key',
-            pluralCount: testProperty.parameter
-        }
-    );
-
-    // Undefined
-    testProperty.set( 'parameter', undefined );
-
-    assert.notEqual(
-        callTranslateKey,
-        'Plural translated value'
-    );
-
-    // Array
-    testProperty.set( 'parameter', [] );
-
-    assert.notEqual(
-        callTranslateKey,
-        'Plural translated value'
-    );
-
-    // Null
-    testProperty.set( 'parameter', null );
-
-    assert.notEqual(
-        callTranslateKey,
-        'Plural translated value'
-    );
-
-    // Function
-    testProperty.set( 'parameter', function() {} );
-
-    assert.notEqual(
-        callTranslateKey,
-        'Plural translated value'
-    );
-
-    // String
-    testProperty.set( 'parameter', 'testString' );
-
-    assert.notEqual(
-        callTranslateKey,
-        'Plural translated value'
-    );
-
-    // Boolean
-    testProperty.set( 'parameter', false );
-
-    assert.notEqual(
-        callTranslateKey,
-        'Plural translated value'
-    );
-
-    // Object
-    testProperty.set( 'parameter', {} );
-
-    assert.notEqual(
-        callTranslateKey,
-        'Plural translated value'
-    );
-
-    // Ember.Object instance
-    testProperty.set( 'parameter', Ember.Object.create( {} ) );
-
-    assert.notEqual(
-        callTranslateKey,
-        'Plural translated value'
-    );
-
-    // Number
-    testProperty.set( 'parameter', 12 );
-
-    assert.strictEqual(
-        callTranslateKey(),
-        'Plural translated value'
     );
 });
 

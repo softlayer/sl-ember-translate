@@ -27,12 +27,13 @@ test( 'The correct service is being injected into the component', function( asse
     );
 });
 
-test( 'Renders as a span tag with no classes', function( assert ) {
-    this.subject( { translateService } );
+test( '"tagName" default value is null', function( assert ) {
+    const component = this.subject();
 
     assert.strictEqual(
-        this.$().prop( 'tagName' ),
-        'SPAN'
+        component.get( 'tagName' ),
+        'span',
+        '"tagName" defaults to span'
     );
 });
 
@@ -59,11 +60,9 @@ test( 'setTranslatedString() is called when the willRender() event occurs', func
     const spy = sinon.spy( component, 'setTranslatedString' );
 
     component.trigger( 'willRender' );
-    component.trigger( 'willRender' );
-    component.trigger( 'willRender' );
 
     assert.strictEqual(
-        spy.calledThrice,
+        spy.calledOnce,
         true,
         'setTranslatedString() is called successfully'
     );
@@ -101,6 +100,29 @@ test(
     }
 );
 
+test( 'translateString() returns expected value', function( assert ) {
+    const component = this.subject({
+        translateService,
+        key: 'the_key',
+        pluralKey: 'plural_key',
+        pluralCount: 'plural_count',
+        $0: 'a',
+        $1: 'b'
+    });
+
+    const spy = sinon.spy( component, 'translateString' );
+
+    Ember.run( () => {
+        component.translateString();
+    });
+
+    assert.equal(
+        spy.returnValues,
+        'TRANSLATE: the_key',
+        'setTranslatedString() returns expected value successfully'
+    );
+});
+
 test( 'setTranslatedString() sets internalTranslatedString and translatedString sets correct value',
     function( assert ) {
         const component = this.subject( {
@@ -123,6 +145,25 @@ test( 'setTranslatedString() sets internalTranslatedString and translatedString 
         );
     }
 );
+
+test( 'translatedString() returns correct value', function( assert ) {
+    const component = this.subject( {
+        translateService,
+        key: 'the_key',
+        pluralKey: 'plural_key',
+        pluralCount: 'plural_count',
+        $0: 'a',
+        $1: 'b'
+    } );
+
+    component.trigger( 'willRender' );
+
+    assert.strictEqual(
+        component.get( 'translatedString' ),
+        component.get( 'internalTranslatedString' ),
+        'translatedString() returns the correct value'
+    );
+});
 
 test( 'translateString() calls translateKey() on the translation service with given values', function( assert ) {
     this.subject({
