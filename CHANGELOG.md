@@ -1,5 +1,14 @@
 # sl-ember-translate Changelog
 
+### 1.10.0
+
+* [#180](https://github.com/softlayer/sl-ember-translate/pull/180) [BREAKING ENHANCEMENT] Upgrade to Ember CLI 1.13.8
+* [#191](https://github.com/softlayer/sl-ember-translate/pull/191) [ENHANCEMENT] Upgrade ember-cli-htmlbars dependency
+* [#200](https://github.com/softlayer/sl-ember-translate/pull/200) [INTERNAL ENHANCEMENT] No longer adding custom observers to bound string replacement tokens in `sl-translate` component
+* [#175](https://github.com/softlayer/sl-ember-translate/issues/175) [DOCUMENTATION ] Remove initializer references
+
+[View complete changeset](https://github.com/softlayer/sl-ember-translate/compare/v1.9.0...v1.10.0)
+
 ### 1.9.0
 
 * [#146](https://github.com/softlayer/sl-ember-translate/issues/146) [BUGFIX] Support type of `Symbol`
