@@ -150,7 +150,7 @@ key text if the key is not found in the dictionary.
 
 ### translateKey()
 This method provides the pluralization and token replacement support of the Tranlsate Service.  To call this method
-direclty, you must pass on object to it of the following format in any of the following combinations:
+directly, you must pass on object to it of the following format in any of the following combinations:
 
 **No pluralization or token replacement**
 
