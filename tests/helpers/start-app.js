@@ -1,5 +1,4 @@
 import Ember from 'ember';
-import slregisterTestHelpers from './sl/register-test-helpers';
 import Application from '../../app';
 import config from '../../config/environment';
 
@@ -12,7 +11,6 @@ export default function startApp( attrs ) {
     Ember.run( function() {
         application = Application.create( attributes );
         application.setupForTesting();
-        slregisterTestHelpers();
         application.injectTestHelpers();
     });
 
