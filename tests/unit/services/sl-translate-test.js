@@ -115,7 +115,7 @@ test( 'setDictionary() sets data on the dictionary property', function( assert )
     );
 });
 
-test( 'getKeyValue() Nonexistent key requested returns key, if existent returns value', function( assert ) {
+test( 'getKeyValue() Valid key returns key value while non valid key returns key name.', function( assert ) {
     TS.setDictionary( Ember.Object.create({
         'the_key': 'my value'
     }) );

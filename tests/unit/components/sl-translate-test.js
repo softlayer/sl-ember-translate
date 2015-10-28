@@ -17,7 +17,7 @@ moduleForComponent( 'sl-translate', 'Unit | Component | sl translate', {
     unit: true
 });
 
-test( 'The correct service is being injected into the component', function( assert ) {
+test( 'Default property values', function( assert ) {
     const component = this.subject();
 
     assert.strictEqual(
@@ -25,20 +25,12 @@ test( 'The correct service is being injected into the component', function( asse
         'sl-translate',
         'The correct service is being injected into the component'
     );
-});
-
-test( '"tagName" default value is null', function( assert ) {
-    const component = this.subject();
 
     assert.strictEqual(
         component.get( 'tagName' ),
         'span',
         '"tagName" defaults to span'
     );
-});
-
-test( '"internalTranslatedString" default value is null', function( assert ) {
-    const component = this.subject();
 
     assert.strictEqual(
         component.get( 'internalTranslatedString' ),
