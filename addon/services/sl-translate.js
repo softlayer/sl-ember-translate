@@ -46,7 +46,7 @@ export default Ember.Service.extend({
 
         /* jshint ignore:start */
         Ember.assert(
-            'services/translation.setDictionary() expects parameter to',
+            'services/translation.setDictionary() expects parameter to be an object',
             (
                 'object' === Ember.typeOf( translations ) ||
                 'instance' === Ember.typeOf( translations )
@@ -104,7 +104,7 @@ export default Ember.Service.extend({
 
         /* jshint ignore:start */
         Ember.assert(
-            'services/translation.translateKey() expects parameter to',
+            'services/translation.translateKey() expects parameter to an object',
             (
                 'object' === Ember.typeOf( data ) ||
                 'instance' === Ember.typeOf( data )
