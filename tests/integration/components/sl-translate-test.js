@@ -19,26 +19,24 @@ moduleForComponent( 'sl-translate', 'Integration | Component | sl translate', {
 });
 
 test( 'Simple Key Translation', function( assert ) {
-
     this.render( hbs`
         {{sl-translate key="SIMPLE_KEY" }}
     ` );
 
     assert.strictEqual(
-        this.$().text().trim(),
+        this.$( '>:first-child' ).text().trim(),
         'I have been translated',
         'Simple Key was translated'
     );
 });
 
 test( 'Single/Plural Keys', function( assert ) {
-
     this.render( hbs`
         {{sl-translate key="SINGULAR_KEY" pluralKey="PLURAL_KEY" pluralCount="1"}}
     ` );
 
     assert.strictEqual(
-        this.$().text().trim(),
+        this.$( '>:first-child' ).text().trim(),
         'View my family',
         'Singular Key was correctly returned'
     );
@@ -48,20 +46,19 @@ test( 'Single/Plural Keys', function( assert ) {
     ` );
 
     assert.strictEqual(
-        this.$().text().trim(),
+        this.$( '>:first-child' ).text().trim(),
         'View my families',
         'Plural Key was correctly returned'
     );
 });
 
 test( 'Replaced Values In Keys', function( assert ) {
-
     this.render( hbs`
         {{sl-translate key="REPLACED_KEY"}}
     ` );
 
     assert.strictEqual(
-        this.$().text().trim(),
+        this.$( '>:first-child' ).text().trim(),
         'I have replaced {0} and {1}',
         'Original String was correct'
     );
@@ -71,7 +68,7 @@ test( 'Replaced Values In Keys', function( assert ) {
     ` );
 
     assert.strictEqual(
-        this.$().text().trim(),
+        this.$( '>:first-child' ).text().trim(),
         'I have replaced First and Unicorn',
         'Replaced String was correct'
     );
@@ -79,7 +76,6 @@ test( 'Replaced Values In Keys', function( assert ) {
 });
 
 test( 'Bound Replacement Values In Keys', function( assert ) {
-
     this.set( 'valueToDisplay', 'the Bound Value' );
 
     this.render( hbs`
@@ -87,35 +83,8 @@ test( 'Bound Replacement Values In Keys', function( assert ) {
     ` );
 
     assert.strictEqual(
-        this.$().text().trim(),
+        this.$( '>:first-child' ).text().trim(),
         'I have replaced First and the Bound Value',
         'Using a bound replacement value works'
-    );
-});
-
-/**
- * Ensure haven't broken any default behavior of Ember, since manipulate properties passed to the component
- * A side effect of this test is the appearance that core Ember functionality is being tested
- */
-test( 'Used Alongside Other Properties', function( assert ) {
-
-    this.render( hbs`
-        {{sl-translate key="SIMPLE_KEY"}}
-    ` );
-
-    assert.strictEqual(
-        this.$( 'em' ).length,
-        0,
-        'Translate used without another property works'
-    );
-
-    this.render( hbs`
-        {{sl-translate tagName="em" key="SIMPLE_KEY"}}
-    ` );
-
-    assert.strictEqual(
-        this.$( 'em' ).length,
-        1,
-        'Translate used alongside another property works'
     );
 });

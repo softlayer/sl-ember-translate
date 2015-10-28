@@ -104,9 +104,11 @@ export default Ember.Service.extend({
 
         /* jshint ignore:start */
         Ember.assert(
-            'Argument must be an object',
-            'object' === Ember.typeOf( data ) &&
-            'array' !== Ember.typeOf( data ) &&
+            'services/translation.translateKey() expects parameter to an object',
+            (
+                'object' === Ember.typeOf( data ) ||
+                'instance' === Ember.typeOf( data )
+            ) &&
             'symbol' !== typeof data
         );
         /* jshint ignore:end */
