@@ -1,16 +1,24 @@
+"use strict";
 /* jshint ignore:start */
 
 /* jshint ignore:end */
 
+define('dummy/acceptance-tests/sinon', ['exports', 'ember-sinon/acceptance-tests/sinon'], function (exports, sinon) {
+
+	'use strict';
+
+
+
+	exports['default'] = sinon['default'];
+
+});
 define('dummy/app', ['exports', 'ember', 'ember/resolver', 'ember/load-initializers', 'dummy/config/environment'], function (exports, Ember, Resolver, loadInitializers, config) {
 
     'use strict';
 
-    var App;
-
     Ember['default'].MODEL_FACTORY_INJECTIONS = true;
 
-    App = Ember['default'].Application.extend({
+    var App = Ember['default'].Application.extend({
         modulePrefix: config['default'].modulePrefix,
         podModulePrefix: config['default'].podModulePrefix,
         Resolver: Resolver['default']
@@ -19,6 +27,20 @@ define('dummy/app', ['exports', 'ember', 'ember/resolver', 'ember/load-initializ
     loadInitializers['default'](App, config['default'].modulePrefix);
 
     exports['default'] = App;
+
+});
+define('dummy/components/app-version', ['exports', 'ember-cli-app-version/components/app-version', 'dummy/config/environment'], function (exports, AppVersionComponent, config) {
+
+  'use strict';
+
+  var _config$APP = config['default'].APP;
+  var name = _config$APP.name;
+  var version = _config$APP.version;
+
+  exports['default'] = AppVersionComponent['default'].extend({
+    version: version,
+    name: name
+  });
 
 });
 define('dummy/components/sl-translate', ['exports', 'sl-ember-translate/components/sl-translate'], function (exports, component) {
@@ -40,6 +62,12 @@ define('dummy/controllers/demo', ['exports', 'ember'], function (exports, Ember)
     'use strict';
 
     exports['default'] = Ember['default'].Controller.extend({
+        actions: {
+            updateStringValues: function updateStringValues() {
+                this.set('valueToDisplay', 'New Updated Value - ' + Math.random());
+            }
+        },
+
         valueToDisplay: 'Unicorn'
     });
 
@@ -51,22 +79,17 @@ define('dummy/controllers/object', ['exports', 'ember'], function (exports, Embe
 	exports['default'] = Ember['default'].Controller;
 
 });
-define('dummy/initializers/app-version', ['exports', 'dummy/config/environment', 'ember'], function (exports, config, Ember) {
+define('dummy/initializers/app-version', ['exports', 'ember-cli-app-version/initializer-factory', 'dummy/config/environment'], function (exports, initializerFactory, config) {
 
   'use strict';
 
-  var classify = Ember['default'].String.classify;
-  var registered = false;
+  var _config$APP = config['default'].APP;
+  var name = _config$APP.name;
+  var version = _config$APP.version;
 
   exports['default'] = {
     name: 'App Version',
-    initialize: function initialize(container, application) {
-      if (!registered) {
-        var appName = classify(application.toString());
-        Ember['default'].libraries.register(appName, config['default'].APP.version);
-        registered = true;
-      }
-    }
+    initialize: initializerFactory['default'](name, version)
   };
 
 });
@@ -76,15 +99,30 @@ define('dummy/initializers/export-application-global', ['exports', 'ember', 'dum
 
   exports.initialize = initialize;
 
-  function initialize(container, application) {
-    var classifiedName = Ember['default'].String.classify(config['default'].modulePrefix);
+  function initialize() {
+    var application = arguments[1] || arguments[0];
+    if (config['default'].exportApplicationGlobal !== false) {
+      var value = config['default'].exportApplicationGlobal;
+      var globalName;
 
-    if (config['default'].exportApplicationGlobal && !window[classifiedName]) {
-      window[classifiedName] = application;
+      if (typeof value === 'string') {
+        globalName = value;
+      } else {
+        globalName = Ember['default'].String.classify(config['default'].modulePrefix);
+      }
+
+      if (!window[globalName]) {
+        window[globalName] = application;
+
+        application.reopen({
+          willDestroy: function willDestroy() {
+            this._super.apply(this, arguments);
+            delete window[globalName];
+          }
+        });
+      }
     }
   }
-
-  ;
 
   exports['default'] = {
     name: 'export-application-global',
@@ -108,10 +146,12 @@ define('dummy/router', ['exports', 'ember', 'dummy/config/environment'], functio
         location: config['default'].locationType
     });
 
-    exports['default'] = Router.map(function () {
+    Router.map(function () {
         this.route('index', { path: '/' });
         this.route('demo');
     });
+
+    exports['default'] = Router;
 
 });
 define('dummy/routes/demo', ['exports', 'ember'], function (exports, Ember) {
@@ -119,13 +159,6 @@ define('dummy/routes/demo', ['exports', 'ember'], function (exports, Ember) {
     'use strict';
 
     exports['default'] = Ember['default'].Route.extend({
-
-        actions: {
-            updateStringValues: function updateStringValues() {
-                this.controllerFor('demo').set('valueToDisplay', 'New Updated Value - ' + Math.random());
-            }
-        },
-
         model: function model() {
             return Ember['default'].Object.create({
                 'SIMPLE_KEY': 'I have been translated',
@@ -139,20 +172,14 @@ define('dummy/routes/demo', ['exports', 'ember'], function (exports, Ember) {
             this.get('translateService').setDictionary(model);
         },
 
-        translateService: Ember['default'].inject.service('translate')
+        translateService: Ember['default'].inject.service('sl-translate')
     });
 
 });
-define('dummy/services/translate', ['exports', 'sl-ember-translate/services/translate'], function (exports, TranslateService) {
+define('dummy/services/sl-translate', ['exports', 'sl-ember-translate/services/sl-translate'], function (exports, TranslateService) {
 
 	'use strict';
 
-	/**
-	 * WARNING!!
-	 *
-	 * This file is needed for /tests/unit/services/translate-test.js
-	 * to correctly reference 'sl-ember-translate/services/translate'
-	 */
 	exports['default'] = TranslateService['default'];
 
 });
@@ -160,9 +187,9 @@ define('dummy/sl-ember-translate/tests/modules/sl-ember-translate/components/sl-
 
   'use strict';
 
-  module('JSHint - modules/sl-ember-translate/components');
-  test('modules/sl-ember-translate/components/sl-translate.js should pass jshint', function () {
-    ok(true, 'modules/sl-ember-translate/components/sl-translate.js should pass jshint.');
+  QUnit.module('JSHint - modules/sl-ember-translate/components');
+  QUnit.test('modules/sl-ember-translate/components/sl-translate.js should pass jshint', function (assert) {
+    assert.ok(true, 'modules/sl-ember-translate/components/sl-translate.js should pass jshint.');
   });
 
 });
@@ -170,19 +197,19 @@ define('dummy/sl-ember-translate/tests/modules/sl-ember-translate/mixins/sl-get-
 
   'use strict';
 
-  module('JSHint - modules/sl-ember-translate/mixins');
-  test('modules/sl-ember-translate/mixins/sl-get-translation.js should pass jshint', function () {
-    ok(true, 'modules/sl-ember-translate/mixins/sl-get-translation.js should pass jshint.');
+  QUnit.module('JSHint - modules/sl-ember-translate/mixins');
+  QUnit.test('modules/sl-ember-translate/mixins/sl-get-translation.js should pass jshint', function (assert) {
+    assert.ok(true, 'modules/sl-ember-translate/mixins/sl-get-translation.js should pass jshint.');
   });
 
 });
-define('dummy/sl-ember-translate/tests/modules/sl-ember-translate/services/translate.jshint', function () {
+define('dummy/sl-ember-translate/tests/modules/sl-ember-translate/services/sl-translate.jshint', function () {
 
   'use strict';
 
-  module('JSHint - modules/sl-ember-translate/services');
-  test('modules/sl-ember-translate/services/translate.js should pass jshint', function () {
-    ok(true, 'modules/sl-ember-translate/services/translate.js should pass jshint.');
+  QUnit.module('JSHint - modules/sl-ember-translate/services');
+  QUnit.test('modules/sl-ember-translate/services/sl-translate.js should pass jshint', function (assert) {
+    assert.ok(true, 'modules/sl-ember-translate/services/sl-translate.js should pass jshint.');
   });
 
 });
@@ -193,12 +220,25 @@ define('dummy/templates/application', ['exports'], function (exports) {
   exports['default'] = Ember.HTMLBars.template((function() {
     var child0 = (function() {
       return {
-        isHTMLBars: true,
-        revision: "Ember@1.12.0",
-        blockParams: 0,
+        meta: {
+          "revision": "Ember@1.13.7",
+          "loc": {
+            "source": null,
+            "start": {
+              "line": 12,
+              "column": 20
+            },
+            "end": {
+              "line": 12,
+              "column": 71
+            }
+          },
+          "moduleName": "dummy/templates/application.hbs"
+        },
+        arity: 0,
         cachedFragment: null,
         hasRendered: false,
-        build: function build(dom) {
+        buildFragment: function buildFragment(dom) {
           var el0 = dom.createDocumentFragment();
           var el1 = dom.createElement("i");
           dom.setAttribute(el1,"class","fa fa-home");
@@ -207,37 +247,35 @@ define('dummy/templates/application', ['exports'], function (exports) {
           dom.appendChild(el0, el1);
           return el0;
         },
-        render: function render(context, env, contextualElement) {
-          var dom = env.dom;
-          dom.detectNamespace(contextualElement);
-          var fragment;
-          if (env.useFragmentCache && dom.canClone) {
-            if (this.cachedFragment === null) {
-              fragment = this.build(dom);
-              if (this.hasRendered) {
-                this.cachedFragment = fragment;
-              } else {
-                this.hasRendered = true;
-              }
-            }
-            if (this.cachedFragment) {
-              fragment = dom.cloneNode(this.cachedFragment, true);
-            }
-          } else {
-            fragment = this.build(dom);
-          }
-          return fragment;
-        }
+        buildRenderNodes: function buildRenderNodes() { return []; },
+        statements: [
+
+        ],
+        locals: [],
+        templates: []
       };
     }());
     var child1 = (function() {
       return {
-        isHTMLBars: true,
-        revision: "Ember@1.12.0",
-        blockParams: 0,
+        meta: {
+          "revision": "Ember@1.13.7",
+          "loc": {
+            "source": null,
+            "start": {
+              "line": 13,
+              "column": 20
+            },
+            "end": {
+              "line": 13,
+              "column": 71
+            }
+          },
+          "moduleName": "dummy/templates/application.hbs"
+        },
+        arity: 0,
         cachedFragment: null,
         hasRendered: false,
-        build: function build(dom) {
+        buildFragment: function buildFragment(dom) {
           var el0 = dom.createDocumentFragment();
           var el1 = dom.createElement("i");
           dom.setAttribute(el1,"class","fa fa-cubes");
@@ -246,36 +284,34 @@ define('dummy/templates/application', ['exports'], function (exports) {
           dom.appendChild(el0, el1);
           return el0;
         },
-        render: function render(context, env, contextualElement) {
-          var dom = env.dom;
-          dom.detectNamespace(contextualElement);
-          var fragment;
-          if (env.useFragmentCache && dom.canClone) {
-            if (this.cachedFragment === null) {
-              fragment = this.build(dom);
-              if (this.hasRendered) {
-                this.cachedFragment = fragment;
-              } else {
-                this.hasRendered = true;
-              }
-            }
-            if (this.cachedFragment) {
-              fragment = dom.cloneNode(this.cachedFragment, true);
-            }
-          } else {
-            fragment = this.build(dom);
-          }
-          return fragment;
-        }
+        buildRenderNodes: function buildRenderNodes() { return []; },
+        statements: [
+
+        ],
+        locals: [],
+        templates: []
       };
     }());
     return {
-      isHTMLBars: true,
-      revision: "Ember@1.12.0",
-      blockParams: 0,
+      meta: {
+        "revision": "Ember@1.13.7",
+        "loc": {
+          "source": null,
+          "start": {
+            "line": 1,
+            "column": 0
+          },
+          "end": {
+            "line": 33,
+            "column": 0
+          }
+        },
+        "moduleName": "dummy/templates/application.hbs"
+      },
+      arity: 0,
       cachedFragment: null,
       hasRendered: false,
-      build: function build(dom) {
+      buildFragment: function buildFragment(dom) {
         var el0 = dom.createDocumentFragment();
         var el1 = dom.createElement("br");
         dom.appendChild(el0, el1);
@@ -439,36 +475,22 @@ define('dummy/templates/application', ['exports'], function (exports) {
         dom.appendChild(el0, el1);
         return el0;
       },
-      render: function render(context, env, contextualElement) {
-        var dom = env.dom;
-        var hooks = env.hooks, block = hooks.block, content = hooks.content;
-        dom.detectNamespace(contextualElement);
-        var fragment;
-        if (env.useFragmentCache && dom.canClone) {
-          if (this.cachedFragment === null) {
-            fragment = this.build(dom);
-            if (this.hasRendered) {
-              this.cachedFragment = fragment;
-            } else {
-              this.hasRendered = true;
-            }
-          }
-          if (this.cachedFragment) {
-            fragment = dom.cloneNode(this.cachedFragment, true);
-          }
-        } else {
-          fragment = this.build(dom);
-        }
+      buildRenderNodes: function buildRenderNodes(dom, fragment, contextualElement) {
         var element0 = dom.childAt(fragment, [2]);
         var element1 = dom.childAt(element0, [1, 1, 1, 3]);
-        var morph0 = dom.createMorphAt(dom.childAt(element1, [1]),0,0);
-        var morph1 = dom.createMorphAt(dom.childAt(element1, [3]),0,0);
-        var morph2 = dom.createMorphAt(element0,3,3);
-        block(env, morph0, context, "link-to", ["index"], {}, child0, null);
-        block(env, morph1, context, "link-to", ["demo"], {}, child1, null);
-        content(env, morph2, context, "outlet");
-        return fragment;
-      }
+        var morphs = new Array(3);
+        morphs[0] = dom.createMorphAt(dom.childAt(element1, [1]),0,0);
+        morphs[1] = dom.createMorphAt(dom.childAt(element1, [3]),0,0);
+        morphs[2] = dom.createMorphAt(element0,3,3);
+        return morphs;
+      },
+      statements: [
+        ["block","link-to",["index"],[],0,null,["loc",[null,[12,20],[12,83]]]],
+        ["block","link-to",["demo"],[],1,null,["loc",[null,[13,20],[13,83]]]],
+        ["content","outlet",["loc",[null,[23,4],[23,14]]]]
+      ],
+      locals: [],
+      templates: [child0, child1]
     };
   }()));
 
@@ -479,12 +501,25 @@ define('dummy/templates/demo', ['exports'], function (exports) {
 
   exports['default'] = Ember.HTMLBars.template((function() {
     return {
-      isHTMLBars: true,
-      revision: "Ember@1.12.0",
-      blockParams: 0,
+      meta: {
+        "revision": "Ember@1.13.7",
+        "loc": {
+          "source": null,
+          "start": {
+            "line": 1,
+            "column": 0
+          },
+          "end": {
+            "line": 30,
+            "column": 0
+          }
+        },
+        "moduleName": "dummy/templates/demo.hbs"
+      },
+      arity: 0,
       cachedFragment: null,
       hasRendered: false,
-      build: function build(dom) {
+      buildFragment: function buildFragment(dom) {
         var el0 = dom.createDocumentFragment();
         var el1 = dom.createElement("div");
         dom.setAttribute(el1,"class","row");
@@ -593,13 +628,13 @@ define('dummy/templates/demo', ['exports'], function (exports) {
         var el2 = dom.createTextNode("Update Values");
         dom.appendChild(el1, el2);
         dom.appendChild(el0, el1);
-        var el1 = dom.createTextNode("\n\n");
-        dom.appendChild(el0, el1);
-        var el1 = dom.createElement("br");
-        dom.appendChild(el0, el1);
-        var el1 = dom.createElement("br");
-        dom.appendChild(el0, el1);
         var el1 = dom.createTextNode("\n");
+        dom.appendChild(el0, el1);
+        var el1 = dom.createElement("br");
+        dom.appendChild(el0, el1);
+        var el1 = dom.createElement("br");
+        dom.appendChild(el0, el1);
+        var el1 = dom.createTextNode("\n\n");
         dom.appendChild(el0, el1);
         var el1 = dom.createElement("h4");
         var el2 = dom.createTextNode("Used alongside other properties or attribute bindings");
@@ -613,44 +648,31 @@ define('dummy/templates/demo', ['exports'], function (exports) {
         dom.appendChild(el0, el1);
         return el0;
       },
-      render: function render(context, env, contextualElement) {
-        var dom = env.dom;
-        var hooks = env.hooks, inline = hooks.inline, get = hooks.get, element = hooks.element;
-        dom.detectNamespace(contextualElement);
-        var fragment;
-        if (env.useFragmentCache && dom.canClone) {
-          if (this.cachedFragment === null) {
-            fragment = this.build(dom);
-            if (this.hasRendered) {
-              this.cachedFragment = fragment;
-            } else {
-              this.hasRendered = true;
-            }
-          }
-          if (this.cachedFragment) {
-            fragment = dom.cloneNode(this.cachedFragment, true);
-          }
-        } else {
-          fragment = this.build(dom);
-        }
+      buildRenderNodes: function buildRenderNodes(dom, fragment, contextualElement) {
         var element0 = dom.childAt(fragment, [36]);
-        var morph0 = dom.createMorphAt(fragment,4,4,contextualElement);
-        var morph1 = dom.createMorphAt(fragment,11,11,contextualElement);
-        var morph2 = dom.createMorphAt(fragment,14,14,contextualElement);
-        var morph3 = dom.createMorphAt(fragment,21,21,contextualElement);
-        var morph4 = dom.createMorphAt(fragment,24,24,contextualElement);
-        var morph5 = dom.createMorphAt(fragment,31,31,contextualElement);
-        var morph6 = dom.createMorphAt(fragment,43,43,contextualElement);
-        inline(env, morph0, context, "sl-translate", [], {"key": "SIMPLE_KEY"});
-        inline(env, morph1, context, "sl-translate", [], {"key": "SINGULAR_KEY", "pluralKey": "PLURAL_KEY", "pluralCount": "1"});
-        inline(env, morph2, context, "sl-translate", [], {"key": "SINGULAR_KEY", "pluralKey": "PLURAL_KEY", "pluralCount": "3"});
-        inline(env, morph3, context, "sl-translate", [], {"key": "REPLACED_KEY"});
-        inline(env, morph4, context, "sl-translate", [], {"key": "REPLACED_KEY", "$0": "First", "$1": "Unicorn"});
-        inline(env, morph5, context, "sl-translate", [], {"key": "REPLACED_KEY", "$0": "First", "$1": get(env, context, "valueToDisplay")});
-        element(env, element0, context, "action", ["updateStringValues"], {});
-        inline(env, morph6, context, "sl-translate", [], {"tagName": "em", "key": "REPLACED_KEY", "$0": "First", "$1": "Dragon"});
-        return fragment;
-      }
+        var morphs = new Array(8);
+        morphs[0] = dom.createMorphAt(fragment,4,4,contextualElement);
+        morphs[1] = dom.createMorphAt(fragment,11,11,contextualElement);
+        morphs[2] = dom.createMorphAt(fragment,14,14,contextualElement);
+        morphs[3] = dom.createMorphAt(fragment,21,21,contextualElement);
+        morphs[4] = dom.createMorphAt(fragment,24,24,contextualElement);
+        morphs[5] = dom.createMorphAt(fragment,31,31,contextualElement);
+        morphs[6] = dom.createElementMorph(element0);
+        morphs[7] = dom.createMorphAt(fragment,43,43,contextualElement);
+        return morphs;
+      },
+      statements: [
+        ["inline","sl-translate",[],["key","SIMPLE_KEY"],["loc",[null,[9,0],[9,33]]]],
+        ["inline","sl-translate",[],["key","SINGULAR_KEY","pluralKey","PLURAL_KEY","pluralCount","1"],["loc",[null,[13,0],[13,74]]]],
+        ["inline","sl-translate",[],["key","SINGULAR_KEY","pluralKey","PLURAL_KEY","pluralCount","3"],["loc",[null,[14,0],[14,74]]]],
+        ["inline","sl-translate",[],["key","REPLACED_KEY"],["loc",[null,[18,17],[18,52]]]],
+        ["inline","sl-translate",[],["key","REPLACED_KEY","$0","First","$1","Unicorn"],["loc",[null,[19,17],[19,76]]]],
+        ["inline","sl-translate",[],["key","REPLACED_KEY","$0","First","$1",["subexpr","@mut",[["get","valueToDisplay",["loc",[null,[23,68],[23,82]]]]],[],[]]],["loc",[null,[23,20],[23,84]]]],
+        ["element","action",["updateStringValues"],[],["loc",[null,[25,8],[25,39]]]],
+        ["inline","sl-translate",[],["tagName","em","key","REPLACED_KEY","$0","First","$1","Dragon"],["loc",[null,[29,0],[29,71]]]]
+      ],
+      locals: [],
+      templates: []
     };
   }()));
 
@@ -662,49 +684,60 @@ define('dummy/templates/index', ['exports'], function (exports) {
   exports['default'] = Ember.HTMLBars.template((function() {
     var child0 = (function() {
       return {
-        isHTMLBars: true,
-        revision: "Ember@1.12.0",
-        blockParams: 0,
+        meta: {
+          "revision": "Ember@1.13.7",
+          "loc": {
+            "source": null,
+            "start": {
+              "line": 10,
+              "column": 12
+            },
+            "end": {
+              "line": 10,
+              "column": 64
+            }
+          },
+          "moduleName": "dummy/templates/index.hbs"
+        },
+        arity: 0,
         cachedFragment: null,
         hasRendered: false,
-        build: function build(dom) {
+        buildFragment: function buildFragment(dom) {
           var el0 = dom.createDocumentFragment();
           var el1 = dom.createElement("i");
           dom.setAttribute(el1,"class","fa fa-cubes fa-5x");
           dom.appendChild(el0, el1);
           return el0;
         },
-        render: function render(context, env, contextualElement) {
-          var dom = env.dom;
-          dom.detectNamespace(contextualElement);
-          var fragment;
-          if (env.useFragmentCache && dom.canClone) {
-            if (this.cachedFragment === null) {
-              fragment = this.build(dom);
-              if (this.hasRendered) {
-                this.cachedFragment = fragment;
-              } else {
-                this.hasRendered = true;
-              }
-            }
-            if (this.cachedFragment) {
-              fragment = dom.cloneNode(this.cachedFragment, true);
-            }
-          } else {
-            fragment = this.build(dom);
-          }
-          return fragment;
-        }
+        buildRenderNodes: function buildRenderNodes() { return []; },
+        statements: [
+
+        ],
+        locals: [],
+        templates: []
       };
     }());
     var child1 = (function() {
       return {
-        isHTMLBars: true,
-        revision: "Ember@1.12.0",
-        blockParams: 0,
+        meta: {
+          "revision": "Ember@1.13.7",
+          "loc": {
+            "source": null,
+            "start": {
+              "line": 11,
+              "column": 11
+            },
+            "end": {
+              "line": 11,
+              "column": 41
+            }
+          },
+          "moduleName": "dummy/templates/index.hbs"
+        },
+        arity: 0,
         cachedFragment: null,
         hasRendered: false,
-        build: function build(dom) {
+        buildFragment: function buildFragment(dom) {
           var el0 = dom.createDocumentFragment();
           var el1 = dom.createElement("b");
           var el2 = dom.createTextNode("Demo");
@@ -712,36 +745,34 @@ define('dummy/templates/index', ['exports'], function (exports) {
           dom.appendChild(el0, el1);
           return el0;
         },
-        render: function render(context, env, contextualElement) {
-          var dom = env.dom;
-          dom.detectNamespace(contextualElement);
-          var fragment;
-          if (env.useFragmentCache && dom.canClone) {
-            if (this.cachedFragment === null) {
-              fragment = this.build(dom);
-              if (this.hasRendered) {
-                this.cachedFragment = fragment;
-              } else {
-                this.hasRendered = true;
-              }
-            }
-            if (this.cachedFragment) {
-              fragment = dom.cloneNode(this.cachedFragment, true);
-            }
-          } else {
-            fragment = this.build(dom);
-          }
-          return fragment;
-        }
+        buildRenderNodes: function buildRenderNodes() { return []; },
+        statements: [
+
+        ],
+        locals: [],
+        templates: []
       };
     }());
     return {
-      isHTMLBars: true,
-      revision: "Ember@1.12.0",
-      blockParams: 0,
+      meta: {
+        "revision": "Ember@1.13.7",
+        "loc": {
+          "source": null,
+          "start": {
+            "line": 1,
+            "column": 0
+          },
+          "end": {
+            "line": 21,
+            "column": 6
+          }
+        },
+        "moduleName": "dummy/templates/index.hbs"
+      },
+      arity: 0,
       cachedFragment: null,
       hasRendered: false,
-      build: function build(dom) {
+      buildFragment: function buildFragment(dom) {
         var el0 = dom.createDocumentFragment();
         var el1 = dom.createElement("div");
         dom.setAttribute(el1,"class","row");
@@ -752,7 +783,7 @@ define('dummy/templates/index', ['exports'], function (exports) {
         var el3 = dom.createTextNode("\n        ");
         dom.appendChild(el2, el3);
         var el3 = dom.createElement("h1");
-        var el4 = dom.createTextNode("sl-ember-translate");
+        var el4 = dom.createTextNode("sl-ember-translate 1.10.0");
         dom.appendChild(el3, el4);
         dom.appendChild(el2, el3);
         var el3 = dom.createTextNode("\n        ");
@@ -854,33 +885,19 @@ define('dummy/templates/index', ['exports'], function (exports) {
         dom.appendChild(el0, el1);
         return el0;
       },
-      render: function render(context, env, contextualElement) {
-        var dom = env.dom;
-        var hooks = env.hooks, block = hooks.block;
-        dom.detectNamespace(contextualElement);
-        var fragment;
-        if (env.useFragmentCache && dom.canClone) {
-          if (this.cachedFragment === null) {
-            fragment = this.build(dom);
-            if (this.hasRendered) {
-              this.cachedFragment = fragment;
-            } else {
-              this.hasRendered = true;
-            }
-          }
-          if (this.cachedFragment) {
-            fragment = dom.cloneNode(this.cachedFragment, true);
-          }
-        } else {
-          fragment = this.build(dom);
-        }
+      buildRenderNodes: function buildRenderNodes(dom, fragment, contextualElement) {
         var element0 = dom.childAt(fragment, [2, 1]);
-        var morph0 = dom.createMorphAt(dom.childAt(element0, [1]),0,0);
-        var morph1 = dom.createMorphAt(dom.childAt(element0, [3]),0,0);
-        block(env, morph0, context, "link-to", ["demo"], {}, child0, null);
-        block(env, morph1, context, "link-to", ["demo"], {}, child1, null);
-        return fragment;
-      }
+        var morphs = new Array(2);
+        morphs[0] = dom.createMorphAt(dom.childAt(element0, [1]),0,0);
+        morphs[1] = dom.createMorphAt(dom.childAt(element0, [3]),0,0);
+        return morphs;
+      },
+      statements: [
+        ["block","link-to",["demo"],[],0,null,["loc",[null,[10,12],[10,76]]]],
+        ["block","link-to",["demo"],[],1,null,["loc",[null,[11,11],[11,53]]]]
+      ],
+      locals: [],
+      templates: [child0, child1]
     };
   }()));
 
@@ -889,9 +906,46 @@ define('dummy/tests/app.jshint', function () {
 
   'use strict';
 
-  module('JSHint - .');
-  test('app.js should pass jshint', function() { 
-    ok(true, 'app.js should pass jshint.'); 
+  QUnit.module('JSHint - .');
+  QUnit.test('app.js should pass jshint', function(assert) { 
+    assert.ok(true, 'app.js should pass jshint.'); 
+  });
+
+});
+define('dummy/tests/blanket-options', function () {
+
+    'use strict';
+
+    /* globals blanket, module */
+
+    var options = {
+        modulePrefix: 'sl-ember-translate',
+        filter: '//.*sl-ember-translate/.*/',
+        antifilter: '//.*(tests|template).*/',
+        loaderExclusions: [],
+        enableCoverage: true,
+        modulePattern: '\/(\\w+)',
+        branchTracking: true,
+        cliOptions: {
+            reporters: ['json'],
+            autostart: true
+        }
+    };
+
+    if ('undefined' === typeof exports) {
+        blanket.options(options);
+    } else {
+        module.exports = options;
+    }
+
+});
+define('dummy/tests/blanket-options.jshint', function () {
+
+  'use strict';
+
+  QUnit.module('JSHint - .');
+  QUnit.test('blanket-options.js should pass jshint', function(assert) { 
+    assert.ok(true, 'blanket-options.js should pass jshint.'); 
   });
 
 });
@@ -899,9 +953,9 @@ define('dummy/tests/controllers/demo.jshint', function () {
 
   'use strict';
 
-  module('JSHint - controllers');
-  test('controllers/demo.js should pass jshint', function() { 
-    ok(true, 'controllers/demo.js should pass jshint.'); 
+  QUnit.module('JSHint - controllers');
+  QUnit.test('controllers/demo.js should pass jshint', function(assert) { 
+    assert.ok(true, 'controllers/demo.js should pass jshint.'); 
   });
 
 });
@@ -923,266 +977,13 @@ define('dummy/tests/helpers/resolver.jshint', function () {
 
   'use strict';
 
-  module('JSHint - helpers');
-  test('helpers/resolver.js should pass jshint', function() { 
-    ok(true, 'helpers/resolver.js should pass jshint.'); 
+  QUnit.module('JSHint - helpers');
+  QUnit.test('helpers/resolver.js should pass jshint', function(assert) { 
+    assert.ok(true, 'helpers/resolver.js should pass jshint.'); 
   });
 
 });
-define('dummy/tests/helpers/sl/register-test-helpers', ['exports', 'ember', 'dummy/tests/helpers/sl/synchronous'], function (exports, Ember, synchronous) {
-
-    'use strict';
-
-    exports['default'] = function () {
-        Ember['default'].Test.registerHelper('contains', synchronous.contains);
-        Ember['default'].Test.registerHelper('ajax', synchronous.ajax);
-        Ember['default'].Test.registerHelper('requires', synchronous.requires);
-    }
-
-});
-define('dummy/tests/helpers/sl/synchronous', ['exports', 'dummy/tests/helpers/sl/synchronous/contains', 'dummy/tests/helpers/sl/synchronous/ajax', 'dummy/tests/helpers/sl/synchronous/requires'], function (exports, contains, ajax, requires) {
-
-	'use strict';
-
-
-
-	exports.contains = contains['default'];
-	exports.ajax = ajax['default'];
-	exports.requires = requires['default'];
-
-});
-define('dummy/tests/helpers/sl/synchronous/ajax', ['exports', 'ember'], function (exports, Ember) {
-
-    'use strict';
-
-    var AjaxHelper = function AjaxHelper() {};
-
-    /**
-     * Emulate the beginning of an AJAX request
-     *
-     * @param   {Ember.String} endpoint
-     * @returns {void}
-     */
-    AjaxHelper.prototype.begin = function (endpoint) {
-        Ember['default'].run(function () {
-            if (endpoint) {
-                $(document).trigger('ajaxSend', [null, { url: endpoint }]);
-            } else {
-                $(document).trigger('ajaxStart');
-            }
-        });
-    };
-
-    /**
-     * Emulate the conclusion of an AJAX request
-     *
-     * @param   {Ember.String} endpoint
-     * @returns {void}
-     */
-    AjaxHelper.prototype.end = function (endpoint) {
-        Ember['default'].run(function () {
-            if (endpoint) {
-                $(document).trigger('ajaxComplete', [null, { url: endpoint }]);
-            } else {
-                $(document).trigger('ajaxStop');
-            }
-        });
-    };
-
-    var helper = new AjaxHelper();
-
-    exports['default'] = helper;
-
-});
-define('dummy/tests/helpers/sl/synchronous/contains', ['exports', 'ember', 'dummy/tests/helpers/sl/utils/utils'], function (exports, Ember, utils) {
-
-    'use strict';
-
-    exports['default'] = function () {
-        var index = 3 === arguments.length ? 1 : 0,
-            underTest = arguments[index],
-            testFor = arguments[index + 1];
-
-        Ember['default'].assert('First non-optional argument must be an array, string or object', 'object' === typeof underTest || 'string' === typeof underTest || Array.isArray(underTest));
-
-        Ember['default'].assert('Second non-optional argument must be an array, string or object', 'object' === typeof testFor || 'string' === typeof testFor || Array.isArray(testFor));
-
-        return utils.doArraysIntersect(utils.convertToArray(underTest), utils.convertToArray(testFor));
-    }
-
-});
-define('dummy/tests/helpers/sl/synchronous/requires', ['exports', 'ember'], function (exports, Ember) {
-
-    'use strict';
-
-    exports['default'] = function (methodUnderTest, requiredTypes) {
-        var typesToTest = {
-            'number': {
-                required: false,
-                testValue: 123987465,
-                message: 'Parameter was a number'
-            },
-            'string': {
-                required: false,
-                testValue: 'testString',
-                message: 'Parameter was a string'
-            },
-            'array': {
-                required: false,
-                testValue: [],
-                message: 'Parameter was an array'
-            },
-            'object': {
-                required: false,
-                testValue: {},
-                message: 'Parameter was an object'
-            },
-            'function': {
-                required: false,
-                testValue: function testValue() {},
-                message: 'Parameter was a function'
-            },
-            'undefined': {
-                required: false,
-                testValue: undefined,
-                message: 'Parameter was undefined'
-            },
-            'boolean': {
-                required: false,
-                testValue: true,
-                message: 'Parameter was a boolean'
-            }
-        },
-            testsThatHaveFailed = [],
-            assertionThrown,
-            assertionPassed,
-            property,
-            parameter;
-
-        Ember['default'].assert('First argument must be a function', 'function' === typeof methodUnderTest);
-        Ember['default'].assert('Second argument must be an array', Array.isArray(requiredTypes));
-
-        // Set required parameter types
-        requiredTypes.forEach(function (item) {
-            typesToTest[item]['required'] = true;
-        });
-
-        // Test each parameter type
-        for (property in typesToTest) {
-            if (typesToTest.hasOwnProperty(property)) {
-
-                // Reset flag
-                assertionThrown = false;
-
-                // Assign cleaner object reference
-                parameter = typesToTest[property];
-
-                // Test parameter
-                try {
-                    methodUnderTest(parameter['testValue']);
-                } catch (error) {
-                    assertionThrown = true;
-                }
-
-                assertionPassed = parameter['required'] ? !assertionThrown : assertionThrown;
-
-                if (!assertionPassed) {
-                    testsThatHaveFailed.push(parameter['message']);
-                }
-            }
-        }
-
-        return {
-            requires: 0 === testsThatHaveFailed.length ? true : false,
-            messages: testsThatHaveFailed.join('; ')
-        };
-    }
-
-});
-define('dummy/tests/helpers/sl/utils/utils', ['exports', 'ember'], function (exports, Ember) {
-
-    'use strict';
-
-    var convertToArray = function convertToArray(underTest) {
-        var returnArray;
-
-        if (Array.isArray(underTest)) {
-            returnArray = underTest;
-        } else {
-            switch (typeof underTest) {
-                case 'string':
-                    returnArray = convertStringToArray(underTest);
-                    break;
-
-                case 'object':
-                    returnArray = convertObjectKeysToArray(underTest);
-                    break;
-            }
-        }
-
-        Ember['default'].assert('String, Object or Array must be supplied', 'undefined' !== typeof returnArray);
-
-        return returnArray;
-    };
-
-    /**
-     * Splits a string into an array of individual "words" as delineated by spaces
-     *
-     * Primarily exists to convert format of call to .prop( 'class' )
-     *
-     * @function convertStringToArray
-     * @param   {string} underTest
-     * @throws  {Ember.assert} If argument is not provided or is not a string
-     * @returns {array}
-     */
-    var convertStringToArray = function convertStringToArray(underTest) {
-
-        Ember['default'].assert('String must be supplied', 'string' === typeof underTest);
-
-        return underTest.split(' ');
-    };
-
-    /**
-     * Returns an array containing all of the property names of an object
-     *
-     * Property names are only extracted from the object provided.  No recursion into nested objects occurs.
-     *
-     * @function convertObjectKeysToArray
-     * @param   {object} underTest
-     * @throws  {Ember.assert} If argument is not provided or is not an object
-     * @returns {array}
-     */
-    var convertObjectKeysToArray = function convertObjectKeysToArray(underTest) {
-
-        Ember['default'].assert('Object must be supplied', 'object' === typeof underTest && !Array.isArray(underTest));
-
-        return Object.keys(underTest);
-    };
-
-    /**
-     * [doArraysIntersect description]
-     *
-     * @function doArraysIntersect
-     * @param  {array} underTest
-     * @param  {array} testFor
-     * @return {boolean}
-     */
-    var doArraysIntersect = function doArraysIntersect(underTest, testFor) {
-
-        Ember['default'].assert('Parameters must be Arrays', Array.isArray(underTest) && Array.isArray(testFor));
-
-        return testFor.some(function (v) {
-            return underTest.indexOf(v) >= 0;
-        });
-    };
-
-    exports.convertToArray = convertToArray;
-    exports.convertStringToArray = convertStringToArray;
-    exports.convertObjectKeysToArray = convertObjectKeysToArray;
-    exports.doArraysIntersect = doArraysIntersect;
-
-});
-define('dummy/tests/helpers/start-app', ['exports', 'ember', 'dummy/tests/helpers/sl/register-test-helpers', 'dummy/app', 'dummy/router', 'dummy/config/environment'], function (exports, Ember, slregisterTestHelpers, Application, Router, config) {
+define('dummy/tests/helpers/start-app', ['exports', 'ember', 'dummy/app', 'dummy/config/environment'], function (exports, Ember, Application, config) {
 
     'use strict';
 
@@ -1190,7 +991,7 @@ define('dummy/tests/helpers/start-app', ['exports', 'ember', 'dummy/tests/helper
 
     exports['default'] = startApp;
     function startApp(attrs) {
-        var application;
+        var application = undefined;
 
         var attributes = Ember['default'].merge({}, config['default'].APP);
         attributes = Ember['default'].merge(attributes, attrs); // use defaults, but you can override;
@@ -1198,7 +999,6 @@ define('dummy/tests/helpers/start-app', ['exports', 'ember', 'dummy/tests/helper
         Ember['default'].run(function () {
             application = Application['default'].create(attributes);
             application.setupForTesting();
-            slregisterTestHelpers['default']();
             application.injectTestHelpers();
         });
 
@@ -1210,9 +1010,299 @@ define('dummy/tests/helpers/start-app.jshint', function () {
 
   'use strict';
 
-  module('JSHint - helpers');
-  test('helpers/start-app.js should pass jshint', function() { 
-    ok(true, 'helpers/start-app.js should pass jshint.'); 
+  QUnit.module('JSHint - helpers');
+  QUnit.test('helpers/start-app.js should pass jshint', function(assert) { 
+    assert.ok(true, 'helpers/start-app.js should pass jshint.'); 
+  });
+
+});
+define('dummy/tests/integration/components/sl-translate-test', ['ember', 'ember-qunit'], function (Ember, ember_qunit) {
+
+    'use strict';
+
+    ember_qunit.moduleForComponent('sl-translate', 'Integration | Component | sl translate', {
+        beforeEach: function beforeEach() {
+            this.container.lookup('service:sl-translate').setDictionary(Ember['default'].Object.create({
+                'SIMPLE_KEY': 'I have been translated',
+                'SINGULAR_KEY': 'View my family',
+                'PLURAL_KEY': 'View my families',
+                'REPLACED_KEY': 'I have replaced {0} and {1}'
+            }));
+        },
+
+        integration: true
+    });
+
+    ember_qunit.test('Simple Key Translation', function (assert) {
+        this.render(Ember['default'].HTMLBars.template((function () {
+            return {
+                meta: {
+                    'revision': 'Ember@1.13.7',
+                    'loc': {
+                        'source': null,
+                        'start': {
+                            'line': 1,
+                            'column': 0
+                        },
+                        'end': {
+                            'line': 3,
+                            'column': 4
+                        }
+                    }
+                },
+                arity: 0,
+                cachedFragment: null,
+                hasRendered: false,
+                buildFragment: function buildFragment(dom) {
+                    var el0 = dom.createDocumentFragment();
+                    var el1 = dom.createTextNode('\n        ');
+                    dom.appendChild(el0, el1);
+                    var el1 = dom.createComment('');
+                    dom.appendChild(el0, el1);
+                    var el1 = dom.createTextNode('\n    ');
+                    dom.appendChild(el0, el1);
+                    return el0;
+                },
+                buildRenderNodes: function buildRenderNodes(dom, fragment, contextualElement) {
+                    var morphs = new Array(1);
+                    morphs[0] = dom.createMorphAt(fragment, 1, 1, contextualElement);
+                    return morphs;
+                },
+                statements: [['inline', 'sl-translate', [], ['key', 'SIMPLE_KEY'], ['loc', [null, [2, 8], [2, 42]]]]],
+                locals: [],
+                templates: []
+            };
+        })()));
+
+        assert.strictEqual(this.$('>:first-child').text().trim(), 'I have been translated', 'Simple Key was translated');
+    });
+
+    ember_qunit.test('Single/Plural Keys', function (assert) {
+        this.render(Ember['default'].HTMLBars.template((function () {
+            return {
+                meta: {
+                    'revision': 'Ember@1.13.7',
+                    'loc': {
+                        'source': null,
+                        'start': {
+                            'line': 1,
+                            'column': 0
+                        },
+                        'end': {
+                            'line': 3,
+                            'column': 4
+                        }
+                    }
+                },
+                arity: 0,
+                cachedFragment: null,
+                hasRendered: false,
+                buildFragment: function buildFragment(dom) {
+                    var el0 = dom.createDocumentFragment();
+                    var el1 = dom.createTextNode('\n        ');
+                    dom.appendChild(el0, el1);
+                    var el1 = dom.createComment('');
+                    dom.appendChild(el0, el1);
+                    var el1 = dom.createTextNode('\n    ');
+                    dom.appendChild(el0, el1);
+                    return el0;
+                },
+                buildRenderNodes: function buildRenderNodes(dom, fragment, contextualElement) {
+                    var morphs = new Array(1);
+                    morphs[0] = dom.createMorphAt(fragment, 1, 1, contextualElement);
+                    return morphs;
+                },
+                statements: [['inline', 'sl-translate', [], ['key', 'SINGULAR_KEY', 'pluralKey', 'PLURAL_KEY', 'pluralCount', '1'], ['loc', [null, [2, 8], [2, 82]]]]],
+                locals: [],
+                templates: []
+            };
+        })()));
+
+        assert.strictEqual(this.$('>:first-child').text().trim(), 'View my family', 'Singular Key was correctly returned');
+
+        this.render(Ember['default'].HTMLBars.template((function () {
+            return {
+                meta: {
+                    'revision': 'Ember@1.13.7',
+                    'loc': {
+                        'source': null,
+                        'start': {
+                            'line': 1,
+                            'column': 0
+                        },
+                        'end': {
+                            'line': 3,
+                            'column': 4
+                        }
+                    }
+                },
+                arity: 0,
+                cachedFragment: null,
+                hasRendered: false,
+                buildFragment: function buildFragment(dom) {
+                    var el0 = dom.createDocumentFragment();
+                    var el1 = dom.createTextNode('\n        ');
+                    dom.appendChild(el0, el1);
+                    var el1 = dom.createComment('');
+                    dom.appendChild(el0, el1);
+                    var el1 = dom.createTextNode('\n    ');
+                    dom.appendChild(el0, el1);
+                    return el0;
+                },
+                buildRenderNodes: function buildRenderNodes(dom, fragment, contextualElement) {
+                    var morphs = new Array(1);
+                    morphs[0] = dom.createMorphAt(fragment, 1, 1, contextualElement);
+                    return morphs;
+                },
+                statements: [['inline', 'sl-translate', [], ['key', 'SINGULAR_KEY', 'pluralKey', 'PLURAL_KEY', 'pluralCount', '3'], ['loc', [null, [2, 8], [2, 82]]]]],
+                locals: [],
+                templates: []
+            };
+        })()));
+
+        assert.strictEqual(this.$('>:first-child').text().trim(), 'View my families', 'Plural Key was correctly returned');
+    });
+
+    ember_qunit.test('Replaced Values In Keys', function (assert) {
+        this.render(Ember['default'].HTMLBars.template((function () {
+            return {
+                meta: {
+                    'revision': 'Ember@1.13.7',
+                    'loc': {
+                        'source': null,
+                        'start': {
+                            'line': 1,
+                            'column': 0
+                        },
+                        'end': {
+                            'line': 3,
+                            'column': 4
+                        }
+                    }
+                },
+                arity: 0,
+                cachedFragment: null,
+                hasRendered: false,
+                buildFragment: function buildFragment(dom) {
+                    var el0 = dom.createDocumentFragment();
+                    var el1 = dom.createTextNode('\n        ');
+                    dom.appendChild(el0, el1);
+                    var el1 = dom.createComment('');
+                    dom.appendChild(el0, el1);
+                    var el1 = dom.createTextNode('\n    ');
+                    dom.appendChild(el0, el1);
+                    return el0;
+                },
+                buildRenderNodes: function buildRenderNodes(dom, fragment, contextualElement) {
+                    var morphs = new Array(1);
+                    morphs[0] = dom.createMorphAt(fragment, 1, 1, contextualElement);
+                    return morphs;
+                },
+                statements: [['inline', 'sl-translate', [], ['key', 'REPLACED_KEY'], ['loc', [null, [2, 8], [2, 43]]]]],
+                locals: [],
+                templates: []
+            };
+        })()));
+
+        assert.strictEqual(this.$('>:first-child').text().trim(), 'I have replaced {0} and {1}', 'Original String was correct');
+
+        this.render(Ember['default'].HTMLBars.template((function () {
+            return {
+                meta: {
+                    'revision': 'Ember@1.13.7',
+                    'loc': {
+                        'source': null,
+                        'start': {
+                            'line': 1,
+                            'column': 0
+                        },
+                        'end': {
+                            'line': 3,
+                            'column': 4
+                        }
+                    }
+                },
+                arity: 0,
+                cachedFragment: null,
+                hasRendered: false,
+                buildFragment: function buildFragment(dom) {
+                    var el0 = dom.createDocumentFragment();
+                    var el1 = dom.createTextNode('\n        ');
+                    dom.appendChild(el0, el1);
+                    var el1 = dom.createComment('');
+                    dom.appendChild(el0, el1);
+                    var el1 = dom.createTextNode('\n    ');
+                    dom.appendChild(el0, el1);
+                    return el0;
+                },
+                buildRenderNodes: function buildRenderNodes(dom, fragment, contextualElement) {
+                    var morphs = new Array(1);
+                    morphs[0] = dom.createMorphAt(fragment, 1, 1, contextualElement);
+                    return morphs;
+                },
+                statements: [['inline', 'sl-translate', [], ['key', 'REPLACED_KEY', '$0', 'First', '$1', 'Unicorn'], ['loc', [null, [2, 8], [2, 67]]]]],
+                locals: [],
+                templates: []
+            };
+        })()));
+
+        assert.strictEqual(this.$('>:first-child').text().trim(), 'I have replaced First and Unicorn', 'Replaced String was correct');
+    });
+
+    ember_qunit.test('Bound Replacement Values In Keys', function (assert) {
+        this.set('valueToDisplay', 'the Bound Value');
+
+        this.render(Ember['default'].HTMLBars.template((function () {
+            return {
+                meta: {
+                    'revision': 'Ember@1.13.7',
+                    'loc': {
+                        'source': null,
+                        'start': {
+                            'line': 1,
+                            'column': 0
+                        },
+                        'end': {
+                            'line': 3,
+                            'column': 4
+                        }
+                    }
+                },
+                arity: 0,
+                cachedFragment: null,
+                hasRendered: false,
+                buildFragment: function buildFragment(dom) {
+                    var el0 = dom.createDocumentFragment();
+                    var el1 = dom.createTextNode('\n        ');
+                    dom.appendChild(el0, el1);
+                    var el1 = dom.createComment('');
+                    dom.appendChild(el0, el1);
+                    var el1 = dom.createTextNode('\n    ');
+                    dom.appendChild(el0, el1);
+                    return el0;
+                },
+                buildRenderNodes: function buildRenderNodes(dom, fragment, contextualElement) {
+                    var morphs = new Array(1);
+                    morphs[0] = dom.createMorphAt(fragment, 1, 1, contextualElement);
+                    return morphs;
+                },
+                statements: [['inline', 'sl-translate', [], ['key', 'REPLACED_KEY', '$0', 'First', '$1', ['subexpr', '@mut', [['get', 'valueToDisplay', ['loc', [null, [2, 56], [2, 70]]]]], [], []]], ['loc', [null, [2, 8], [2, 72]]]]],
+                locals: [],
+                templates: []
+            };
+        })()));
+
+        assert.strictEqual(this.$('>:first-child').text().trim(), 'I have replaced First and the Bound Value', 'Using a bound replacement value works');
+    });
+
+});
+define('dummy/tests/integration/components/sl-translate-test.jshint', function () {
+
+  'use strict';
+
+  QUnit.module('JSHint - integration/components');
+  QUnit.test('integration/components/sl-translate-test.js should pass jshint', function(assert) { 
+    assert.ok(true, 'integration/components/sl-translate-test.js should pass jshint.'); 
   });
 
 });
@@ -1220,9 +1310,9 @@ define('dummy/tests/router.jshint', function () {
 
   'use strict';
 
-  module('JSHint - .');
-  test('router.js should pass jshint', function() { 
-    ok(true, 'router.js should pass jshint.'); 
+  QUnit.module('JSHint - .');
+  QUnit.test('router.js should pass jshint', function(assert) { 
+    assert.ok(true, 'router.js should pass jshint.'); 
   });
 
 });
@@ -1230,19 +1320,9 @@ define('dummy/tests/routes/demo.jshint', function () {
 
   'use strict';
 
-  module('JSHint - routes');
-  test('routes/demo.js should pass jshint', function() { 
-    ok(true, 'routes/demo.js should pass jshint.'); 
-  });
-
-});
-define('dummy/tests/services/translate.jshint', function () {
-
-  'use strict';
-
-  module('JSHint - services');
-  test('services/translate.js should pass jshint', function() { 
-    ok(true, 'services/translate.js should pass jshint.'); 
+  QUnit.module('JSHint - routes');
+  QUnit.test('routes/demo.js should pass jshint', function(assert) { 
+    assert.ok(true, 'routes/demo.js should pass jshint.'); 
   });
 
 });
@@ -1257,13 +1337,13 @@ define('dummy/tests/test-helper.jshint', function () {
 
   'use strict';
 
-  module('JSHint - .');
-  test('test-helper.js should pass jshint', function() { 
-    ok(true, 'test-helper.js should pass jshint.'); 
+  QUnit.module('JSHint - .');
+  QUnit.test('test-helper.js should pass jshint', function(assert) { 
+    assert.ok(true, 'test-helper.js should pass jshint.'); 
   });
 
 });
-define('dummy/tests/unit/components/sl-translate-test', ['ember', 'ember-qunit'], function (Ember, ember_qunit) {
+define('dummy/tests/unit/components/sl-translate-test', ['ember', 'ember-qunit', 'sinon'], function (Ember, ember_qunit, sinon) {
 
     'use strict';
 
@@ -1282,91 +1362,18 @@ define('dummy/tests/unit/components/sl-translate-test', ['ember', 'ember-qunit']
         unit: true
     });
 
-    /**
-     * Ensures that the template is wrapping the content in a span tag and not in
-     * any block-level tags. While it appears that core Ember functionality is being
-     * tested this test is ensuring that the implied contract about how this non-UI
-     * component is rendered into the DOM is adhered to.
-     */
-    ember_qunit.test('Renders as a span tag with no classes', function (assert) {
-        this.subject({ translateService: translateService });
-
-        assert.equal(this.$().prop('tagName'), 'SPAN');
-        assert.equal(this.$().prop('class'), 'ember-view');
-    });
-
-    /**
-     * That it renders and functions as expected
-     */
-    ember_qunit.test('DOM and content of rendered translation', function (assert) {
-        this.subject({
-            key: 'the_key',
-            translateService: translateService
-        });
-
-        assert.equal(Ember['default'].$.trim(this.$().text()), 'TRANSLATE: the_key');
-    });
-
-    /**
-     * Ensure haven't broken any default behavior of Ember, since manipulate properties passed to the component
-     * A side effect of this test is the appearance that core Ember functionality is being tested
-     */
-    ember_qunit.test('Can be used alongside other properties or attribute bindings', function (assert) {
-        this.subject({
-            translateService: translateService,
-            key: 'key_alongside',
-            tagName: 'h1',
-            classNames: ['testClass']
-        });
-
-        assert.equal(this.$().prop('tagName'), 'H1');
-        assert.equal(Ember['default'].$.trim(this.$().text()), 'TRANSLATE: key_alongside');
-        assert.equal(this.$().prop('class'), ['ember-view testClass']);
-    });
-
-    ember_qunit.test('On initialization, extractParameterKeys() filters passed parameters', function (assert) {
-        var component = this.subject({
-            key: 'the_key',
-            pluralKey: 'plural_key',
-            pluralCount: 'plural_count',
-            $1: 'a',
-            2: 'b',
-            other: 'c'
-        });
-
-        assert.deepEqual(component.get('parameters').sort(), ['$1']);
-    });
-
-    ember_qunit.test('On initialization, extractParameterKeys() filters passed parameters to be bound', function (assert) {
-        var boundProperty = null;
-        var component = this.subject({
-            key: 'the_key',
-            pluralKey: 'plural_key',
-            pluralCount: 'plural_count',
-            $1: 'a',
-            2: 'b',
-            $3: boundProperty,
-            $3Binding: 'hack; should test this more correctly',
-            other: 'c'
-        });
-
-        assert.deepEqual(component.get('observedParameters'), ['$3']);
-    });
-
-    ember_qunit.test('setTranslatedString() sets translatedString property with value from translateString()', function (assert) {
+    ember_qunit.test('Default property values', function (assert) {
         var component = this.subject();
 
-        component.translateString = function () {
-            return 'test value';
-        };
+        assert.strictEqual(component.translateService.name, 'sl-translate', 'The correct service is being injected into the component');
 
-        component.setTranslatedString();
+        assert.strictEqual(component.get('tagName'), 'span', '"tagName" defaults to span');
 
-        assert.equal(component.get('translatedString'), 'test value');
+        assert.strictEqual(component.get('internalTranslatedString'), null, '"internalTranslatedString" defaults to null');
     });
 
-    ember_qunit.test('translateString() calls translateKey() on the translation service', function (assert) {
-        this.subject({
+    ember_qunit.test('setTranslatedString() is called when the willRender() event occurs', function (assert) {
+        var component = this.subject({
             translateService: translateService,
             key: 'the_key',
             pluralKey: 'plural_key',
@@ -1375,80 +1382,121 @@ define('dummy/tests/unit/components/sl-translate-test', ['ember', 'ember-qunit']
             $1: 'b'
         });
 
-        this.render();
+        var spy = sinon['default'].spy(component, 'setTranslatedString');
 
-        assert.equal(translateService.get('key'), 'the_key');
-        assert.equal(translateService.get('pluralKey'), 'plural_key');
-        assert.equal(translateService.get('pluralCount'), 'plural_count');
+        component.trigger('willRender');
+
+        assert.strictEqual(spy.calledOnce, true, 'setTranslatedString() is called successfully');
+    });
+
+    ember_qunit.test('setTranslatedString() sets internalTranslatedString property with value from translateString()', function (assert) {
+        var component = this.subject({
+            translateService: translateService,
+            key: 'the_key',
+            pluralKey: 'plural_key',
+            pluralCount: 'plural_count',
+            $0: 'a',
+            $1: 'b'
+        });
+
+        var spy = sinon['default'].spy(component, 'translateString');
+
+        Ember['default'].run(function () {
+            component.setTranslatedString();
+        });
+
+        assert.strictEqual(component.get('internalTranslatedString'), 'TRANSLATE: the_key', 'the property "internalTranslatedString" has the correct value');
+
+        assert.strictEqual(spy.calledOnce, true, 'translateString() is called successfully once');
+    });
+
+    ember_qunit.test('translateString() returns expected value', function (assert) {
+        var component = this.subject({
+            translateService: translateService,
+            key: 'the_key',
+            pluralKey: 'plural_key',
+            pluralCount: 'plural_count',
+            $0: 'a',
+            $1: 'b'
+        });
+
+        assert.equal(component.translateString(), 'TRANSLATE: the_key', 'setTranslatedString() returns expected value successfully');
+    });
+
+    ember_qunit.test('setTranslatedString() sets internalTranslatedString and translatedString sets correct value', function (assert) {
+        var component = this.subject({
+            translateService: translateService,
+            key: 'the_key',
+            pluralKey: 'plural_key',
+            pluralCount: 'plural_count',
+            $0: 'a',
+            $1: 'b'
+        });
+
+        Ember['default'].run(function () {
+            component.setTranslatedString();
+        });
+
+        assert.strictEqual(component.get('translatedString'), 'TRANSLATE: the_key', 'translatedString computed property sets correct string');
+    });
+
+    ember_qunit.test('translatedString() returns correct value', function (assert) {
+        var component = this.subject({
+            translateService: translateService,
+            key: 'the_key',
+            pluralKey: 'plural_key',
+            pluralCount: 'plural_count',
+            $0: 'a',
+            $1: 'b'
+        });
+
+        component.trigger('willRender');
+
+        assert.strictEqual(component.get('translatedString'), component.get('internalTranslatedString'), 'translatedString() returns the correct value');
+    });
+
+    ember_qunit.test('translateString() calls translateKey() on the translation service with given values', function (assert) {
+        this.subject({
+            translateService: translateService,
+            key: 'the_key',
+            pluralKey: 'plural_key',
+            pluralCount: 'plural_count',
+            $0: 'a',
+            $1: 'b',
+            c: 'c'
+        });
+
+        assert.strictEqual(translateService.get('key'), 'the_key');
+        assert.strictEqual(translateService.get('pluralKey'), 'plural_key');
+        assert.strictEqual(translateService.get('pluralCount'), 'plural_count');
         assert.deepEqual(translateService.get('parameters'), { $0: 'a', $1: 'b' });
     });
 
-    ember_qunit.test('willInsertElement event causes setTranslatedString() to be called', function (assert) {
+    ember_qunit.test('translateString() only accepts the correct parameter key pattern', function (assert) {
+        var component = this.subject({
+            translateService: translateService,
+            key: 'the_key',
+            pluralKey: 'plural_key',
+            pluralCount: 'plural_count',
+            $0: 'a',
+            $12: 'b',
+            r: 'c',
+            $10000: 'd'
+        });
+
+        Ember['default'].run(function () {
+            component.translateString();
+        });
+
+        assert.deepEqual(translateService.get('parameters'), { $0: 'a', $12: 'b', $10000: 'd' });
+    });
+
+    ember_qunit.test('Dependent keys are correct', function (assert) {
         var component = this.subject();
-        var setTranslatedStringWasCalled = false;
 
-        component.setTranslatedString = function () {
-            setTranslatedStringWasCalled = true;
-        };
+        var translatedStringDependentKeys = ['internalTranslatedString'];
 
-        // Render in DOM to trigger willInsertElement event
-        this.render();
-
-        assert.equal(setTranslatedStringWasCalled, true);
-    });
-
-    ember_qunit.test('willInsertElement event causes observers to be added to each entry in observedParameters property', function (assert) {
-        var component = this.subject({
-            translateService: translateService,
-            key: 'the_key',
-            $0Binding: 'a',
-            $1: 'b'
-        });
-        var setTranslatedStringWasCalled = false;
-
-        component.setTranslatedString = function () {
-            setTranslatedStringWasCalled = true;
-        };
-
-        // Render in DOM to trigger willInsertElement event
-        this.render();
-
-        // Change value so can monitor for change
-        setTranslatedStringWasCalled = false;
-
-        Ember['default'].run(function () {
-            component.set('$0', 'c');
-        });
-
-        assert.equal(setTranslatedStringWasCalled, true);
-    });
-
-    ember_qunit.test('willClearRender event causes observers to be removed', function (assert) {
-        var component = this.subject({
-            translateService: translateService,
-            key: 'the_key',
-            $0Binding: 'a',
-            $1: 'b'
-        });
-        var setTranslatedStringWasCalled = false;
-
-        component.setTranslatedString = function () {
-            setTranslatedStringWasCalled = true;
-        };
-
-        // Render in DOM to trigger willInsertElement event
-        this.render();
-
-        // Change value so can monitor for change
-        setTranslatedStringWasCalled = false;
-
-        component.trigger('willClearRender');
-
-        Ember['default'].run(function () {
-            component.set('$0', 'c');
-        });
-
-        assert.equal(setTranslatedStringWasCalled, false);
+        assert.deepEqual(component.translatedString._dependentKeys, translatedStringDependentKeys, 'Dependent keys are set correctly for translatedString()');
     });
 
 });
@@ -1456,9 +1504,9 @@ define('dummy/tests/unit/components/sl-translate-test.jshint', function () {
 
   'use strict';
 
-  module('JSHint - unit/components');
-  test('unit/components/sl-translate-test.js should pass jshint', function() { 
-    ok(true, 'unit/components/sl-translate-test.js should pass jshint.'); 
+  QUnit.module('JSHint - unit/components');
+  QUnit.test('unit/components/sl-translate-test.js should pass jshint', function(assert) { 
+    assert.ok(true, 'unit/components/sl-translate-test.js should pass jshint.'); 
   });
 
 });
@@ -1470,9 +1518,14 @@ define('dummy/tests/unit/mixins/sl-get-translation-test', ['ember', 'sl-ember-tr
         unit: true
     });
 
-    ember_qunit.test('Successfully mixed', function (assert) {
-        assert.expect(1);
+    ember_qunit.test('The correct service is being injected into the mixin', function (assert) {
+        var testObject = Ember['default'].Object.extend(mixinUnderTest['default']);
+        var subject = testObject.create();
 
+        assert.strictEqual(subject.translateService.name, 'sl-translate', 'The correct service is being injected into the mixin');
+    });
+
+    ember_qunit.test('Successfully mixed', function (assert) {
         var testObject = Ember['default'].Object.extend(mixinUnderTest['default']);
         var subject = testObject.create();
 
@@ -1480,19 +1533,15 @@ define('dummy/tests/unit/mixins/sl-get-translation-test', ['ember', 'sl-ember-tr
     });
 
     ember_qunit.test('Call to get() with a key not beginning with "translate." is not intercepted', function (assert) {
-        assert.expect(1);
-
         var testObject = Ember['default'].Object.extend(mixinUnderTest['default'], {
             testKey: 'testValue'
         });
         var subject = testObject.create();
 
-        assert.equal(subject.get('testKey'), 'testValue');
+        assert.strictEqual(subject.get('testKey'), 'testValue');
     });
 
     ember_qunit.test('Call to get() with a key beginning with "translate." calls this.translate()', function (assert) {
-        assert.expect(1);
-
         var testObject = Ember['default'].Object.extend(mixinUnderTest['default'], {
             translate: function translate(value) {
                 return value;
@@ -1500,12 +1549,10 @@ define('dummy/tests/unit/mixins/sl-get-translation-test', ['ember', 'sl-ember-tr
         });
         var subject = testObject.create();
 
-        assert.equal(subject.get('translate.testingKey'), 'testingKey');
+        assert.strictEqual(subject.get('translate.testingKey'), 'testingKey');
     });
 
     ember_qunit.test('translate() returns call to this.translateService.getKeyValue()', function (assert) {
-        assert.expect(1);
-
         var testObject = Ember['default'].Object.extend(mixinUnderTest['default'], {
             translateService: {
                 getKeyValue: function getKeyValue(value) {
@@ -1515,7 +1562,7 @@ define('dummy/tests/unit/mixins/sl-get-translation-test', ['ember', 'sl-ember-tr
         });
         var subject = testObject.create();
 
-        assert.equal(subject.translate('called'), 'called');
+        assert.strictEqual(subject.translate('called'), 'called');
     });
 
 });
@@ -1523,19 +1570,19 @@ define('dummy/tests/unit/mixins/sl-get-translation-test.jshint', function () {
 
   'use strict';
 
-  module('JSHint - unit/mixins');
-  test('unit/mixins/sl-get-translation-test.js should pass jshint', function() { 
-    ok(true, 'unit/mixins/sl-get-translation-test.js should pass jshint.'); 
+  QUnit.module('JSHint - unit/mixins');
+  QUnit.test('unit/mixins/sl-get-translation-test.js should pass jshint', function(assert) { 
+    assert.ok(true, 'unit/mixins/sl-get-translation-test.js should pass jshint.'); 
   });
 
 });
-define('dummy/tests/unit/services/translate-test', ['ember', 'ember-qunit', 'sl-ember-translate/services/translate', 'dummy/tests/helpers/sl/synchronous'], function (Ember, ember_qunit, TranslateService, synchronous) {
+define('dummy/tests/unit/services/sl-translate-test', ['ember', 'ember-qunit', 'sl-ember-translate/services/sl-translate', 'sinon'], function (Ember, ember_qunit, TranslateService, sinon) {
 
     'use strict';
 
     var TS = undefined;
 
-    ember_qunit.moduleFor('service:translate', 'Unit | Service | translate', {
+    ember_qunit.moduleFor('service:sl-translate', 'Unit | Service | sl translate', {
         beforeEach: function beforeEach() {
             TS = TranslateService['default'].create();
         },
@@ -1543,111 +1590,63 @@ define('dummy/tests/unit/services/translate-test', ['ember', 'ember-qunit', 'sl-
         unit: true
     });
 
-    ember_qunit.test('container property defaults to null', function (assert) {
-        assert.equal(TS.get('container'), null);
-    });
-
     ember_qunit.test('dictionary property defaults to null', function (assert) {
-        assert.equal(TS.get('dictionary'), null);
+        assert.strictEqual(TS.get('dictionary'), null);
     });
 
     ember_qunit.test('setDictionary() accepts only an object as a parameter', function (assert) {
+        var testProperty = Ember['default'].Object.create({
+            parameter: ''
+        });
 
-        // Empty parameter
+        var callSetDictionary = function callSetDictionary() {
+            return TS.setDictionary(testProperty.parameter);
+        };
 
-        var assertionThrown = false;
+        // Undefined
+        testProperty.set('parameter', undefined);
 
-        try {
-            TS.setDictionary();
-        } catch (error) {
-            assertionThrown = true;
-        }
+        assert.throws(callSetDictionary, 'Parameter was undefined');
 
-        assert.ok(assertionThrown, 'Parameter was empty');
+        // Array
+        testProperty.set('parameter', []);
 
-        // Number parameter
+        assert.throws(callSetDictionary, 'Parameter was an array');
 
-        assertionThrown = false;
+        // Null
+        testProperty.set('parameter', null);
 
-        try {
-            TS.setDictionary(4);
-        } catch (error) {
-            assertionThrown = true;
-        }
+        assert.throws(callSetDictionary, 'Parameter was null');
 
-        assert.ok(assertionThrown, 'Parameter was a Number');
+        // Number
+        testProperty.set('parameter', 123);
 
-        // Array Parameter
-
-        assertionThrown = false;
-
-        try {
-            TS.setDictionary([]);
-        } catch (error) {
-            assertionThrown = true;
-        }
-
-        assert.ok(assertionThrown, 'Parameter was an Array');
+        assert.throws(callSetDictionary, 'Parameter was a number');
 
         // Function
+        testProperty.set('parameter', function () {});
 
-        assertionThrown = false;
+        assert.throws(callSetDictionary, 'Parameter was a function');
 
-        try {
-            TS.setDictionary(function () {});
-        } catch (error) {
-            assertionThrown = true;
-        }
+        // String
+        testProperty.set('parameter', 'testString');
 
-        assert.ok(assertionThrown, 'Parameter was a Function');
+        assert.throws(callSetDictionary, 'Parameter was a string');
 
-        // String Parameter
+        // Boolean
+        testProperty.set('parameter', false);
 
-        assertionThrown = false;
+        assert.throws(callSetDictionary, 'Parameter was false');
 
-        try {
-            TS.setDictionary('test');
-        } catch (error) {
-            assertionThrown = true;
-        }
+        // Object
+        testProperty.set('parameter', {});
 
-        assert.ok(assertionThrown, 'Parameter was a String');
+        assert.strictEqual(callSetDictionary(), undefined, 'Parameter was an object');
 
-        // Boolean Parameter
+        // Ember.Object instance
+        testProperty.set('parameter', Ember['default'].Object.create({}));
 
-        assertionThrown = false;
-
-        try {
-            TS.setDictionary(false);
-        } catch (error) {
-            assertionThrown = true;
-        }
-
-        assert.ok(assertionThrown, 'Parameter was a Boolean');
-
-        // Object Parameter
-
-        assertionThrown = false;
-
-        try {
-            TS.setDictionary({});
-        } catch (error) {
-            assertionThrown = true;
-        }
-
-        assert.ok(!assertionThrown, 'Parameter was an Object');
-
-        // Ember Object Instance Parameter
-
-        assertionThrown = false;
-
-        try {
-            TS.setDictionary(Ember['default'].Object.create({}));
-        } catch (error) {
-            assertionThrown = true;
-        }
-
-        assert.ok(!assertionThrown, 'Parameter was an Ember.Object instance');
+        assert.strictEqual(callSetDictionary(), undefined, 'Parameter was an Ember.Object instance');
     });
 
     ember_qunit.test('setDictionary() sets data on the dictionary property', function (assert) {
@@ -1660,26 +1659,80 @@ define('dummy/tests/unit/services/translate-test', ['ember', 'ember-qunit', 'sl-
         assert.deepEqual(TS.get('dictionary'), testDictionary);
     });
 
-    ember_qunit.test('getKeyValue() returns requested key if not found in dictionary', function (assert) {
+    ember_qunit.test('getKeyValue() Valid key returns key value while non valid key returns key name.', function (assert) {
         TS.setDictionary(Ember['default'].Object.create({
             'the_key': 'my value'
         }));
 
-        assert.notEqual(TS.getKeyValue('wrong_key'), 'the_key');
+        assert.notStrictEqual(TS.getKeyValue('wrong_key'), 'the_key');
+
+        assert.strictEqual(TS.getKeyValue('the_key'), 'my value');
     });
 
-    ember_qunit.test('getKeyValue() returns requested key\'s translated string', function (assert) {
-        TS.setDictionary(Ember['default'].Object.create({
-            'the_key': 'my value'
-        }));
+    ember_qunit.test('getKeyValue() is gets called by translateKey', function (assert) {
+        var spy = sinon['default'].spy(TS, 'getKeyValue');
 
-        assert.equal(TS.getKeyValue('the_key'), 'my value');
+        TS.translateKey({
+            key: 'singular_key',
+            pluralKey: 'plural_key'
+        });
+
+        assert.strictEqual(spy.calledOnce, true, 'getKeyValue() is called once');
     });
 
-    ember_qunit.test('translateKey() accepts only an object as a parameter', function (assert) {
-        var test = synchronous.requires(TS.translateKey, ['object']);
+    ember_qunit.test('setDictionary() accepts only an object as a parameter', function (assert) {
+        var testProperty = Ember['default'].Object.create({
+            parameter: ''
+        });
 
-        assert.ok(test.requires, test.messages);
+        var callTranslateKey = function callTranslateKey() {
+            return TS.translateKey(testProperty.parameter);
+        };
+
+        // Undefined
+        testProperty.set('parameter', undefined);
+
+        assert.throws(callTranslateKey, 'Parameter was undefined');
+
+        // Array
+        testProperty.set('parameter', []);
+
+        assert.throws(callTranslateKey, 'Parameter was an array');
+
+        // Null
+        testProperty.set('parameter', null);
+
+        assert.throws(callTranslateKey, 'Parameter was null');
+
+        // Number
+        testProperty.set('parameter', 123);
+
+        assert.throws(callTranslateKey, 'Parameter was a number');
+
+        // Function
+        testProperty.set('parameter', function () {});
+
+        assert.throws(callTranslateKey, 'Parameter was a function');
+
+        // String
+        testProperty.set('parameter', 'testString');
+
+        assert.throws(callTranslateKey, 'Parameter was a string');
+
+        // Boolean
+        testProperty.set('parameter', false);
+
+        assert.throws(callTranslateKey, 'Parameter was false');
+
+        // Object
+        testProperty.set('parameter', {});
+
+        assert.strictEqual(callTranslateKey(), undefined, 'Parameter was an object');
+
+        // Ember.Object instance
+        testProperty.set('parameter', Ember['default'].Object.create({}));
+
+        assert.strictEqual(callTranslateKey(), undefined, 'Parameter was an Ember.Object instance');
     });
 
     ember_qunit.test('translateKey() returns translated string for specified key', function (assert) {
@@ -1687,32 +1740,19 @@ define('dummy/tests/unit/services/translate-test', ['ember', 'ember-qunit', 'sl-
             'the_key': 'my value'
         }));
 
-        assert.equal(TS.getKeyValue('the_key'), 'my value');
+        assert.strictEqual(TS.getKeyValue('the_key'), 'my value');
     });
 
     ember_qunit.test('If either "pluralKey" or "pluralCount" are provided to translateKey() then both must be', function (assert) {
-        assert.equal(TS.translateKey({
+        assert.strictEqual(TS.translateKey({
             key: 'singular_key',
             pluralKey: 'plural_key'
         }), 'singular_key');
 
-        assert.equal(TS.translateKey({
+        assert.strictEqual(TS.translateKey({
             key: 'singular_key',
             pluralCount: 3
         }), 'singular_key');
-    });
-
-    ember_qunit.test('Pluralization only works if "pluralCount" is a number', function (assert) {
-        TS.setDictionary(Ember['default'].Object.create({
-            'the_singular_key': 'Singular translated value',
-            'the_plural_key': 'Plural translated value'
-        }));
-
-        assert.notEqual(TS.translateKey({
-            key: 'the_singular_key',
-            pluralKey: 'the_plural_key',
-            pluralCount: 'two'
-        }), 'Plural translated value');
     });
 
     ember_qunit.test('Pluralization occurs when provided the necessary information', function (assert) {
@@ -1721,13 +1761,13 @@ define('dummy/tests/unit/services/translate-test', ['ember', 'ember-qunit', 'sl-
             'the_plural_key': 'Plural translated value'
         }));
 
-        assert.equal(TS.translateKey({
+        assert.strictEqual(TS.translateKey({
             key: 'the_singular_key',
             pluralKey: 'the_plural_key',
             pluralCount: 0
         }), 'Singular translated value');
 
-        assert.equal(TS.translateKey({
+        assert.strictEqual(TS.translateKey({
             key: 'the_singular_key',
             pluralKey: 'the_plural_key',
             pluralCount: 3
@@ -1739,7 +1779,7 @@ define('dummy/tests/unit/services/translate-test', ['ember', 'ember-qunit', 'sl-
             'the_key': 'Replaced values: {0} and {1}'
         }));
 
-        assert.equal(TS.translateKey({
+        assert.strictEqual(TS.translateKey({
             key: 'the_key',
             parameters: {
                 $0: 'ASDF',
@@ -1749,13 +1789,13 @@ define('dummy/tests/unit/services/translate-test', ['ember', 'ember-qunit', 'sl-
     });
 
 });
-define('dummy/tests/unit/services/translate-test.jshint', function () {
+define('dummy/tests/unit/services/sl-translate-test.jshint', function () {
 
   'use strict';
 
-  module('JSHint - unit/services');
-  test('unit/services/translate-test.js should pass jshint', function() { 
-    ok(true, 'unit/services/translate-test.js should pass jshint.'); 
+  QUnit.module('JSHint - unit/services');
+  QUnit.test('unit/services/sl-translate-test.js should pass jshint', function(assert) { 
+    assert.ok(true, 'unit/services/sl-translate-test.js should pass jshint.'); 
   });
 
 });
@@ -1787,7 +1827,7 @@ catch(err) {
 if (runningTests) {
   require("dummy/tests/test-helper");
 } else {
-  require("dummy/app")["default"].create({"name":"sl-ember-translate","version":"1.7.0.a5432d09"});
+  require("dummy/app")["default"].create({"name":"sl-ember-translate","version":"1.10.0+462a7ac9"});
 }
 
 /* jshint ignore:end */

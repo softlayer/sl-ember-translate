@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>JSDoc: Source: services/sl-translate.js</title>
+
+    <script src="scripts/prettify/prettify.js"> </script>
+    <script src="scripts/prettify/lang-css.js"> </script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+</head>
+
+<body>
+
+<div id="main">
+
+    <h1 class="page-title">Source: services/sl-translate.js</h1>
+
+    
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>import Ember from 'ember';
+
+/**
+ * @module
+ * @augments ember/Service
+ */
+export default Ember.Service.extend({
+
+    // -------------------------------------------------------------------------
+    // Dependencies
+
+    // -------------------------------------------------------------------------
+    // Attributes
+
+    // -------------------------------------------------------------------------
+    // Actions
+
+    // -------------------------------------------------------------------------
+    // Events
+
+    // -------------------------------------------------------------------------
+    // Properties
+
+    /**
+     * Translations
+     *
+     * @type {?Object|ember/Object}
+     */
+    dictionary: null,
+
+    // -------------------------------------------------------------------------
+    // Observers
+
+    // -------------------------------------------------------------------------
+    // Methods
+
+    /**
+     * Set translation dictionary data
+     *
+     * @function
+     * @param {Object|ember/Object} translations
+     * @throws {ember.assert}
+     * @returns {undefined}
+     */
+    setDictionary( translations ) {
+
+        /* jshint ignore:start */
+        Ember.assert(
+            'services/translation.setDictionary() expects parameter to be an object',
+            (
+                'object' === Ember.typeOf( translations ) ||
+                'instance' === Ember.typeOf( translations )
+            ) &amp;&amp;
+            'symbol' !== typeof translations
+        );
+        /* jshint ignore:end */
+
+        this.set( 'dictionary', translations );
+    },
+
+    /**
+     * Retrieve value for specified dictionary key
+     *
+     * @function
+     * @param {String} key - Dictionary key to retrieve value for
+     * @returns {String}
+     */
+    getKeyValue( key ) {
+        const defaultKeyValue = 'KEY__NOT__PRESENT';
+        const retrievedKey = this.get( 'dictionary' ).getWithDefault( key, defaultKeyValue );
+        let returnValue;
+
+        if ( defaultKeyValue !== retrievedKey ) {
+            returnValue = retrievedKey;
+
+        } else {
+            Ember.warn( 'No translation match for key "' + key + '".' );
+            returnValue = key;
+        }
+
+        return returnValue;
+    },
+
+    /**
+     * @typedef {Object} translateKeyParameter
+     * @property {String} key
+     * @property {String} [pluralKey]
+     * @property {String} [pluralCount]
+     * @property {Object} [parameters]
+     */
+
+    /**
+     * Translate provided key
+     *
+     * Supports
+     * - singular/plural string substitution
+     * - replacement of placeholder tokens in translation strings with passed parameters
+     *
+     * @function
+     * @param {translateKeyParameter} data
+     * @returns {String}
+     */
+    translateKey( data ) {
+
+        /* jshint ignore:start */
+        Ember.assert(
+            'services/translation.translateKey() expects parameter to an object',
+            (
+                'object' === Ember.typeOf( data ) ||
+                'instance' === Ember.typeOf( data )
+            ) &amp;&amp;
+            'symbol' !== typeof data
+        );
+        /* jshint ignore:end */
+
+        data.parameters = data.parameters || {};
+
+        let pluralErrorTracker = 0;
+
+        // BEGIN: Pluralization error checking
+        if ( !Ember.isEmpty( data.pluralKey ) ) {
+            pluralErrorTracker++;
+        }
+
+        if ( !Ember.isEmpty( data.pluralCount ) ) {
+            pluralErrorTracker++;
+        }
+
+        let token = data.key;
+
+        const getTokenValue = ( value ) => {
+            try {
+                value = this.getKeyValue( value );
+            } catch ( e ) {
+                Ember.warn( 'Unable to translate key "' + value + '".' );
+            }
+
+            return value;
+        };
+
+        if ( 1 === pluralErrorTracker ) {
+            Ember.warn( 'If either "pluralKey" or "pluralCount" are provided then both must be.' +
+                'Singular key value was returned.' );
+
+            return getTokenValue( token );
+        }
+        // END: Pluralization error checking
+
+        // Pluralization
+        if ( !Ember.isEmpty( data.pluralCount ) &amp;&amp; Number( data.pluralCount ) > 1 ) {
+            token = data.pluralKey;
+        }
+
+        let translatedString;
+        translatedString = getTokenValue( token );
+
+        // Parameter replacement
+        Object.keys( data.parameters ).map( key => {
+            translatedString = translatedString.replace( '{' + key.replace( '$', '' ) + '}', data.parameters[key] );
+        });
+
+        return translatedString;
+    }
+});
+</code></pre>
+        </article>
+    </section>
+
+
+
+
+</div>
+
+<nav>
+    <h2><a href="index.html">Home</a></h2><h3>Modules</h3><ul><li><a href="module-addon_components_sl-translate.html">addon/components/sl-translate</a></li><li><a href="module-addon_mixins_sl-get-translation.html">addon/mixins/sl-get-translation</a></li><li><a href="module-addon_services_sl-translate.html">addon/services/sl-translate</a></li></ul>
+</nav>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.4.0-dev</a> on Wed Oct 28 2015 16:05:26 GMT-0500 (CDT)
+</footer>
+
+<script> prettyPrint(); </script>
+<script src="scripts/linenumber.js"> </script>
+</body>
+</html>
