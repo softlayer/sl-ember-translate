@@ -39,20 +39,21 @@ export default Ember.Service.extend({
      *
      * @function
      * @param {Object|ember/Object} translations
-     * @throws {ember.assert}
+     * @throws {ember/Error}
      * @returns {undefined}
      */
     setDictionary( translations ) {
 
         /* jshint ignore:start */
-        Ember.assert(
-            'services/translation.setDictionary() expects parameter to be an object',
+        if (
             (
-                'object' === Ember.typeOf( translations ) ||
-                'instance' === Ember.typeOf( translations )
-            ) &&
-            'symbol' !== typeof translations
-        );
+                'object' !== Ember.typeOf( translations ) &&
+                'instance' !== Ember.typeOf( translations )
+            ) ||
+            'symbol' === typeof translations
+        ) {
+            throw new Ember.Error( 'services/translation.setDictionary() expects parameter to be an object' );
+        }
         /* jshint ignore:end */
 
         this.set( 'dictionary', translations );
@@ -98,19 +99,21 @@ export default Ember.Service.extend({
      *
      * @function
      * @param {translateKeyParameter} data
+     * @throws {ember/Error}
      * @returns {String}
      */
     translateKey( data ) {
 
         /* jshint ignore:start */
-        Ember.assert(
-            'services/translation.translateKey() expects parameter to an object',
+        if (
             (
-                'object' === Ember.typeOf( data ) ||
-                'instance' === Ember.typeOf( data )
-            ) &&
-            'symbol' !== typeof data
-        );
+                'object' !== Ember.typeOf( data ) &&
+                'instance' !== Ember.typeOf( data )
+            ) ||
+            'symbol' === typeof data
+        ) {
+            throw new Ember.Error( 'services/translation.translateKey() expects parameter to an object' );
+        }
         /* jshint ignore:end */
 
         data.parameters = data.parameters || {};
