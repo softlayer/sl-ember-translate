@@ -87,8 +87,8 @@ export default Ember.Component.extend({
     translateString() {
         const parametersHash = {};
 
-        Object.keys( this ).map( key => {
-            if ( /^\$\d+/.test( key ) ) {
+        Object.keys( this.attrs ).map( key => {
+            if ( /^\$\w+/.test( key ) ) {
                 parametersHash[key] = this.get( key );
             }
         });

@@ -6,7 +6,7 @@ export default Ember.Route.extend({
             'SIMPLE_KEY': 'I have been translated',
             'SINGULAR_KEY': 'View my family',
             'PLURAL_KEY': 'View my families',
-            'REPLACED_KEY': 'I have replaced {0} and {1}'
+            'REPLACED_KEY': 'I have replaced {0} and {TEST}'
         });
     },
 

@@ -10,7 +10,7 @@ moduleForComponent( 'sl-translate', 'Integration | Component | sl translate', {
                     'SIMPLE_KEY': 'I have been translated',
                     'SINGULAR_KEY': 'View my family',
                     'PLURAL_KEY': 'View my families',
-                    'REPLACED_KEY': 'I have replaced {0} and {1}'
+                    'REPLACED_KEY': 'I have replaced {0} and {test}'
                 })
             );
     },
@@ -59,12 +59,12 @@ test( 'Replaced Values In Keys', function( assert ) {
 
     assert.strictEqual(
         this.$( '>:first-child' ).text().trim(),
-        'I have replaced {0} and {1}',
+        'I have replaced {0} and {test}',
         'Original String was correct'
     );
 
     this.render( hbs`
-        {{sl-translate key="REPLACED_KEY" $0="First" $1="Unicorn"}}
+        {{sl-translate key="REPLACED_KEY" $0="First" $test="Unicorn"}}
     ` );
 
     assert.strictEqual(
@@ -79,7 +79,7 @@ test( 'Bound Replacement Values In Keys', function( assert ) {
     this.set( 'valueToDisplay', 'the Bound Value' );
 
     this.render( hbs`
-        {{sl-translate key="REPLACED_KEY" $0="First" $1=valueToDisplay}}
+        {{sl-translate key="REPLACED_KEY" $0="First" $test=valueToDisplay}}
     ` );
 
     assert.strictEqual(

@@ -142,7 +142,7 @@ export default Ember.Service.extend({
         };
 
         if ( 1 === pluralErrorTracker ) {
-            Ember.warn( 'If either "pluralKey" or "pluralCount" are provided then both must be.' +
+            Ember.warn( 'If either "pluralKey" or "pluralCount" are provided then both must be. ' +
                 'Singular key value was returned.' );
 
             return getTokenValue( token );

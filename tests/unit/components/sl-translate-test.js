@@ -8,7 +8,6 @@ const translateService = Ember.Object.create({
         this.set( 'pluralKey', data.pluralKey );
         this.set( 'pluralCount', data.pluralCount );
         this.set( 'parameters', data.parameters );
-
         return 'TRANSLATE: ' + data.key;
     }
 });
@@ -41,12 +40,9 @@ test( 'Default property values', function( assert ) {
 
 test( 'setTranslatedString() is called when the willRender() event occurs', function( assert ) {
     const component = this.subject( {
-        translateService,
-        key: 'the_key',
-        pluralKey: 'plural_key',
-        pluralCount: 'plural_count',
-        $0: 'a',
-        $1: 'b'
+        setTranslatedString: function() {
+            return;
+        }
     });
 
     const spy = sinon.spy( component, 'setTranslatedString' );
@@ -64,12 +60,9 @@ test(
     'setTranslatedString() sets internalTranslatedString property with value from translateString()',
     function( assert ) {
         const component = this.subject({
-            translateService,
-            key: 'the_key',
-            pluralKey: 'plural_key',
-            pluralCount: 'plural_count',
-            $0: 'a',
-            $1: 'b'
+            translateString: function() {
+                return 'TRANSLATE: the_key';
+            }
         });
 
         const spy = sinon.spy( component, 'translateString' );
@@ -102,6 +95,8 @@ test( 'translateString() returns expected value', function( assert ) {
         $1: 'b'
     });
 
+    this.render();
+
     assert.equal(
         component.translateString(),
         'TRANSLATE: the_key',
@@ -119,6 +114,8 @@ test( 'setTranslatedString() sets internalTranslatedString and translatedString 
             $0: 'a',
             $1: 'b'
         });
+
+        this.render();
 
         Ember.run( () => {
             component.setTranslatedString();
@@ -142,7 +139,11 @@ test( 'translatedString() returns correct value', function( assert ) {
         $1: 'b'
     } );
 
-    component.trigger( 'willRender' );
+    this.render();
+
+    Ember.run( () => {
+        component.trigger( 'willRender' );
+    });
 
     assert.strictEqual(
         component.get( 'translatedString' ),
@@ -152,14 +153,32 @@ test( 'translatedString() returns correct value', function( assert ) {
 });
 
 test( 'translateString() calls translateKey() on the translation service with given values', function( assert ) {
-    this.subject({
+    const component = this.subject({
         translateService,
         key: 'the_key',
         pluralKey: 'plural_key',
         pluralCount: 'plural_count',
         $0: 'a',
         $1: 'b',
-        c: 'c'
+        c: 'c',
+        $lowercase: 'lowercase',
+        $Uppercase: 'Uppercase',
+        $CAPITALS: 'CAPITALS'
+    });
+
+    Ember.run( () => {
+        component.set( 'attrs', {
+            key: 'the_key',
+            pluralKey: 'plural_key',
+            pluralCount: 'plural_count',
+            $0: 'a',
+            $1: 'b',
+            c: 'c',
+            $lowercase: 'lowercase',
+            $Uppercase: 'Uppercase',
+            $CAPITALS: 'CAPITALS'
+        });
+        component.trigger( 'willRender' );
     });
 
     assert.strictEqual(
@@ -176,7 +195,13 @@ test( 'translateString() calls translateKey() on the translation service with gi
     );
     assert.deepEqual(
         translateService.get( 'parameters' ),
-        { $0: 'a', $1: 'b' }
+        {
+            $0: 'a',
+            $1: 'b',
+            $lowercase: 'lowercase',
+            $Uppercase: 'Uppercase',
+            $CAPITALS: 'CAPITALS'
+        }
     );
 });
 
@@ -189,16 +214,38 @@ test( 'translateString() only accepts the correct parameter key pattern', functi
         $0: 'a',
         $12: 'b',
         r: 'c',
-        $10000: 'd'
+        $10000: 'd',
+        $lowercase: 'lowercase',
+        $Uppercase: 'Uppercase',
+        $CAPITALS: 'CAPITALS'
     });
 
     Ember.run( () => {
+        component.set( 'attrs', {
+            key: 'the_key',
+            pluralKey: 'plural_key',
+            pluralCount: 'plural_count',
+            $0: 'a',
+            $12: 'b',
+            r: 'c',
+            $10000: 'd',
+            $lowercase: 'lowercase',
+            $Uppercase: 'Uppercase',
+            $CAPITALS: 'CAPITALS'
+        });
         component.translateString();
     });
 
     assert.deepEqual(
         translateService.get( 'parameters' ),
-        { $0: 'a', $12: 'b', $10000: 'd' }
+        {
+            $0: 'a',
+            $12: 'b',
+            $10000: 'd',
+            $lowercase: 'lowercase',
+            $Uppercase: 'Uppercase',
+            $CAPITALS: 'CAPITALS'
+        }
     );
 });
 
