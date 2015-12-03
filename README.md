@@ -117,15 +117,13 @@ The order of the parameters does not matter.
 
 ### String Replacement
 
-If the translated string has tokens within it (e.g {0}, {1}, etc) that need to be replaced with values, use the
-following format:
+If the translated string has tokens (alphanumeric characters including underscore that can be uppercase, lowercase or a combination of each) within it (e.g {0}, {REPLACE_ME}, {Me_2}, etc) that need to be replaced with values, use the following format:
 
 ```handlebars
-{{sl-translate key="ACCESSLOG_LIST_PAGINATION" $0="5" $1="10" $2="200"}}
+{{sl-translate key="ACCESSLOG_LIST_PAGINATION" $0="5" $REPLACE_ME="10" $Me_2="200"}}
 ```
 
-where each "$x" parameter numerically corresponds to the tokens in the translation string.  The order of the
-parameters does not matter.
+where each "$x" parameter corresponds to the tokens in the translation string.  The order of the parameters does not matter.
 
 
 
