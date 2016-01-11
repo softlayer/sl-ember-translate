@@ -3,9 +3,11 @@
 window.EmberENV = {"FEATURES":{}};
 var runningTests = false;
 
-self.EmberENV.EXTEND_PROTOTYPES = false;
+
 
 /* jshint ignore:end */
+
+;self.EmberENV.EXTEND_PROTOTYPES = false;
 
 ;var define, requireModule, require, requirejs;
 
@@ -69993,8 +69995,8 @@ define('sl-ember-translate/components/sl-translate', ['exports', 'ember', 'sl-em
 
             var parametersHash = {};
 
-            Object.keys(this).map(function (key) {
-                if (/^\$\d+/.test(key)) {
+            Object.keys(this.attrs).map(function (key) {
+                if (/^\$\w/.test(key)) {
                     parametersHash[key] = _this.get(key);
                 }
             });
@@ -70118,13 +70120,15 @@ define('sl-ember-translate/services/sl-translate', ['exports', 'ember'], functio
          *
          * @function
          * @param {Object|ember/Object} translations
-         * @throws {ember.assert}
+         * @throws {ember/Error}
          * @returns {undefined}
          */
         setDictionary: function setDictionary(translations) {
 
             /* jshint ignore:start */
-            Ember['default'].assert('services/translation.setDictionary() expects parameter to be an object', ('object' === Ember['default'].typeOf(translations) || 'instance' === Ember['default'].typeOf(translations)) && 'symbol' !== typeof translations);
+            if ('object' !== Ember['default'].typeOf(translations) && 'instance' !== Ember['default'].typeOf(translations) || 'symbol' === typeof translations) {
+                throw new Ember['default'].Error('services/translation.setDictionary() expects parameter to be an object');
+            }
             /* jshint ignore:end */
 
             this.set('dictionary', translations);
@@ -70169,13 +70173,16 @@ define('sl-ember-translate/services/sl-translate', ['exports', 'ember'], functio
          *
          * @function
          * @param {translateKeyParameter} data
+         * @throws {ember/Error}
          * @returns {String}
          */
         translateKey: function translateKey(data) {
             var _this = this;
 
             /* jshint ignore:start */
-            Ember['default'].assert('services/translation.translateKey() expects parameter to an object', ('object' === Ember['default'].typeOf(data) || 'instance' === Ember['default'].typeOf(data)) && 'symbol' !== typeof data);
+            if ('object' !== Ember['default'].typeOf(data) && 'instance' !== Ember['default'].typeOf(data) || 'symbol' === typeof data) {
+                throw new Ember['default'].Error('services/translation.translateKey() expects parameter to an object');
+            }
             /* jshint ignore:end */
 
             data.parameters = data.parameters || {};
@@ -70204,7 +70211,7 @@ define('sl-ember-translate/services/sl-translate', ['exports', 'ember'], functio
             };
 
             if (1 === pluralErrorTracker) {
-                Ember['default'].warn('If either "pluralKey" or "pluralCount" are provided then both must be.' + 'Singular key value was returned.');
+                Ember['default'].warn('If either "pluralKey" or "pluralCount" are provided then both must be. ' + 'Singular key value was returned.');
 
                 return getTokenValue(token);
             }

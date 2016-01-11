@@ -164,7 +164,7 @@ define('dummy/routes/demo', ['exports', 'ember'], function (exports, Ember) {
                 'SIMPLE_KEY': 'I have been translated',
                 'SINGULAR_KEY': 'View my family',
                 'PLURAL_KEY': 'View my families',
-                'REPLACED_KEY': 'I have replaced {0} and {1}'
+                'REPLACED_KEY': 'I have replaced {0} and {TEST}'
             });
         },
 
@@ -189,6 +189,7 @@ define('dummy/sl-ember-translate/tests/modules/sl-ember-translate/components/sl-
 
   QUnit.module('JSHint - modules/sl-ember-translate/components');
   QUnit.test('modules/sl-ember-translate/components/sl-translate.js should pass jshint', function (assert) {
+    assert.expect(1);
     assert.ok(true, 'modules/sl-ember-translate/components/sl-translate.js should pass jshint.');
   });
 
@@ -199,6 +200,7 @@ define('dummy/sl-ember-translate/tests/modules/sl-ember-translate/mixins/sl-get-
 
   QUnit.module('JSHint - modules/sl-ember-translate/mixins');
   QUnit.test('modules/sl-ember-translate/mixins/sl-get-translation.js should pass jshint', function (assert) {
+    assert.expect(1);
     assert.ok(true, 'modules/sl-ember-translate/mixins/sl-get-translation.js should pass jshint.');
   });
 
@@ -209,6 +211,7 @@ define('dummy/sl-ember-translate/tests/modules/sl-ember-translate/services/sl-tr
 
   QUnit.module('JSHint - modules/sl-ember-translate/services');
   QUnit.test('modules/sl-ember-translate/services/sl-translate.js should pass jshint', function (assert) {
+    assert.expect(1);
     assert.ok(true, 'modules/sl-ember-translate/services/sl-translate.js should pass jshint.');
   });
 
@@ -666,10 +669,10 @@ define('dummy/templates/demo', ['exports'], function (exports) {
         ["inline","sl-translate",[],["key","SINGULAR_KEY","pluralKey","PLURAL_KEY","pluralCount","1"],["loc",[null,[13,0],[13,74]]]],
         ["inline","sl-translate",[],["key","SINGULAR_KEY","pluralKey","PLURAL_KEY","pluralCount","3"],["loc",[null,[14,0],[14,74]]]],
         ["inline","sl-translate",[],["key","REPLACED_KEY"],["loc",[null,[18,17],[18,52]]]],
-        ["inline","sl-translate",[],["key","REPLACED_KEY","$0","First","$1","Unicorn"],["loc",[null,[19,17],[19,76]]]],
-        ["inline","sl-translate",[],["key","REPLACED_KEY","$0","First","$1",["subexpr","@mut",[["get","valueToDisplay",["loc",[null,[23,68],[23,82]]]]],[],[]]],["loc",[null,[23,20],[23,84]]]],
+        ["inline","sl-translate",[],["key","REPLACED_KEY","$0","First","$TEST","Unicorn"],["loc",[null,[19,17],[19,79]]]],
+        ["inline","sl-translate",[],["key","REPLACED_KEY","$0","First","$TEST",["subexpr","@mut",[["get","valueToDisplay",["loc",[null,[23,71],[23,85]]]]],[],[]]],["loc",[null,[23,20],[23,87]]]],
         ["element","action",["updateStringValues"],[],["loc",[null,[25,8],[25,39]]]],
-        ["inline","sl-translate",[],["tagName","em","key","REPLACED_KEY","$0","First","$1","Dragon"],["loc",[null,[29,0],[29,71]]]]
+        ["inline","sl-translate",[],["tagName","em","key","REPLACED_KEY","$0","First","$TEST","Dragon"],["loc",[null,[29,0],[29,74]]]]
       ],
       locals: [],
       templates: []
@@ -783,7 +786,7 @@ define('dummy/templates/index', ['exports'], function (exports) {
         var el3 = dom.createTextNode("\n        ");
         dom.appendChild(el2, el3);
         var el3 = dom.createElement("h1");
-        var el4 = dom.createTextNode("sl-ember-translate 1.10.0");
+        var el4 = dom.createTextNode("sl-ember-translate 1.10.1");
         dom.appendChild(el3, el4);
         dom.appendChild(el2, el3);
         var el3 = dom.createTextNode("\n        ");
@@ -908,6 +911,7 @@ define('dummy/tests/app.jshint', function () {
 
   QUnit.module('JSHint - .');
   QUnit.test('app.js should pass jshint', function(assert) { 
+    assert.expect(1);
     assert.ok(true, 'app.js should pass jshint.'); 
   });
 
@@ -945,6 +949,7 @@ define('dummy/tests/blanket-options.jshint', function () {
 
   QUnit.module('JSHint - .');
   QUnit.test('blanket-options.js should pass jshint', function(assert) { 
+    assert.expect(1);
     assert.ok(true, 'blanket-options.js should pass jshint.'); 
   });
 
@@ -955,6 +960,7 @@ define('dummy/tests/controllers/demo.jshint', function () {
 
   QUnit.module('JSHint - controllers');
   QUnit.test('controllers/demo.js should pass jshint', function(assert) { 
+    assert.expect(1);
     assert.ok(true, 'controllers/demo.js should pass jshint.'); 
   });
 
@@ -979,6 +985,7 @@ define('dummy/tests/helpers/resolver.jshint', function () {
 
   QUnit.module('JSHint - helpers');
   QUnit.test('helpers/resolver.js should pass jshint', function(assert) { 
+    assert.expect(1);
     assert.ok(true, 'helpers/resolver.js should pass jshint.'); 
   });
 
@@ -1012,6 +1019,7 @@ define('dummy/tests/helpers/start-app.jshint', function () {
 
   QUnit.module('JSHint - helpers');
   QUnit.test('helpers/start-app.js should pass jshint', function(assert) { 
+    assert.expect(1);
     assert.ok(true, 'helpers/start-app.js should pass jshint.'); 
   });
 
@@ -1026,7 +1034,7 @@ define('dummy/tests/integration/components/sl-translate-test', ['ember', 'ember-
                 'SIMPLE_KEY': 'I have been translated',
                 'SINGULAR_KEY': 'View my family',
                 'PLURAL_KEY': 'View my families',
-                'REPLACED_KEY': 'I have replaced {0} and {1}'
+                'REPLACED_KEY': 'I have replaced {0} and {test}'
             }));
         },
 
@@ -1204,7 +1212,7 @@ define('dummy/tests/integration/components/sl-translate-test', ['ember', 'ember-
             };
         })()));
 
-        assert.strictEqual(this.$('>:first-child').text().trim(), 'I have replaced {0} and {1}', 'Original String was correct');
+        assert.strictEqual(this.$('>:first-child').text().trim(), 'I have replaced {0} and {test}', 'Original String was correct');
 
         this.render(Ember['default'].HTMLBars.template((function () {
             return {
@@ -1240,7 +1248,7 @@ define('dummy/tests/integration/components/sl-translate-test', ['ember', 'ember-
                     morphs[0] = dom.createMorphAt(fragment, 1, 1, contextualElement);
                     return morphs;
                 },
-                statements: [['inline', 'sl-translate', [], ['key', 'REPLACED_KEY', '$0', 'First', '$1', 'Unicorn'], ['loc', [null, [2, 8], [2, 67]]]]],
+                statements: [['inline', 'sl-translate', [], ['key', 'REPLACED_KEY', '$0', 'First', '$test', 'Unicorn'], ['loc', [null, [2, 8], [2, 70]]]]],
                 locals: [],
                 templates: []
             };
@@ -1286,7 +1294,7 @@ define('dummy/tests/integration/components/sl-translate-test', ['ember', 'ember-
                     morphs[0] = dom.createMorphAt(fragment, 1, 1, contextualElement);
                     return morphs;
                 },
-                statements: [['inline', 'sl-translate', [], ['key', 'REPLACED_KEY', '$0', 'First', '$1', ['subexpr', '@mut', [['get', 'valueToDisplay', ['loc', [null, [2, 56], [2, 70]]]]], [], []]], ['loc', [null, [2, 8], [2, 72]]]]],
+                statements: [['inline', 'sl-translate', [], ['key', 'REPLACED_KEY', '$0', 'First', '$test', ['subexpr', '@mut', [['get', 'valueToDisplay', ['loc', [null, [2, 59], [2, 73]]]]], [], []]], ['loc', [null, [2, 8], [2, 75]]]]],
                 locals: [],
                 templates: []
             };
@@ -1302,6 +1310,7 @@ define('dummy/tests/integration/components/sl-translate-test.jshint', function (
 
   QUnit.module('JSHint - integration/components');
   QUnit.test('integration/components/sl-translate-test.js should pass jshint', function(assert) { 
+    assert.expect(1);
     assert.ok(true, 'integration/components/sl-translate-test.js should pass jshint.'); 
   });
 
@@ -1312,6 +1321,7 @@ define('dummy/tests/router.jshint', function () {
 
   QUnit.module('JSHint - .');
   QUnit.test('router.js should pass jshint', function(assert) { 
+    assert.expect(1);
     assert.ok(true, 'router.js should pass jshint.'); 
   });
 
@@ -1322,6 +1332,7 @@ define('dummy/tests/routes/demo.jshint', function () {
 
   QUnit.module('JSHint - routes');
   QUnit.test('routes/demo.js should pass jshint', function(assert) { 
+    assert.expect(1);
     assert.ok(true, 'routes/demo.js should pass jshint.'); 
   });
 
@@ -1339,6 +1350,7 @@ define('dummy/tests/test-helper.jshint', function () {
 
   QUnit.module('JSHint - .');
   QUnit.test('test-helper.js should pass jshint', function(assert) { 
+    assert.expect(1);
     assert.ok(true, 'test-helper.js should pass jshint.'); 
   });
 
@@ -1353,7 +1365,6 @@ define('dummy/tests/unit/components/sl-translate-test', ['ember', 'ember-qunit',
             this.set('pluralKey', data.pluralKey);
             this.set('pluralCount', data.pluralCount);
             this.set('parameters', data.parameters);
-
             return 'TRANSLATE: ' + data.key;
         }
     });
@@ -1374,12 +1385,9 @@ define('dummy/tests/unit/components/sl-translate-test', ['ember', 'ember-qunit',
 
     ember_qunit.test('setTranslatedString() is called when the willRender() event occurs', function (assert) {
         var component = this.subject({
-            translateService: translateService,
-            key: 'the_key',
-            pluralKey: 'plural_key',
-            pluralCount: 'plural_count',
-            $0: 'a',
-            $1: 'b'
+            setTranslatedString: function setTranslatedString() {
+                return;
+            }
         });
 
         var spy = sinon['default'].spy(component, 'setTranslatedString');
@@ -1391,12 +1399,9 @@ define('dummy/tests/unit/components/sl-translate-test', ['ember', 'ember-qunit',
 
     ember_qunit.test('setTranslatedString() sets internalTranslatedString property with value from translateString()', function (assert) {
         var component = this.subject({
-            translateService: translateService,
-            key: 'the_key',
-            pluralKey: 'plural_key',
-            pluralCount: 'plural_count',
-            $0: 'a',
-            $1: 'b'
+            translateString: function translateString() {
+                return 'TRANSLATE: the_key';
+            }
         });
 
         var spy = sinon['default'].spy(component, 'translateString');
@@ -1420,6 +1425,8 @@ define('dummy/tests/unit/components/sl-translate-test', ['ember', 'ember-qunit',
             $1: 'b'
         });
 
+        this.render();
+
         assert.equal(component.translateString(), 'TRANSLATE: the_key', 'setTranslatedString() returns expected value successfully');
     });
 
@@ -1432,6 +1439,8 @@ define('dummy/tests/unit/components/sl-translate-test', ['ember', 'ember-qunit',
             $0: 'a',
             $1: 'b'
         });
+
+        this.render();
 
         Ember['default'].run(function () {
             component.setTranslatedString();
@@ -1450,26 +1459,54 @@ define('dummy/tests/unit/components/sl-translate-test', ['ember', 'ember-qunit',
             $1: 'b'
         });
 
-        component.trigger('willRender');
+        this.render();
+
+        Ember['default'].run(function () {
+            component.trigger('willRender');
+        });
 
         assert.strictEqual(component.get('translatedString'), component.get('internalTranslatedString'), 'translatedString() returns the correct value');
     });
 
     ember_qunit.test('translateString() calls translateKey() on the translation service with given values', function (assert) {
-        this.subject({
+        var component = this.subject({
             translateService: translateService,
             key: 'the_key',
             pluralKey: 'plural_key',
             pluralCount: 'plural_count',
             $0: 'a',
             $1: 'b',
-            c: 'c'
+            c: 'c',
+            $lowercase: 'lowercase',
+            $Uppercase: 'Uppercase',
+            $CAPITALS: 'CAPITALS'
+        });
+
+        Ember['default'].run(function () {
+            component.set('attrs', {
+                key: 'the_key',
+                pluralKey: 'plural_key',
+                pluralCount: 'plural_count',
+                $0: 'a',
+                $1: 'b',
+                c: 'c',
+                $lowercase: 'lowercase',
+                $Uppercase: 'Uppercase',
+                $CAPITALS: 'CAPITALS'
+            });
+            component.trigger('willRender');
         });
 
         assert.strictEqual(translateService.get('key'), 'the_key');
         assert.strictEqual(translateService.get('pluralKey'), 'plural_key');
         assert.strictEqual(translateService.get('pluralCount'), 'plural_count');
-        assert.deepEqual(translateService.get('parameters'), { $0: 'a', $1: 'b' });
+        assert.deepEqual(translateService.get('parameters'), {
+            $0: 'a',
+            $1: 'b',
+            $lowercase: 'lowercase',
+            $Uppercase: 'Uppercase',
+            $CAPITALS: 'CAPITALS'
+        });
     });
 
     ember_qunit.test('translateString() only accepts the correct parameter key pattern', function (assert) {
@@ -1481,14 +1518,36 @@ define('dummy/tests/unit/components/sl-translate-test', ['ember', 'ember-qunit',
             $0: 'a',
             $12: 'b',
             r: 'c',
-            $10000: 'd'
+            $10000: 'd',
+            $lowercase: 'lowercase',
+            $Uppercase: 'Uppercase',
+            $CAPITALS: 'CAPITALS'
         });
 
         Ember['default'].run(function () {
+            component.set('attrs', {
+                key: 'the_key',
+                pluralKey: 'plural_key',
+                pluralCount: 'plural_count',
+                $0: 'a',
+                $12: 'b',
+                r: 'c',
+                $10000: 'd',
+                $lowercase: 'lowercase',
+                $Uppercase: 'Uppercase',
+                $CAPITALS: 'CAPITALS'
+            });
             component.translateString();
         });
 
-        assert.deepEqual(translateService.get('parameters'), { $0: 'a', $12: 'b', $10000: 'd' });
+        assert.deepEqual(translateService.get('parameters'), {
+            $0: 'a',
+            $12: 'b',
+            $10000: 'd',
+            $lowercase: 'lowercase',
+            $Uppercase: 'Uppercase',
+            $CAPITALS: 'CAPITALS'
+        });
     });
 
     ember_qunit.test('Dependent keys are correct', function (assert) {
@@ -1506,6 +1565,7 @@ define('dummy/tests/unit/components/sl-translate-test.jshint', function () {
 
   QUnit.module('JSHint - unit/components');
   QUnit.test('unit/components/sl-translate-test.js should pass jshint', function(assert) { 
+    assert.expect(1);
     assert.ok(true, 'unit/components/sl-translate-test.js should pass jshint.'); 
   });
 
@@ -1572,6 +1632,7 @@ define('dummy/tests/unit/mixins/sl-get-translation-test.jshint', function () {
 
   QUnit.module('JSHint - unit/mixins');
   QUnit.test('unit/mixins/sl-get-translation-test.js should pass jshint', function(assert) { 
+    assert.expect(1);
     assert.ok(true, 'unit/mixins/sl-get-translation-test.js should pass jshint.'); 
   });
 
@@ -1795,6 +1856,7 @@ define('dummy/tests/unit/services/sl-translate-test.jshint', function () {
 
   QUnit.module('JSHint - unit/services');
   QUnit.test('unit/services/sl-translate-test.js should pass jshint', function(assert) { 
+    assert.expect(1);
     assert.ok(true, 'unit/services/sl-translate-test.js should pass jshint.'); 
   });
 
@@ -1827,7 +1889,7 @@ catch(err) {
 if (runningTests) {
   require("dummy/tests/test-helper");
 } else {
-  require("dummy/app")["default"].create({"name":"sl-ember-translate","version":"1.10.0+462a7ac9"});
+  require("dummy/app")["default"].create({"name":"sl-ember-translate","version":"1.10.1+80cdb807"});
 }
 
 /* jshint ignore:end */
