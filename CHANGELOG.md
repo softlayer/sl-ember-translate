@@ -1,5 +1,12 @@
 # sl-ember-translate Changelog
 
+### 1.10.1
+
+* [#225](https://github.com/softlayer/sl-ember-translate/pull/225) BUGFIX Lock down version of jQuery in bower.json
+* [#223](https://github.com/softlayer/sl-ember-translate/pull/223) ENHANCEMENT Improved Token Pattern to allow alphanumeric
+
+[View complete changeset](https://github.com/softlayer/sl-ember-translate/compare/v1.10.0...v1.10.1)
+
 ### 1.10.0
 
 * [#180](https://github.com/softlayer/sl-ember-translate/pull/180) [BREAKING ENHANCEMENT] Upgrade to Ember CLI 1.13.8
