@@ -1,5 +1,13 @@
 # sl-ember-translate Changelog
 
+### 1.11.0
+
+**BREAKING ENHANCEMENT**
+
+* [#229](https://github.com/softlayer/sl-ember-translate/issues/229) Upgrade to Ember CLI 2.3.0
+
+[View complete changeset](https://github.com/softlayer/sl-ember-translate/compare/v1.10.1...v1.11.0)
+
 ### 1.10.1
 
 **BUGFIX**
@@ -148,7 +156,7 @@
 **BREAKING ENHANCEMENT**
 
 * [#36](https://github.com/softlayer/sl-ember-translate/pull/36) Upgrade to Ember CLI 0.1.4
-* [Remove ember-cli-content-security-policy dependency](https://github.com/softlayer/sl-ember-translate/commit/7f51cb2def71e781ba369330f957f924974abeb0) 
+* [Remove ember-cli-content-security-policy dependency](https://github.com/softlayer/sl-ember-translate/commit/7f51cb2def71e781ba369330f957f924974abeb0)
 
 **INTERNAL**
 
