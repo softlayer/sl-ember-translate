@@ -1,5 +1,13 @@
 # sl-ember-translate Changelog
 
+### 1.12.0
+
+**BREAKING ENHANCEMENT**
+
+* [#232](https://github.com/softlayer/sl-ember-translate/issues/232) Upgrade to Ember CLI 2.4.1
+
+[View complete changeset](https://github.com/softlayer/sl-ember-translate/compare/v1.11.0...v1.12.0)
+
 ### 1.11.0
 
 **BREAKING ENHANCEMENT**
